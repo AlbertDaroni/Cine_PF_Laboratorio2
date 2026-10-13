@@ -1,14 +1,10 @@
 @model IEnumerable<Proyecto_Final.Models.Cine>
 
-@{
-    ViewData["Title"] = "Listado de Cines";
-}
+@{ ViewData["Title"] = "Listado de Cines"; }
 
 <h1>Listado de Cines</h1>
 
-<p>
-    <a asp-action="Crear" class="btn btn-primary">Crear nuevo cine</a>
-</p>
+<p><a asp-action="Crear" class="btn btn-primary">Crear nuevo cine</a></p>
 
 <table class="table table-striped">
     <thead>
@@ -20,8 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var cine in Model)
-        {
+        @foreach (var cine in Model) {
             <tr>
                 <td>@cine.Nombre</td>
                 <td>@cine.Direccion</td>

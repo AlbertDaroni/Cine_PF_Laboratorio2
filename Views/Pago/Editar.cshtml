@@ -1,12 +1,10 @@
 @model Proyecto_Final.Models.Pago
 
-@{
-    ViewData["Title"] = "Modificar Pago";
-}
+@{ ViewData["Title"] = "Editar Pago"; }
 
-<h1>Modificar Pago</h1>
+<h1>Editar Pago</h1>
 
-<form asp-action="Modificar" method="post">
+<form asp-action="Editar" method="post">
     <input type="hidden" asp-for="ID" />
 
     <div class="form-group mb-3">

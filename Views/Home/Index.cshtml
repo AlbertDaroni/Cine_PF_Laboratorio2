@@ -1,22 +1,11 @@
-﻿@{
-    ViewData["Title"] = "Inicio";
-}
+﻿@{ ViewData["Title"] = "Inicio"; }
 
 <div class="text-center">
     <h1 class="display-4">Sistema de Cine</h1>
     <p>Administracion de cines y pagos.</p>
 
     <div class="mt-4">
-        <a asp-controller="Cine"
-           asp-action="Indice"
-           class="btn btn-primary">
-            Ver Cines
-        </a>
-
-        <a asp-controller="Pago"
-           asp-action="Indice"
-           class="btn btn-success">
-            Ver Pagos
-        </a>
+        <a asp-controller="Cine" asp-action="Indice" class="btn btn-primary">Ver Cines</a>
+        <a asp-controller="Pago" asp-action="Indice" class="btn btn-success">Ver Pagos</a>
     </div>
 </div>
