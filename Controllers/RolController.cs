@@ -24,7 +24,7 @@ public class RolController : Controller {
         if (!ModelState.IsValid) return View(rol);
 
         _context.Roles.Add(rol);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class RolController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var rol = await _context.Roles.Find(id);
+        var rol = await _context.Roles.FindAsync(id);
         if (rol == null) return NotFound();
         return View(rol);
     }
@@ -44,7 +44,7 @@ public class RolController : Controller {
         if (!ModelState.IsValid) return View(rol);
 
         _context.Roles.Update(rol);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class RolController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var rol = await _context.Roles.Find(id);
+        var rol = await _context.Roles.FindAsync(id);
         if (rol == null) return NotFound();
         return View(rol);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var rol = _context.Roles.Find(id);
+        var rol = await _context.Roles.FindAsync(id);
         if (rol == null) return NotFound();
 
         _context.Roles.Remove(rol);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

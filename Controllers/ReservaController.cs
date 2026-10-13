@@ -24,7 +24,7 @@ public class ReservaController : Controller {
         if (!ModelState.IsValid) return View(reserva);
 
         _context.Reservas.Add(reserva);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class ReservaController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var reserva = await _context.Reservas.Find(id);
+        var reserva = await _context.Reservas.FindAsync(id);
         if (reserva == null) return NotFound();
         return View(reserva);
     }
@@ -43,8 +43,8 @@ public class ReservaController : Controller {
         if (id != reserva.ID) return BadRequest();
         if (!ModelState.IsValid) return View(reserva);
 
-        _contextReservas.Update(reserva);
-        await _context.SaveChanges();
+        _context.Reservas.Update(reserva);
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class ReservaController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var reserva = await _context.Reservas.Find(id);
+        var reserva = await _context.Reservas.FindAsync(id);
         if (reserva == null) return NotFound();
         return View(reserva);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var reserva = _context.Reservas.Find(id);
+        var reserva = await _context.Reservas.FindAsync(id);
         if (reserva == null) return NotFound();
 
         _context.Reservas.Remove(reserva);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

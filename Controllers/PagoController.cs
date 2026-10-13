@@ -24,7 +24,7 @@ public class PagoController : Controller {
         if (!ModelState.IsValid) return View(pago);
 
         _context.Pagos.Add(pago);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class PagoController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var pago = await _context.Pagos.Find(id);
+        var pago = await _context.Pagos.FindAsync(id);
         if (pago == null) return NotFound();
         return View(pago);
     }
@@ -44,7 +44,7 @@ public class PagoController : Controller {
         if (!ModelState.IsValid) return View(pago);
 
         _context.Pagos.Update(pago);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class PagoController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var pago = await _context.Pagos.Find(id);
+        var pago = await _context.Pagos.FindAsync(id);
         if (pago == null) return NotFound();
         return View(pago);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var pago = _context.Pagos.Find(id);
+        var pago = await _context.Pagos.FindAsync(id);
         if (pago == null) return NotFound();
 
         _context.Pagos.Remove(pago);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

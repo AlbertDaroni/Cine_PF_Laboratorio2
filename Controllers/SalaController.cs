@@ -24,7 +24,7 @@ public class SalaController : Controller {
         if (!ModelState.IsValid) return View(sala);
 
         _context.Salas.Add(sala);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class SalaController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var sala = await _context.Salas.Find(id);
+        var sala = await _context.Salas.FindAsync(id);
         if (sala == null) return NotFound();
         return View(sala);
     }
@@ -44,7 +44,7 @@ public class SalaController : Controller {
         if (!ModelState.IsValid) return View(sala);
 
         _context.Salas.Update(sala);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class SalaController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var sala = await _context.Salas.Find(id);
+        var sala = await _context.Salas.FindAsync(id);
         if (sala == null) return NotFound();
         return View(sala);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var sala = _context.Salas.Find(id);
+        var sala = await _context.Salas.FindAsync(id);
         if (sala == null) return NotFound();
 
         _context.Salas.Remove(sala);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

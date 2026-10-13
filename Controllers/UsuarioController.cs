@@ -25,7 +25,7 @@ public class UsuarioController : Controller {
         if (!ModelState.IsValid) return View(usuario);
 
         _context.Usuarios.Add(usuario);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -34,7 +34,7 @@ public class UsuarioController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var usuario = await _context.Usuarios.Find(id);
+        var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null) return NotFound();
         return View(usuario);
     }
@@ -45,7 +45,7 @@ public class UsuarioController : Controller {
         if (!ModelState.IsValid) return View(usuario);
 
         _context.Usuarios.Update(usuario);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -54,18 +54,18 @@ public class UsuarioController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var usuario = await _context.Usuarios.Find(id);
+        var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null) return NotFound();
         return View(usuario);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var usuario = _context.Usuarios.Find(id);
+        var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null) return NotFound();
 
         _context.Usuarios.Remove(usuario);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

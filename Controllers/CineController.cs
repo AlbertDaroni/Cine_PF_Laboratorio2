@@ -24,7 +24,7 @@ public class CineController : Controller {
         if (!ModelState.IsValid) return View(cine);
 
         _context.Cines.Add(cine);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class CineController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var cine = await _context.Cines.Find(id);
+        var cine = await _context.Cines.FindAsync(id);
         if (cine == null) return NotFound();
         return View(cine);
     }
@@ -44,7 +44,7 @@ public class CineController : Controller {
         if (!ModelState.IsValid) return View(cine);
 
         _context.Cines.Update(cine);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class CineController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var cine = await _context.Cines.Find(id);
+        var cine = await _context.Cines.FindAsync(id);
         if (cine == null) return NotFound();
         return View(cine);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var cine = _context.Cines.Find(id);
+        var cine = await _context.Cines.FindAsync(id);
         if (cine == null) return NotFound();
 
         _context.Cines.Remove(cine);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

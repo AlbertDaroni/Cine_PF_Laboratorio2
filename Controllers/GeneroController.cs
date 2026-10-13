@@ -24,7 +24,7 @@ public class GeneroController : Controller {
         if (!ModelState.IsValid) return View(genero);
 
         _context.Generos.Add(genero);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class GeneroController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var genero = await _context.Generos.Find(id);
+        var genero = await _context.Generos.FindAsync(id);
         if (genero == null) return NotFound();
         return View(genero);
     }
@@ -44,7 +44,7 @@ public class GeneroController : Controller {
         if (!ModelState.IsValid) return View(genero);
 
         _context.Generos.Update(genero);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class GeneroController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var genero = await _context.Generos.Find(id);
+        var genero = await _context.Generos.FindAsync(id);
         if (genero == null) return NotFound();
         return View(genero);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var genero = _context.Generos.Find(id);
+        var genero = await _context.Generos.FindAsync(id);
         if (genero == null) return NotFound();
 
         _context.Generos.Remove(genero);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }

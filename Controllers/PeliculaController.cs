@@ -24,7 +24,7 @@ public class PeliculaController : Controller {
         if (!ModelState.IsValid) return View(pelicula);
 
         _context.Peliculas.Add(pelicula);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -33,7 +33,7 @@ public class PeliculaController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var pelicula = await _context.Peliculas.Find(id);
+        var pelicula = await _context.Peliculas.FindAsync(id);
         if (pelicula == null) return NotFound();
         return View(pelicula);
     }
@@ -44,7 +44,7 @@ public class PeliculaController : Controller {
         if (!ModelState.IsValid) return View(pelicula);
 
         _context.Peliculas.Update(pelicula);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
@@ -53,18 +53,18 @@ public class PeliculaController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var pelicula = await _context.Peliculas.Find(id);
+        var pelicula = await _context.Peliculas.FindAsync(id);
         if (pelicula == null) return NotFound();
         return View(pelicula);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
-        var pelicula = _context.Peliculas.Find(id);
+        var pelicula = await _context.Peliculas.FindAsync(id);
         if (pelicula == null) return NotFound();
 
         _context.Peliculas.Remove(pelicula);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
     }
