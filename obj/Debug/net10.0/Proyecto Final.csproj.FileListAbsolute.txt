@@ -1,0 +1,10 @@
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.csproj.AssemblyReference.cache
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.GeneratedMSBuildEditorConfig.editorconfig
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.AssemblyInfoInputs.cache
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.AssemblyInfo.cs
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.csproj.CoreCompileInputs.cache
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.MvcApplicationPartsAssemblyInfo.cache
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cache
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cs
+C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\obj\Debug\net10.0\Proyecto Final.sourcelink.json

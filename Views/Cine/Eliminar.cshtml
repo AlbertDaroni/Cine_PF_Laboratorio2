@@ -1,0 +1,25 @@
+@model Proyecto_Final.Models.Cine
+
+@{
+    ViewData["Title"] = "Eliminar Cine";
+}
+
+<h1>Eliminar Cine</h1>
+
+<div class="alert alert-danger">
+    ¿Seguro que queres eliminar este cine?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Nombre:</strong> @Model.Nombre</p>
+        <p><strong>Direccion:</strong> @Model.Direccion</p>
+        <p><strong>Abierto:</strong> @(Model.Abierto ? "Si" : "No")</p>
+
+        <form asp-action="Eliminar" method="post">
+            <input type="hidden" asp-for="ID" />
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a asp-action="Indice" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

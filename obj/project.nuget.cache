@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fmbkltyU+ek=",
+  "dgSpecHash": "Hg/s6h+jpus=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
+  "projectFilePath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
@@ -36,9 +36,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Se detectó una versión del paquete fuera de la restricción de dependencia: Pomelo.EntityFrameworkCore.MySql 9.0.0 requiere Microsoft.EntityFrameworkCore.Relational (>= 9.0.0 && <= 9.0.999), pero la versión Microsoft.EntityFrameworkCore.Relational 10.0.12 ya se resolvió.",
-      "projectPath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
+      "projectPath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
+      "filePath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
       "libraryId": "Microsoft.EntityFrameworkCore.Relational",
       "targetGraphs": [
         "net10.0"

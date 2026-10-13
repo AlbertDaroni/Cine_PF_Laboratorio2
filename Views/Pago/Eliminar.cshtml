@@ -1,0 +1,25 @@
+@model Proyecto_Final.Models.Pago
+
+@{
+    ViewData["Title"] = "Eliminar Pago";
+}
+
+<h1>Eliminar Pago</h1>
+
+<div class="alert alert-danger">
+    ¿Seguro que queres eliminar este pago?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Concepto:</strong> @Model.Concepto</p>
+        <p><strong>Importe:</strong> @Model.Importe.ToString("C")</p>
+        <p><strong>Estado:</strong> @Model.Estado</p>
+
+        <form asp-action="Eliminar" method="post">
+            <input type="hidden" asp-for="ID" />
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a asp-action="Indice" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

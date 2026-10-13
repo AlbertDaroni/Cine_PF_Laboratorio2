@@ -2148,11 +2148,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
+      "projectUniqueName": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
       "projectName": "Proyecto Final",
-      "projectPath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
+      "projectPath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
       "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\obj\\",
+      "outputPath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
