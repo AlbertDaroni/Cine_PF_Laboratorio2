@@ -20,141 +20,141 @@ build_property.TargetFrameworkVersion = v10.0
 build_property.EntryPointFilePath = 
 build_property.RootNamespace = Proyecto_Final
 build_property.RootNamespace = Proyecto_Final
-build_property.ProjectDir = C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\
+build_property.ProjectDir = C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final
+build_property.MSBuildProjectDirectory = C:\univercidad\2do cuatrimestre\Laboratorio 2\Cine_PF_Laboratorio2
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Cine/Crear.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Cine/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZVxDcmVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Cine/Detalles.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Cine/Detalles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZVxEZXRhbGxlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Cine/Eliminar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Cine/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZVxFbGltaW5hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Cine/Indice.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Cine/Indice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZVxJbmRpY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Cine/Modificar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Cine/Modificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZVxNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Home/Index.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Home/Privacy.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pago/Crear.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pago/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xDcmVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pago/Detalles.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pago/Detalles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xEZXRhbGxlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pago/Eliminar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pago/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xFbGltaW5hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pago/Indice.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pago/Indice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xJbmRpY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pago/Modificar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pago/Modificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pelicula/Crear.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pelicula/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcQ3JlYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pelicula/Detalles.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pelicula/Detalles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcRGV0YWxsZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pelicula/Eliminar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pelicula/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcRWxpbWluYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pelicula/Indice.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pelicula/Indice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcSW5kaWNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Pelicula/Modificar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Pelicula/Modificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcTW9kaWZpY2FyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Sala/Crear.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Sala/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxDcmVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Sala/Detalles.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Sala/Detalles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxEZXRhbGxlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Sala/Eliminar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Sala/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxFbGltaW5hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Sala/Indice.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Sala/Indice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxJbmRpY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Sala/Modificar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Sala/Modificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Shared/Error.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Usuario/Crear.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Usuario/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Usuario/Detalles.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Usuario/Detalles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xEZXRhbGxlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Usuario/Eliminar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Usuario/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFbGltaW5hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Usuario/Indice.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Usuario/Indice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRpY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Usuario/Modificar.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Usuario/Modificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/_ViewImports.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/_ViewStart.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Usuario/OneDrive/Documentos/Tecnicatura Universitaria de Desarrollo de Software (Trabajos)/Laboratorio II/Proyecto Final/Views/Shared/_Layout.cshtml]
+[C:/univercidad/2do cuatrimestre/Laboratorio 2/Cine_PF_Laboratorio2/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-tbp89to82y
