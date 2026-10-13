@@ -17,5 +17,5 @@ public class Pago {
     [Required(ErrorMessage = "El importe es obligatorio")]
     public decimal Importe { get; set; }
 
-    public string Estado { get; set; }
+    public bool Estado { get; set; }
 }

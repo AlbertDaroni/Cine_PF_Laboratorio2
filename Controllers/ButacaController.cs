@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Proyecto_Final.Models;
 using Proyecto_Final.Data;
+
+namespace Proyecto_Final.Controllers;
 
 public class ButacaController : Controller {
     private readonly BD_Context _context;

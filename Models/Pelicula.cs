@@ -20,10 +20,10 @@ public class Pelicula {
     public string Idioma { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    public Time Horario { get; set; }
+    public int Horario { get; set; }
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    public Time Duracion { get; set; }
+    public int Duracion { get; set; }
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public double Precio { get; set; }

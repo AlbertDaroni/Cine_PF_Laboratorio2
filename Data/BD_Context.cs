@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Models;
 
+namespace Proyecto_Final.Data;
+
 public class BD_Context : DbContext {
     public BD_Context(DbContextOptions<BD_Context> options) : base(options) {}
 
-    public DbSet<Usuario> Salas { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Cine> Cines { get; set; }
     public DbSet<Sala> Salas { get; set; }
     public DbSet<Butaca> Butacas { get; set; }
