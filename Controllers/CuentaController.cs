@@ -35,6 +35,11 @@ public class CuentaController : Controller {
             return View(signin);
         }
 
+        if (usuario.DNI != signin.DNI) {
+            ModelState.AddModelError("", "El DNI no coincide con el correo ingresado.");
+            return View(signin);
+        }
+
         await AutenticarUsuario(usuario);
 
         return RedirectToAction("Index", "Home");

@@ -1,0 +1,48 @@
+@model IEnumerable<Proyecto_Final.Models.Usuario>
+
+@{ ViewData["Title"] = "Usuarios"; }
+
+<h1>Gestión de Usuarios</h1>
+
+@if (TempData["Mensaje"] != null) {
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<p><a asp-action="Crear" class="btn btn-primary">Nuevo Usuario</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Foto de perfil</th>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model) {
+            <tr>
+                <td><img src="@usuario.Foto_Perfil" width="30" height="30" class="rounded-circle me-2"></td>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.DNI</td>
+                <td>@usuario.Correo</td>
+                <td>@usuario.Rol.Nombre</td>
+                <td>
+                    @if (usuario.Estado) {
+                        <span class="badge bg-success">Activo</span>
+                    } else {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@usuario.ID" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Modificar" asp-route-id="@usuario.ID" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@usuario.ID" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

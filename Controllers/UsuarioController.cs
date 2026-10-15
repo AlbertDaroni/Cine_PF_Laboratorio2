@@ -16,6 +16,15 @@ public class UsuarioController : Controller {
     public async Task<IActionResult> Indice() { return View(await _context.Usuarios.AsNoTracking().ToListAsync()); }
 
     // -----------------------------------------------------------------------------------
+    // Funciones para Obtener
+    [HttpGet]
+    public async Task<IActionResult> Detalles(int id) {
+        var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
+        if (usuario == null) return NotFound();
+        return View(usuario);
+    }
+
+    // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet]
     public IActionResult Crear() { return View(); }

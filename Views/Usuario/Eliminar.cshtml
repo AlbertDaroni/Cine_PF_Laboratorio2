@@ -1,0 +1,40 @@
+@model Proyecto_Final.Models.Usuario
+
+@{ ViewData["Title"] = "Dar de baja Usuario"; }
+
+<h1>Dar de baja Usuario</h1>
+<h3>¿Está seguro que desea dar de baja este usuario?</h3>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+
+    <dt class="col-sm-3">DNI</dt>
+    <dd class="col-sm-9">@Model.DNI</dd>
+
+    <dt class="col-sm-3">Correo</dt>
+    <dd class="col-sm-9">@Model.Correo</dd>
+
+    <dt class="col-sm-3">Foto de perfil</dt>
+    <dd class="col-sm-9"><img src="@Model.Foto_Perfil" width="30" height="30" class="rounded-circle me-2"></dd>
+
+    <dt class="col-sm-3">Rol</dt>
+    <dd class="col-sm-9">@Model.Rol.Nombre</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        @if (Model.Estado) {
+            <span class="badge bg-success">Activo</span>
+        } else {
+            <span class="badge bg-danger">Inactivo</span>
+        }
+    </dd>
+</dl>
+
+<form asp-action="Eliminar" asp-route-id="@Model.ID" method="post">
+    <input type="hidden" asp-for="ID">
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+</form>

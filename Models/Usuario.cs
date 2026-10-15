@@ -25,7 +25,7 @@ public class Usuario {
     
     public bool Estado { get; set; } = true;
 
-    [Required]
+    [Required, Column("rol_id")]
     public int RolID { get; set; }
     
     [ForeignKey("RolID")]
