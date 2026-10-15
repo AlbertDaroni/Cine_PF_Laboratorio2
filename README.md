@@ -122,3 +122,4 @@
    Cada módulo contará con las vistas necesarias para consultar, crear, editar y eliminar registros de acuerdo con los permisos de cada rol.
 
 5. ## DER -->
+   <img width="869" height="1600" alt="DiagrameEntidadyRelaciondeCine" src="https://github.com/user-attachments/assets/c6857062-4598-4840-8fcb-ae7b4328d123" />
