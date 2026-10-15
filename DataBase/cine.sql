@@ -4,6 +4,12 @@ CREATE TABLE roles (
     nombre VARCHAR(255) NOT NULL
 );
 
+-- Inicialización de los roles principales
+INSERT INTO roles (nombre)
+VALUES  ("Administrador"),
+        ("Empleado"),
+        ("Usuario");
+
 CREATE TABLE cines (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
@@ -19,7 +25,10 @@ CREATE TABLE generos (
 CREATE TABLE directores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    nacionalidad VARCHAR(100) NULL
+    apellido VARCHAR(255) NOT NULL,
+    nacionalidad VARCHAR(100) NULL,
+    pelicula_id INT NOT NULL,
+    FOREIGN KEY (pelicula_id) REFERENCES peliculas(id) ON UPDATE DELETE
 );
 
 -- 2. TABLAS CON LLAVES FORÁNEAS BÁSICAS
@@ -34,6 +43,10 @@ CREATE TABLE usuarios (
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- Inicialización del admin principal
+INSERT INTO usuarios (nombre, correo, dni, contraseña, rol_id)
+VALUES ("Admin", "admin@gmail.com", 123, 123, 1);
 
 CREATE TABLE salas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,10 +64,7 @@ CREATE TABLE peliculas (
     clasificacion VARCHAR(10) NOT NULL,
     idioma VARCHAR(255) NOT NULL,
     duracion INT NOT NULL,
-    precio DECIMAL(10,2) NOT NULL DEFAULT 0,
-    estado TINYINT(1) DEFAULT 1,
-    director_id INT NOT NULL,
-    FOREIGN KEY (director_id) REFERENCES directores(id) ON DELETE RESTRICT ON UPDATE CASCADE
+    estado TINYINT(1) DEFAULT 1
 );
 
 -- 3. TABLAS INTERMEDIAS Y ESTRUCTURAS COMPLEJAS

@@ -1,0 +1,19 @@
+@model Proyecto_Final.Models.Rol
+
+@{ ViewData["Title"] = "Dar de baja Rol"; }
+
+<h1>Dar de baja Rol</h1>
+<h3>¿Está seguro que desea dar de baja este rol?</h3>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+</dl>
+
+<form asp-action="Eliminar" asp-route-id="@Model.ID" method="post">
+    <input type="hidden" asp-for="ID">
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+</form>

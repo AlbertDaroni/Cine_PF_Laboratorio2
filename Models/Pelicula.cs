@@ -20,17 +20,9 @@ public class Pelicula {
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public int Duracion { get; set; }
 
-    [Required(ErrorMessage = "Este campo es obligatorio")]
-    public double Precio { get; set; }
-
     public bool Estado { get; set; } = true;
 
-    [Required]
-    public int DirectorID { get; set; }
-    
-    [ForeignKey("DirectorID")]
-    public virtual Director? Director { get; set; }
-
+    public virtual ICollection<Director> Directores { get; set; } = new List<Director>();
     public virtual ICollection<Genero> Generos { get; set; } = new List<Genero>();
     public virtual ICollection<Funcion> Funciones { get; set; } = new List<Funcion>();
 }

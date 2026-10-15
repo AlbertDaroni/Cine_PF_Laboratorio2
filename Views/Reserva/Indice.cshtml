@@ -1,0 +1,60 @@
+@model IEnumerable<Proyecto_Final.Models.Reserva>
+
+@{ ViewData["Title"] = "Reservas"; }
+
+<h1>Reservas</h1>
+
+@if (TempData["Mensaje"] != null) {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+@if (User.IsInRole("Administrador")) {
+    @if (ViewBag.Todas == true) {
+        <a asp-action="Indice" asp-route-todos="false" class="btn btn-primary">Ver mis reservas</a>
+    } else {
+        <a asp-action="Indice" asp-route-todos="true" class="btn btn-primary">Ver todas las reservas</a>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha de creación</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha fin original</th>
+            <th>Fecha fin efectiva</th>
+            <th>Monto</th>
+            <th>Multa</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reserva in Model) {
+            <tr>
+                <td>@reserva.Fecha_Creacion</td>
+                <td>@reserva.Fecha_Inicio</td>
+                <td>@reserva.Fecha_Fin_Original</td>
+                <td>@reserva.Fecha_Fin_Efectiva</td>
+                <td>$ @reserva.Monto_Dia</td>
+                <td>$ @reserva.Multa</td>
+                <td>
+                    @if (reserva.Estado == "1") {
+                        <span class="badge bg-success">Activa</span>
+                    } else {
+                        <span class="badge bg-danger">Inactiva</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Modificar" asp-route-id="@reserva.id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Detalles" asp-route-id="@reserva.id" class="btn btn-info btn-sm">Detalles</a>
+                    @if (User.IsInRole("Administrador")) {
+                        <a asp-action="Eliminar" asp-route-id="@reserva.id" class="btn btn-danger">Eliminar</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

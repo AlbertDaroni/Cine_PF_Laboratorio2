@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
 
@@ -13,7 +14,7 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
-    public async Task<IActionResult> Indice() { return View(await _context.Usuarios.AsNoTracking().ToListAsync()); }
+    public async Task<IActionResult> Indice() { return View(await _context.Usuarios.Include(u => u.Rol).AsNoTracking().ToListAsync()); }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Obtener
@@ -27,7 +28,10 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet]
-    public IActionResult Crear() { return View(); }
+    public async Task<IActionResult> Crear() {
+        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+        return View();
+    }
 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Crear(Usuario usuario) {
@@ -43,8 +47,10 @@ public class UsuarioController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var usuario = await _context.Usuarios.FindAsync(id);
+        var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
+
+        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
         return View(usuario);
     }
 
@@ -63,7 +69,7 @@ public class UsuarioController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var usuario = await _context.Usuarios.FindAsync(id);
+        var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
         return View(usuario);
     }

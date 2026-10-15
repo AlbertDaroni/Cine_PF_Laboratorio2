@@ -1,0 +1,32 @@
+@model IEnumerable<Proyecto_Final.Models.Rol>
+
+@{ ViewData["Title"] = "Roles"; }
+
+<h1>Gestión de Roles</h1>
+
+@if (TempData["Mensaje"] != null) {
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<p><a asp-action="Crear" class="btn btn-primary">Nuevo Roles</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rol in Model) {
+            <tr>
+                <td>@rol.Nombre</td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@rol.ID" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Editar" asp-route-id="@rol.ID" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@rol.ID" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

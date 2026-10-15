@@ -9,8 +9,15 @@ public class Director {
     [Required(ErrorMessage = "Este campo es obligatorio"), StringLength(255)]
     public string Nombre { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Este campo es obligatorio"), StringLength(255)]
+    public string Apellido { get; set; } = string.Empty;
+
     [StringLength(100)]
     public string? Nacionalidad { get; set; }
 
-    public virtual ICollection<Pelicula> Peliculas { get; set; } = new List<Pelicula>();
+    [Required, Column("pelicula_id")]
+    public int PeliculaID { get; set; }
+
+    [ForeignKey("PeliculaID")]
+    public virtual Pelicula? Pelicula { get; set; }
 }

@@ -15,13 +15,13 @@ public class Reserva {
 
     public bool Estado { get; set; } = true;
 
-    [Required]
+    [Required, Column("usuario_id")]
     public int UsuarioID { get; set; }
     
     [ForeignKey("UsuarioID")]
     public virtual Usuario? Usuario { get; set; }
 
-    [Required]
+    [Required, Column("funcion_id")]
     public int FuncionID { get; set; }
     
     [ForeignKey("FuncionID")]
