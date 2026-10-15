@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final.Models;
 
@@ -22,5 +23,13 @@ public class Usuario {
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public string Contraseña { get; set; } = string.Empty;
     
-    public bool Estado { get; set; }
+    public bool Estado { get; set; } = true;
+
+    [Required]
+    public int RolID { get; set; }
+    
+    [ForeignKey("RolID")]
+    public virtual Rol? Rol { get; set; }
+
+    public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 }

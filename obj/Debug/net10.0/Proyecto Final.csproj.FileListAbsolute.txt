@@ -1,13 +1,3 @@
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.csproj.AssemblyReference.cache
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.AssemblyInfoInputs.cache
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.AssemblyInfo.cs
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.csproj.CoreCompileInputs.cache
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cache
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cs
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.sourcelink.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\appsettings.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Proyecto Final.staticwebassets.runtime.json
@@ -18,22 +8,21 @@ C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de 
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Proyecto Final.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Proyecto Final.pdb
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Humanizer.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.Build.Framework.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.Build.Locator.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.Workspaces.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Mono.TextTemplating.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\MySqlConnector.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Newtonsoft.Json.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\System.CodeDom.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\System.Composition.AttributedModel.dll
@@ -93,19 +82,29 @@ C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de 
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.csproj.AssemblyReference.cache
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.AssemblyInfoInputs.cache
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.AssemblyInfo.cs
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cache
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.RazorAssemblyInfo.cs
+C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\Proyecto Final.sourcelink.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Usuario\OneDrive\Documentos\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\Laboratorio II\Proyecto Final\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
