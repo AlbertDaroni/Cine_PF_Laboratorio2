@@ -4,12 +4,6 @@ CREATE TABLE roles (
     nombre VARCHAR(255) NOT NULL
 );
 
--- Inicialización de los roles principales
-INSERT INTO roles (nombre)
-VALUES  ("Administrador"),
-        ("Empleado"),
-        ("Usuario");
-
 CREATE TABLE cines (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
@@ -22,19 +16,28 @@ CREATE TABLE generos (
     nombre VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE peliculas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    portada TEXT NOT NULL UNIQUE,
+    clasificacion VARCHAR(10) NOT NULL,
+    idioma VARCHAR(255) NOT NULL,
+    duracion INT NOT NULL,
+    estado TINYINT(1) DEFAULT 1
+);
+
 CREATE TABLE directores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
-    nacionalidad VARCHAR(100) NULL,
-    pelicula_id INT NOT NULL,
-    FOREIGN KEY (pelicula_id) REFERENCES peliculas(id) ON UPDATE DELETE
+    nacionalidad VARCHAR(100) NULL
 );
 
 -- 2. TABLAS CON LLAVES FORÁNEAS BÁSICAS
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
     dni INT NOT NULL UNIQUE,
     foto_perfil TEXT NULL,
@@ -43,10 +46,6 @@ CREATE TABLE usuarios (
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
-
--- Inicialización del admin principal
-INSERT INTO usuarios (nombre, correo, dni, contraseña, rol_id)
-VALUES ("Admin", "admin@gmail.com", 123, 123, 1);
 
 CREATE TABLE salas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,13 +57,12 @@ CREATE TABLE salas (
     FOREIGN KEY (cine_id) REFERENCES cines(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE peliculas (
+CREATE TABLE butacas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    clasificacion VARCHAR(10) NOT NULL,
-    idioma VARCHAR(255) NOT NULL,
-    duracion INT NOT NULL,
-    estado TINYINT(1) DEFAULT 1
+    numero VARCHAR(3) NOT NULL,
+    estado TINYINT(1) DEFAULT 0,
+    sala_id INT NOT NULL,
+    FOREIGN KEY (sala_id) REFERENCES salas(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- 3. TABLAS INTERMEDIAS Y ESTRUCTURAS COMPLEJAS
@@ -76,12 +74,12 @@ CREATE TABLE pelicula_genero (
     FOREIGN KEY (genero_id) REFERENCES generos(id) ON DELETE CASCADE
 );
 
-CREATE TABLE butacas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    numero VARCHAR(3) NOT NULL,
-    estado TINYINT(1) DEFAULT 0,
-    sala_id INT NOT NULL,
-    FOREIGN KEY (sala_id) REFERENCES salas(id) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE pelicula_director (
+    pelicula_id INT NOT NULL,
+    director_id INT NOT NULL,
+    PRIMARY KEY (pelicula_id, director_id),
+    FOREIGN KEY (pelicula_id) REFERENCES peliculas(id) ON DELETE CASCADE,
+    FOREIGN KEY (director_id) REFERENCES directores(id) ON DELETE CASCADE
 );
 
 -- La tabla Funciones une Películas, Salas y Horarios específicos
