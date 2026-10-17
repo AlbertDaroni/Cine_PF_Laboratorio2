@@ -12,6 +12,10 @@ public class Usuario {
     public string Nombre { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
+    [StringLength(50, ErrorMessage = "El apellido no puede superar los 50 caracteres.")]
+    public string Apellido { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Este campo es obligatorio")]
     [EmailAddress(ErrorMessage = "El formato del correo no es válido")]
     public string Correo { get; set; } = string.Empty;
 

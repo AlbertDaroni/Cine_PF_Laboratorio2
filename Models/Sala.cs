@@ -18,7 +18,7 @@ public class Sala {
 
     public bool Estado { get; set; } = true;
 
-    [Required]
+    [Required, Column("cine_id")]
     public int CineID { get; set; }
     
     [ForeignKey("CineID")]

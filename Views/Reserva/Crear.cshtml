@@ -3,7 +3,7 @@
 @{ ViewData["Title"] = "Nueva Reserva"; }
 
 <h1>Nueva Reserva</h1>
-
+<!--
 <form asp-action="Crear" method="post">
     <input type="hidden" asp-for="FuncionID">
     <input type="hidden" asp-for="Precio">
@@ -36,9 +36,9 @@
         <input asp-for="Fecha_Fin_Efectiva" class="form-control" type="datetime-local">
         <span asp-validation-for="Fecha_Fin_Efectiva" class="text-danger"></span>
     </div>
-
     <button type="submit" class="btn btn-success">Guardar</button>
     <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
 </form>
+-->
 
 @section Scripts { <partial name="_ValidationScriptsPartial"/> }

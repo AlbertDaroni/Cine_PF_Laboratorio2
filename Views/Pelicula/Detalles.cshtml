@@ -1,0 +1,37 @@
+@model Proyecto_Final.Models.Pelicula
+
+@{ ViewData["Title"] = "Detalles"; }
+
+<h1>Detalles de la Película</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Portada</dt>
+    <dd class="col-sm-9"><img src="@Model.Portada"></dd>
+
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+
+    <dt class="col-sm-3">Clasificación</dt>
+    <dd class="col-sm-9">@Model.Clasificacion</dd>
+
+    <dt class="col-sm-3">Idioma</dt>
+    <dd class="col-sm-9">@Model.Idioma</dd>
+
+    <dt class="col-sm-3">Duración</dt>
+    <dd class="col-sm-9">@Model.Duracion</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        @if (Model.Estado) {
+            <span class="badge bg-success">Activa</span>
+        } else {
+            <span class="badge bg-danger">Inactiva</span>
+        }
+    </dd>
+</dl>
+
+@if (User.IsInRole("Administrador" ) || User.IsInRole("Empleado")) {
+    <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+    <a asp-action="Eliminar" asp-route-id="@Model.ID" class="btn btn-danger btn-sm">Eliminar</a>
+}
+<button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>

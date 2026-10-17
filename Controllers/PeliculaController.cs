@@ -12,7 +12,16 @@ public class PeliculaController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
-    public async Task<IActionResult> Indice() { return View(await _context.Peliculas.AsNoTracking().ToListAsync()); }
+    public async Task<IActionResult> Indice() {
+        var peliculas = await _context.Peliculas
+            .Include(p => p.Directores)
+            .Include(p => p.Generos)
+            .AsNoTracking()
+            .ToListAsync()
+        ;
+
+        return View(peliculas);
+    }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
@@ -33,7 +42,7 @@ public class PeliculaController : Controller {
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
-        var pelicula = await _context.Peliculas.FindAsync(id);
+        var pelicula = await _context.Peliculas.Include(p => p.Directores).Include(p => p.Generos).FirstOrDefaultAsync(p => p.ID == id);
         if (pelicula == null) return NotFound();
         return View(pelicula);
     }
@@ -53,7 +62,7 @@ public class PeliculaController : Controller {
     // Funciones para Eliminar
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
-        var pelicula = await _context.Peliculas.FindAsync(id);
+        var pelicula = await _context.Peliculas.Include(p => p.Directores).Include(p => p.Generos).FirstOrDefaultAsync(p => p.ID == id);
         if (pelicula == null) return NotFound();
         return View(pelicula);
     }

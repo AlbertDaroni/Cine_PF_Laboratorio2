@@ -1,0 +1,55 @@
+@model Proyecto_Final.Models.Pelicula
+
+@{ ViewData["Title"] = "Editar"; }
+
+<h1>Editar</h1>
+
+<hr>
+
+<form asp-action="Editar" asp-route-id="@Model.ID" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Titulo"></label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Portada"></label>
+        <input asp-for="Portada" class="form-control" type="file" accept="image/*" />
+        <span asp-validation-for="Portada" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Clasificacion"></label>
+        <input asp-for="Clasificacion" class="form-control" />
+        <span asp-validation-for="Clasificacion" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Idioma"></label>
+        <input asp-for="Idioma" class="form-control" />
+        <span asp-validation-for="Idioma" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Duracion"></label>
+        <input asp-for="Duracion" class="form-control" />
+        <span asp-validation-for="Duracion" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Estado"></label>
+        <select asp-for="Estado" class="form-select">
+            <option value="1">Activa</option>
+            <option value="0">Inactiva</option>
+        </select>
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

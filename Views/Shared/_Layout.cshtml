@@ -32,7 +32,7 @@
                         }
                         @if (User.Identity != null && User.Identity.IsAuthenticated) {
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Reserva" asp-action="Indice">Reservas</a></li>
-                            <li class="nav-item">
+                            <li class="nav-item position-absolute end-0">
                                 <a class="nav-link text-success d-flex align-items-center" asp-controller="Usuario" asp-action="Detalles" asp-route-id="@usuarioID">
                                     <img src="@Foto_Perfil" width="30" height="30" class="rounded-circle me-2">
                                     <span>Cuenta</span>

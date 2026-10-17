@@ -11,7 +11,10 @@ public class Pelicula {
     public string Titulo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    [StringLength(10, ErrorMessage = "La clasificación no puede superar los 3 caracteres.")]
+    public string Portada { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Este campo es obligatorio")]
+    [StringLength(10, ErrorMessage = "La clasificación no puede superar los 10 caracteres.")]
     public string Clasificacion { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Este campo es obligatorio"), StringLength(255)]

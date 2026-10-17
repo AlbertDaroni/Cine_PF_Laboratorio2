@@ -15,9 +15,5 @@ public class Director {
     [StringLength(100)]
     public string? Nacionalidad { get; set; }
 
-    [Required, Column("pelicula_id")]
-    public int PeliculaID { get; set; }
-
-    [ForeignKey("PeliculaID")]
-    public virtual Pelicula? Pelicula { get; set; }
+    public virtual ICollection<Pelicula> Peliculas { get; set; } = new List<Pelicula>();
 }

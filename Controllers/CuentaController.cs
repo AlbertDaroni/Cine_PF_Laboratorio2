@@ -50,7 +50,7 @@ public class CuentaController : Controller {
     [HttpPost]
     public async Task<IActionResult> Logout() {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("SignIn");
+        return RedirectToAction("Index", "Home");
     }
 
     // -----------------------------------------------------------------------------------

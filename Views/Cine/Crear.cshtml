@@ -1,8 +1,8 @@
 @model Proyecto_Final.Models.Cine
 
-@{ ViewData["Title"] = "Crear Cine"; }
+@{ ViewData["Title"] = "Agregar"; }
 
-<h1>Crear Cine</h1>
+<h1>Agregar</h1>
 
 <form asp-action="Crear" method="post">
     <div class="form-group mb-3">
@@ -26,6 +26,4 @@
     <a asp-action="Indice" class="btn btn-secondary">Volver</a>
 </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

@@ -12,7 +12,7 @@
         <p><strong>Direccion:</strong> @Model.Direccion</p>
         <p><strong>Abierto:</strong> @(Model.Abierto ? "Si" : "No")</p>
 
-        <a asp-action="Modificar" asp-route-id="@Model.ID" class="btn btn-warning">Modificar</a>
+        <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
         <a asp-action="Indice" class="btn btn-secondary">Volver</a>
     </div>
 </div>
