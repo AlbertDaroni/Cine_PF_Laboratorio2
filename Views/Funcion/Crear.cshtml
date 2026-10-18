@@ -1,0 +1,33 @@
+@model Proyecto_Final.Models.Funcion
+
+@{ ViewData["Title"] = "Nueva Función"; }
+
+<h1>Crear</h1>
+
+<form asp-action="Crear" method="post">
+    <input type="hidden" asp-for="PeliculaID" value=ViewBag.PeliculaID>
+    <input type="hidden" asp-for="SalaID" value=ViewBag.SalaID>
+
+    <div class="mb-3">
+        <label asp-for="FechaHora" class="form-label">Fecha y Hora</label>
+        <input asp-for="FechaHora" class="form-control" type="datetime-local" />
+        <span asp-validation-for="FechaHora" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Precio" class="form-label">Precio</label>
+        <input asp-for="Precio" class="form-control" />
+        <span asp-validation-for="Precio" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Estado" class="form-label">Estado</label>
+        <select asp-for="Estado" class="form-select">
+            <option value="1">Activa</option>
+            <option value="0">Inactiva</option>
+        </select>
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+</form>
+
+@section Scripts { <partial name="_ValidationScriptsPartial"/> }

@@ -10,7 +10,8 @@ namespace Proyecto_Final.Controllers;
 [Authorize]
 public class UsuarioController : Controller {
     private readonly BD_Context _context;
-    public UsuarioController(BD_Context context) { _context = context; }
+    private readonly IWebHostEnvironment _environment;
+    public UsuarioController(BD_Context context, IWebHostEnvironment _environment) { _context = context; _environment = _environment; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
@@ -55,12 +56,37 @@ public class UsuarioController : Controller {
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Editar(int id, Usuario usuario) {
+    public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? foto_perfil) {
         if (id != usuario.ID) return BadRequest();
         if (!ModelState.IsValid) return View(usuario);
 
-        _context.Usuarios.Update(usuario);
-        await _context.SaveChangesAsync();
+        try {
+            var usuarioOriginal = await _context.Usuarios.FindAsync(id);
+            if (usuarioOriginal == null) return NotFound();
+
+            usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
+
+            if (foto_perfil != null) {
+                if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "no_image.png") {
+                    string rutaFotoVieja = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture", usuarioOriginal.Foto_Perfil);
+
+                    if (System.IO.File.Exists(rutaFotoVieja)) System.IO.File.Delete(rutaFotoVieja);
+                }
+
+                string nombre = Guid.NewGuid().ToString() + "_" + Path.GetFileName(foto_perfil.FileName);
+                string direccion = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture");
+                string direccionCompleta = Path.Combine(direccion, nombre);
+
+                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await foto_perfil.CopyToAsync(stream); };
+                usuario.Foto_Perfil = nombre;
+            }
+
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+        } catch (DbUpdateConcurrencyException) {
+            if (!_context.Usuarios.Any(u => u.ID == usuario.ID)) return NotFound();
+            else throw;
+        }
 
         return RedirectToAction(nameof(Indice));
     }

@@ -1,0 +1,54 @@
+@model Proyecto_Final.Models.Funcion
+
+@{ ViewData["Title"] = "Detalles de la Función"; }
+
+<h1>Detalles de la Función</h1>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Fecha y hora</dt>
+    <dd class="col-sm-9">@Model.FechaHora</dd>
+
+    <dl>
+        <dt class="col-sm-3">Portada</dt>
+        <dd class="col-sm-9"><img src="~/uploads/portada/@Model.Pelicula.Portada"></dd>
+
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Titulo</dd>
+
+        <dt class="col-sm-3">Clasificación</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Clasificacion</dd>
+
+        <dt class="col-sm-3">Idioma</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Idioma</dd>
+
+        <dt class="col-sm-3">Duración</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Duracion min</dd>
+    </dl>
+
+    <dl>
+        <dt class="col-sm-3">Número</dt>
+        <dd class="col-sm-9">@Model.Sala.Numero</dd>
+
+        <dt class="col-sm-3">Tipo</dt>
+        <dd class="col-sm-9">@Model.Sala.Tipo</dd>
+    </dl>
+
+    <dt class="col-sm-3">Precio</dt>
+    <dd class="col-sm-9">$ @Model.Precio</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        @if (Model.Estado) {
+            <span class="badge bg-success">Activa</span>
+        } else {
+            <span class="badge bg-danger">Inactiva</span>
+        }
+    </dd>
+</dl>
+
+<div>
+    <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
+</div>

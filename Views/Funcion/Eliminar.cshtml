@@ -1,0 +1,56 @@
+@model Proyecto_Final.Models.Funcion
+
+@{ ViewData["Title"] = "Eliminar Función"; }
+
+<h1>Dar de baja esta función</h1>
+<h3>¿Está seguro que desea dar de baja esta función?</h3>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Fecha y hora</dt>
+    <dd class="col-sm-9">@Model.FechaHora</dd>
+
+    <dl>
+        <dt class="col-sm-3">Portada</dt>
+        <dd class="col-sm-9"><img src="~/uploads/portada/@Model.Pelicula.Portada"></dd>
+
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Titulo</dd>
+
+        <dt class="col-sm-3">Clasificación</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Clasificacion</dd>
+
+        <dt class="col-sm-3">Idioma</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Idioma</dd>
+
+        <dt class="col-sm-3">Duración</dt>
+        <dd class="col-sm-9">@Model.Pelicula.Duracion min</dd>
+    </dl>
+
+    <dl>
+        <dt class="col-sm-3">Número</dt>
+        <dd class="col-sm-9">@Model.Sala.Numero</dd>
+
+        <dt class="col-sm-3">Tipo</dt>
+        <dd class="col-sm-9">@Model.Sala.Tipo</dd>
+    </dl>
+
+    <dt class="col-sm-3">Precio</dt>
+    <dd class="col-sm-9">$ @Model.Precio</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        @if (Model.Estado) {
+            <span class="badge bg-success">Activa</span>
+        } else {
+            <span class="badge bg-danger">Inactiva</span>
+        }
+    </dd>
+</dl>
+
+<form asp-action="Eliminar" asp-route-id="@Model.ID" method="post">
+    <input type="hidden" asp-for="ID">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+</form>

@@ -11,7 +11,7 @@ public class Pelicula {
     public string Titulo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
-    public string Portada { get; set; } = string.Empty;
+    public string? Portada { get; set; } = "/uploads/portada/no_image.png";
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
     [StringLength(10, ErrorMessage = "La clasificación no puede superar los 10 caracteres.")]

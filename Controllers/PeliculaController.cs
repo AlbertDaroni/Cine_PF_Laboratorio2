@@ -8,7 +8,8 @@ namespace Proyecto_Final.Controllers;
 
 public class PeliculaController : Controller {
     private readonly BD_Context _context;
-    public PeliculaController(BD_Context context) { _context = context; }
+    private readonly IWebHostEnvironment _environment;
+    public PeliculaController(BD_Context context, IWebHostEnvironment _environment) { _context = context; _environment = _environment; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
@@ -29,8 +30,15 @@ public class PeliculaController : Controller {
     public IActionResult Crear() { return View(); }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Crear(Pelicula pelicula) {
-        if (!ModelState.IsValid) return View(pelicula);
+    public async Task<IActionResult> Crear(Pelicula pelicula, IFormFile portada) {
+        if (!ModelState.IsValid || portada == null) return View(pelicula);
+
+        string nombre = Guid.NewGuid().ToString() + "_" + Path.GetFileName(portada.FileName);
+        string direccion = Path.Combine(_environment.WebRootPath, "uploads", "portada");
+        string direccionCompleta = Path.Combine(direccion, nombre);
+
+        using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await portada.CopyToAsync(stream); };
+        pelicula.Portada = nombre;
 
         _context.Peliculas.Add(pelicula);
         await _context.SaveChangesAsync();
@@ -48,12 +56,37 @@ public class PeliculaController : Controller {
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Editar(int id, Pelicula pelicula) {
+    public async Task<IActionResult> Editar(int id, Pelicula pelicula, IFormFile? nuevaPortada) {
         if (id != pelicula.ID) return BadRequest();
         if (!ModelState.IsValid) return View(pelicula);
 
-        _context.Peliculas.Update(pelicula);
-        await _context.SaveChangesAsync();
+        try {
+            var peliculaOriginal = await _context.Peliculas.FindAsync(id);
+            if (peliculaOriginal == null) return NotFound();
+
+            pelicula.Portada = peliculaOriginal.Portada;
+
+            if (nuevaPortada != null) {
+                if (!string.IsNullOrEmpty(peliculaOriginal.Portada) && peliculaOriginal.Portada != "no_image.png") {
+                    string rutaPortadaVieja = Path.Combine(_environment.WebRootPath, "uploads", "portada", peliculaOriginal.Portada);
+
+                    if (System.IO.File.Exists(rutaPortadaVieja)) System.IO.File.Delete(rutaPortadaVieja);
+                }
+
+                string nombre = Guid.NewGuid().ToString() + "_" + Path.GetFileName(nuevaPortada.FileName);
+                string direccion = Path.Combine(_environment.WebRootPath, "uploads", "portada");
+                string direccionCompleta = Path.Combine(direccion, nombre);
+
+                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await nuevaPortada.CopyToAsync(stream); };
+                pelicula.Portada = nombre;
+            }
+
+            _context.Peliculas.Update(pelicula);
+            await _context.SaveChangesAsync();
+        } catch (DbUpdateConcurrencyException) {
+            if (!_context.Peliculas.Any(p => p.ID == pelicula.ID)) return NotFound();
+            else throw;
+        }
 
         return RedirectToAction(nameof(Indice));
     }

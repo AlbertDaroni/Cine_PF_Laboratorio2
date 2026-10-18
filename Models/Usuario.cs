@@ -22,7 +22,7 @@ public class Usuario {
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public int DNI { get; set; }
     
-    public string? Foto_Perfil { get; set; } = "../wwwroot/uploads/profile_picture/image.png";
+    public string? Foto_Perfil { get; set; } = "/uploads/profile_picture/image.png";
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public string Contraseña { get; set; } = string.Empty;

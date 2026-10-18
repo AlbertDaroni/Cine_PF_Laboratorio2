@@ -1,0 +1,36 @@
+@model IEnumerable<Proyecto_Final.Models.Funcion>
+
+@{ ViewData["Title"] = "Funciones"; }
+
+<h1>Funciones</h1>
+
+@if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+    <a asp-action="Crear" class="btn btn-primary">Agregar</a>
+}
+
+<table class="table table-stripped">
+    <thead>
+        <th>Fecha y Hora</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Película</th>
+        <th>Sala</th>
+    </thead>
+    <tbody>
+        @foreach (var funcion in Model) {
+            <tr>
+                <td>@funcion.FechaHora</td>
+                <td>@funcion.Precio</td>
+                <td>
+                    @if (funcion.Estado) {
+                        <span class="badge bg-success">Activa</span>
+                    } else {
+                        <span class="badge bg-danger">Inactiva</span>
+                    }
+                </td>
+                <td>@funcion.Pelicula.Titulo</td>
+                <td>@funcion.Sala.Numero</td>
+            </tr>
+        }
+    </tbody>
+</table>
