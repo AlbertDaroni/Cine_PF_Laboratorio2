@@ -35,6 +35,15 @@
         <span asp-validation-for="Duracion" class="text-danger"></span>
     </div>
 
+    <div class="form-group mb-3">
+        <label asp-for="Estado"></label>
+        <select asp-for="Estado" class="form-select">
+            <option value="true">Activa</option>
+            <option value="false">Inactiva</option>
+        </select>
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-success">Guardar</button>
     <a asp-action="Indice" class="btn btn-secondary">Volver</a>
 </form>

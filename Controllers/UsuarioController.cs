@@ -58,16 +58,19 @@ public class UsuarioController : Controller {
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? foto_perfil) {
         if (id != usuario.ID) return BadRequest();
-        if (!ModelState.IsValid) return View(usuario);
+        if (!ModelState.IsValid) {
+            ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+            return View(usuario);
+        }
 
         try {
-            var usuarioOriginal = await _context.Usuarios.FindAsync(id);
+            var usuarioOriginal = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.ID == id);
             if (usuarioOriginal == null) return NotFound();
 
             usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
 
-            if (foto_perfil != null) {
-                if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "no_image.png") {
+            if (foto_perfil != null && foto_perfil.Length > 0) {
+                if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "image.png") {
                     string rutaFotoVieja = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture", usuarioOriginal.Foto_Perfil);
 
                     if (System.IO.File.Exists(rutaFotoVieja)) System.IO.File.Delete(rutaFotoVieja);

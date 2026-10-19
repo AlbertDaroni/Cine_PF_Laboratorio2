@@ -4,7 +4,9 @@
 
 <h1>Listado de Cines</h1>
 
-<p><a asp-action="Crear" class="btn btn-primary">Agregar</a></p>
+@if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+    <p><a asp-action="Crear" class="btn btn-primary">Agregar</a></p>
+}
 
 <table class="table table-striped">
     <thead>
@@ -23,8 +25,10 @@
                 <td>@(cine.Abierto ? "Sí" : "No")</td>
                 <td>
                     <a asp-action="Detalles" asp-route-id="@cine.ID" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Editar" asp-route-id="@cine.ID" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Eliminar" asp-route-id="@cine.ID" class="btn btn-danger btn-sm">Eliminar</a>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+                        <a asp-action="Editar" asp-route-id="@cine.ID" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Eliminar" asp-route-id="@cine.ID" class="btn btn-danger btn-sm">Eliminar</a>
+                    }
                 </td>
             </tr>
         }

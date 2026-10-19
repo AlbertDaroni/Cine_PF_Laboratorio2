@@ -61,12 +61,12 @@ public class PeliculaController : Controller {
         if (!ModelState.IsValid) return View(pelicula);
 
         try {
-            var peliculaOriginal = await _context.Peliculas.FindAsync(id);
+            var peliculaOriginal = await _context.Peliculas.AsNoTracking().FirstOrDefaultAsync(p => p.ID == id);
             if (peliculaOriginal == null) return NotFound();
 
             pelicula.Portada = peliculaOriginal.Portada;
 
-            if (nuevaPortada != null) {
+            if (nuevaPortada != null && nuevaPortada.Length > 0) {
                 if (!string.IsNullOrEmpty(peliculaOriginal.Portada) && peliculaOriginal.Portada != "no_image.png") {
                     string rutaPortadaVieja = Path.Combine(_environment.WebRootPath, "uploads", "portada", peliculaOriginal.Portada);
 

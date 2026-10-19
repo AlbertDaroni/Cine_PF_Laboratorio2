@@ -18,6 +18,12 @@
             </div>
 
             <div class="mb-3">
+                <label asp-for="Apellido" class="form-label"></label>
+                <input asp-for="Apellido" class="form-control">
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
                 <label asp-for="DNI" class="form-label"></label>
                 <input asp-for="DNI" class="form-control">
                 <span asp-validation-for="DNI" class="text-danger"></span>
@@ -52,8 +58,8 @@
             <div class="mb-3">
                 <label asp-for="Estado" class="form-label"></label>
                 <select asp-for="Estado" class="form-select">
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
                 </select>
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>

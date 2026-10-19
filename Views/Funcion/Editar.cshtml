@@ -23,8 +23,8 @@
     <div class="mb-3">
         <label asp-for="Estado" class="form-label">Estado</label>
         <select asp-for="Estado" class="form-select">
-            <option value="1">Activa</option>
-            <option value="0">Inactiva</option>
+            <option value="true">Activa</option>
+            <option value="false">Inactiva</option>
         </select>
         <span asp-validation-for="Estado" class="text-danger"></span>
     </div>

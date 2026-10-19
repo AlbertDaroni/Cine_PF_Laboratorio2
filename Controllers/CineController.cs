@@ -30,6 +30,14 @@ public class CineController : Controller {
     }
 
     // -----------------------------------------------------------------------------------
+    // Funciones para Obtener
+    public async Task<IActionResult> Detalles(int id) {
+        var cine = await _context.Cines.FindAsync(id);
+        if (cine == null) return NotFound();
+        return View(cine);
+    }
+
+    // -----------------------------------------------------------------------------------
     // Funciones para Editar
     [HttpGet]
     public async Task<IActionResult> Editar(int id) {
