@@ -9,7 +9,7 @@ namespace Proyecto_Final.Controllers;
 [Authorize]
 public class FuncionController : Controller {
     private readonly BD_Context _context;
-    public FuncionController(BD_Context _context) { _context = _context; }
+    public FuncionController(BD_Context _context) { this._context = _context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
@@ -20,8 +20,7 @@ public class FuncionController : Controller {
             .Include(f => f.Sala)
             .Where(f => f.PeliculaID == id)
             .AsNoTracking().ToListAsync();
-
-        if (funciones == null || !funciones.Any()) return NotFound();
+            
         return View(funciones);
     }
 

@@ -8,6 +8,7 @@ public class Funcion {
     public int ID { get; set; }
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
+    [Column("fecha_hora")]
     public DateTime FechaHora { get; set; }
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
@@ -16,12 +17,14 @@ public class Funcion {
     public bool Estado { get; set; } = true;
 
     [Required]
+    [Column("pelicula_id")]
     public int PeliculaID { get; set; }
     
     [ForeignKey("PeliculaID")]
     public virtual Pelicula? Pelicula { get; set; }
 
     [Required]
+    [Column("sala_id")]
     public int SalaID { get; set; }
     
     [ForeignKey("SalaID")]

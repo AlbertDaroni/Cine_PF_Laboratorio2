@@ -462,14 +462,14 @@ INSERT INTO usuarios (nombre, apellido, correo, dni, foto_perfil, contraseña, e
 ('Carlos', 'López', 'carlos.lopez@gmail.com', 42987654, NULL, 'carlos123', 1, 2),
 ('Ana', 'Martínez', 'ana.martinez@gmail.com', 35111222, NULL, 'ana123', 1, 3),
 ('Luis', 'Rodríguez', 'luis.rod@gmail.com', 41555666, NULL, 'luis123', 0, 3),
-('Carlos', 'Gómez', 'carlos.gomez@gmail.com', 30123456, NULL, 'Pass4567!', 1, 3),
-('María', 'Rodríguez', 'maria.rod@yahoo.com', 32456123, NULL, 'Maria2026*', 1, 3),
+('Carlos', 'Gómez', 'carlos.gomez@gmail.com', 30123456, NULL, 'Pass45678', 1, 3),
+('María', 'Rodríguez', 'maria.rod@yahoo.com', 32456123, NULL, 'Maria20267', 1, 3),
 ('Javier', 'López', 'javi.lopez@outlook.com', 28999888, NULL, 'Javito9988', 1, 3),
 ('Lucía', 'Fernández', 'lucia.f@gmail.com', 35111222, NULL, 'LuFernandez4', 1, 3),
 ('Diego', 'Martinez', 'diego.mtz@hotmail.com', 40222333, NULL, 'DiegoM7788', 1, 3),
-('Sofía', 'Benítez', 'sofia.b@gmail.com', 38444555, NULL, 'SofiB2026!', 1, 3),
+('Sofía', 'Benítez', 'sofia.b@gmail.com', 38444555, NULL, 'SofiB20267', 1, 3),
 ('Lucas', 'Castro', 'lucas.castro@live.com.ar', 41555666, NULL, 'LucasC9900', 1, 3),
-('Valentina', 'Silva', 'valen.silva@gmail.com', 39666777, NULL, 'ValeSilva#1', 1, 3),
+('Valentina', 'Silva', 'valen.silva@gmail.com', 39666777, NULL, 'Valesilva21', 1, 3),
 ('Martín', 'Sosa', 'martin.sosa@yahoo.com.ar', 33777888, NULL, 'TinchoS2026', 1, 3),
 ('Camila', 'Ruiz', 'camila.ruiz@gmail.com', 42888999, NULL, 'CamiRuiz88', 1, 3);
 
