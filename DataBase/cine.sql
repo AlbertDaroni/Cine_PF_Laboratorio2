@@ -42,7 +42,7 @@ CREATE TABLE usuarios (
     dni INT NOT NULL UNIQUE,
     foto_perfil TEXT NULL,
     contraseña VARCHAR(255) NOT NULL,
-    estado TINYINT(1) DEFAULT 1,
+    estado TINYINT(1) NOT NULL DEFAULT 1,
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -52,7 +52,7 @@ CREATE TABLE salas (
     numero INT NOT NULL,
     tipo VARCHAR(255) NOT NULL,
     capacidad INT NOT NULL,
-    estado TINYINT(1) DEFAULT 1,
+    estado TINYINT(1) NOT NULL DEFAULT 1,
     cine_id INT NOT NULL,
     FOREIGN KEY (cine_id) REFERENCES cines(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final.Models;
 
+[Table("butacas")]
 public class Butaca
 {
     [Key]

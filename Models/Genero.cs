@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final.Models;
 
+[Table("generos")]
 public class Genero {
     [Key]
     public int ID { get; set; }
