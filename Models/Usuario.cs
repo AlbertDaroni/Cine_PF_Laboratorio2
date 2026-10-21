@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final.Models;
 
+[Table("usuarios")]
 public class Usuario {
     [Key]
     public int ID { get; set; }
@@ -22,6 +23,7 @@ public class Usuario {
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public int DNI { get; set; }
     
+    [Column("foto_perfil")]
     public string? Foto_Perfil { get; set; } = "/uploads/profile_picture/image.png";
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
