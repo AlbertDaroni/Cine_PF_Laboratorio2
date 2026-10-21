@@ -1,6 +1,8 @@
 @model IEnumerable<Proyecto_Final.Models.Funcion>
 
-@{ ViewData["Title"] = "Funciones"; }
+@{
+    ViewData["Title"] = "Funciones";
+}
 
 <h1>Funciones</h1>
 
@@ -11,7 +13,8 @@
     </div>
 }
 
-@if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+@if (User.IsInRole("Administrador") || User.IsInRole("Empleado"))
+{
     <a asp-action="Crear" class="btn btn-primary">Agregar</a>
 }
 
@@ -22,21 +25,39 @@
         <th>Estado</th>
         <th>Película</th>
         <th>Sala</th>
+        <th>Acciones</th>
     </thead>
     <tbody>
-        @foreach (var funcion in Model) {
+        @foreach (var funcion in Model)
+        {
             <tr>
                 <td>@funcion.FechaHora</td>
                 <td>@funcion.Precio</td>
                 <td>
-                    @if (funcion.Estado) {
+                    @if (funcion.Estado)
+                    {
                         <span class="badge bg-success">Activa</span>
-                    } else {
+                    }
+                    else
+                    {
                         <span class="badge bg-danger">Inactiva</span>
                     }
                 </td>
                 <td>@funcion.Pelicula.Titulo</td>
                 <td>@funcion.Sala.Numero</td>
+                <td>
+                    @if (funcion.Estado && funcion.FechaHora > DateTime.Now)
+                    {
+                        <a asp-controller="Reserva" asp-action="Crear" asp-route-FuncionID="@funcion.ID"
+                           class="btn btn-success btn-sm">
+                            Reservar
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No disponible</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>

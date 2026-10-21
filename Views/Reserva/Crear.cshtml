@@ -1,44 +1,53 @@
-@model Proyecto_Final.Models.Reserva
+@model Proyecto_Final.Models.CrearReservaViewModel
 
-@{ ViewData["Title"] = "Nueva Reserva"; }
+@{
+    ViewData["Title"] = "Nueva reserva";
+}
 
-<h1>Nueva Reserva</h1>
-<!--
+<h1>Reservar entradas</h1>
+
+@if (TempData["Mensaje"] is string mensaje)
+{
+    <div class="alert alert-success">
+        @mensaje
+    </div>
+}
+
+<h2>@Model.TituloPelicula</h2>
+
+<p>Función: @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+<p>Precio por entrada: $@Model.PrecioEntrada.ToString("N2")</p>
+
 <form asp-action="Crear" method="post">
-    <input type="hidden" asp-for="FuncionID">
-    <input type="hidden" asp-for="Precio">
+    <input type="hidden" asp-for="FuncionID" />
 
-    <div class="mb-3">
-        <label asp-for="FuncionID" class="form-label">Función</label>
-        <input class="form-control" type="text" value="@Model.Funcion.Pelicula.Titulo" readonly>
-    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div class="mb-3">
-        <label asp-for="Precio" class="form-label">Precio</label>
-        <input class="form-control" type="text" value="@Model.Funcion.Precio" readonly>
-        <span asp-validation-for="Precio" class="text-danger"></span>
-    </div>
+    <fieldset class="mb-3">
+        <legend>Seleccioná tus butacas</legend>
 
-    <div class="mb-3">
-        <label asp-for="Fecha_Hora" class="form-label">Fecha y hora</label>
-        <input asp-for="Fecha_Inicio" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Inicio" class="text-danger"></span>
-    </div>
+        @foreach (var butaca in Model.Butacas)
+        {
+            <div class="form-check">
+                @if (butaca.Disponible)
+                {
+                    <input class="form-check-input" type="checkbox" name="ButacasSeleccionadas" value="@butaca.ID"
+                           id="butaca_@butaca.ID" />
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" id="butaca_@butaca.ID" disabled />
+                }
 
-    <div class="mb-3">
-        <label asp-for="Fecha_Fin_Original" class="form-label">Fecha fin original</label>
-        <input asp-for="Fecha_Fin_Original" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Fin_Original" class="text-danger"></span>
-    </div>
+                <label class="form-check-label" for="butaca_@butaca.ID">
+                    @butaca.Numero
+                    @(butaca.Disponible ? "Disponible" : "Reservada")
+                </label>
+            </div>
+        }
+    </fieldset>
 
-    <div class="mb-3">
-        <label asp-for="Fecha_Fin_Efectiva" class="form-label">Fecha fin efectiva</label>
-        <input asp-for="Fecha_Fin_Efectiva" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Fin_Efectiva" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+    <button type="submit" class="btn btn-success">
+        Confirmar reserva
+    </button>
 </form>
--->
-
-@section Scripts { <partial name="_ValidationScriptsPartial"/> }

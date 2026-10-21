@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 // Autenticación por Cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
-        options.LoginPath = "/Cuenta/Login";
+        options.LoginPath = "/Cuenta/SignIn";
         options.AccessDeniedPath = "/Cuenta/AccesoDenegado";
     });
 
