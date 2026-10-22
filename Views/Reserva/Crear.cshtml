@@ -1,16 +1,11 @@
 @model Proyecto_Final.Models.CrearReservaViewModel
 
-@{
-    ViewData["Title"] = "Nueva reserva";
-}
+@{ ViewData["Title"] = "Nueva reserva"; }
 
 <h1>Reservar entradas</h1>
 
-@if (TempData["Mensaje"] is string mensaje)
-{
-    <div class="alert alert-success">
-        @mensaje
-    </div>
+@if (TempData["Mensaje"] is string mensaje) {
+    <div class="alert alert-success">@mensaje</div>
 }
 
 <h2>@Model.TituloPelicula</h2>
@@ -25,17 +20,11 @@
 
     <fieldset class="mb-3">
         <legend>Seleccioná tus butacas</legend>
-
-        @foreach (var butaca in Model.Butacas)
-        {
+        @foreach (var butaca in Model.Butacas) {
             <div class="form-check">
-                @if (butaca.Disponible)
-                {
-                    <input class="form-check-input" type="checkbox" name="ButacasSeleccionadas" value="@butaca.ID"
-                           id="butaca_@butaca.ID" />
-                }
-                else
-                {
+                @if (butaca.Disponible) {
+                    <input class="form-check-input" type="checkbox" name="ButacasSeleccionadas" value="@butaca.ID" id="butaca_@butaca.ID" />
+                } else {
                     <input class="form-check-input" type="checkbox" id="butaca_@butaca.ID" disabled />
                 }
 
@@ -47,7 +36,5 @@
         }
     </fieldset>
 
-    <button type="submit" class="btn btn-success">
-        Confirmar reserva
-    </button>
+    <button type="submit" class="btn btn-success">Confirmar reserva</button>
 </form>

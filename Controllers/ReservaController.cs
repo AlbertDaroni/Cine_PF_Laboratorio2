@@ -8,34 +8,21 @@ using System.Security.Claims;
 namespace Proyecto_Final.Controllers;
 
 [Authorize]
-public class ReservaController : Controller
-{
+public class ReservaController : Controller {
     private readonly BD_Context _context;
-    public ReservaController(BD_Context context) { _context = context; }
+    public ReservaController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
     [HttpGet]
-    public async Task<IActionResult> Indice(int pagina = 1)
-    {
-        if (!int.TryParse(
-            User.FindFirstValue(ClaimTypes.NameIdentifier),
-            out int usuarioID))
-        {
-            return Challenge();
-        }
+    public async Task<IActionResult> Indice(int pagina = 1) {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
 
         const int tamanioPagina = 10;
 
-        var consulta = _context.Reservas
-            .AsNoTracking()
-            .Where(r => r.UsuarioID == usuarioID);
-
+        var consulta = _context.Reservas.AsNoTracking().Where(r => r.UsuarioID == usuarioID);
         var total = await consulta.CountAsync();
-
-        var totalPaginas = Math.Max(
-            1,
-            (int)Math.Ceiling(total / (double)tamanioPagina));
+        var totalPaginas = Math.Max(1, (int)Math.Ceiling(total / (double)tamanioPagina));
 
         pagina = Math.Clamp(pagina, 1, totalPaginas);
 
@@ -60,30 +47,23 @@ public class ReservaController : Controller
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet]
-    public async Task<IActionResult> Crear(int? FuncionID)
-    {
-        if (FuncionID == null)
-            return BadRequest("Debés indicar una función.");
+    public async Task<IActionResult> Crear(int? FuncionID) {
+        if (FuncionID == null) return BadRequest("Debés indicar una función.");
 
         var funcion = await _context.Funciones
             .Include(f => f.Pelicula)
             .AsNoTracking()
             .FirstOrDefaultAsync(f => f.ID == FuncionID.Value);
 
-        if (funcion == null)
-            return NotFound();
+        if (funcion == null) return NotFound();
 
-        if (!funcion.Estado || funcion.FechaHora <= DateTime.Now)
-            return BadRequest("Esta función no está disponible para reservar.");
+        if (!funcion.Estado || funcion.FechaHora <= DateTime.Now) return BadRequest("Esta función no está disponible para reservar.");
 
         var butacasReservadas = _context.DetallesReservas
-            .Where(d => d.Reserva != null
-                && d.Reserva.FuncionID == funcion.ID
-                && d.Reserva.Estado)
+            .Where(d => d.Reserva != null && d.Reserva.FuncionID == funcion.ID && d.Reserva.Estado)
             .Select(d => d.ButacaID);
 
-        var modelo = new CrearReservaViewModel
-        {
+        var modelo = new CrearReservaViewModel {
             FuncionID = funcion.ID,
             TituloPelicula = funcion.Pelicula?.Titulo ?? "Sin título",
             FechaHora = funcion.FechaHora,
@@ -92,8 +72,7 @@ public class ReservaController : Controller
             Butacas = await _context.Butacas
                 .Where(b => b.SalaID == funcion.SalaID)
                 .OrderBy(b => b.Numero)
-                .Select(b => new ButacaDisponibleViewModel
-                {
+                .Select(b => new ButacaDisponibleViewModel {
                     ID = b.ID,
                     Numero = b.Numero,
                     Disponible = !butacasReservadas.Contains(b.ID)
@@ -105,32 +84,18 @@ public class ReservaController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Crear(
-    int FuncionID,
-    List<int>? ButacasSeleccionadas)
-    {
-        if (!int.TryParse(
-            User.FindFirstValue(ClaimTypes.NameIdentifier),
-            out int usuarioID))
-        {
-            return Challenge();
-        }
+    public async Task<IActionResult> Crear(int FuncionID, List<int>? ButacasSeleccionadas) {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
 
-        var seleccionadas = ButacasSeleccionadas?
-            .Distinct()
-            .ToList() ?? new List<int>();
+        var seleccionadas = ButacasSeleccionadas?.Distinct().ToList() ?? new List<int>();
 
-        if (!ModelState.IsValid || seleccionadas.Count == 0)
-        {
-            ModelState.AddModelError(
-                "", "Seleccioná al menos una butaca válida.");
-
+        if (!ModelState.IsValid || seleccionadas.Count == 0) {
+            ModelState.AddModelError("", "Seleccioná al menos una butaca válida.");
             return await Crear((int?)FuncionID);
         }
 
         // La transacción permite guardar la reserva y sus detalles juntos.
-        await using var transaccion =
-            await _context.Database.BeginTransactionAsync();
+        await using var transaccion = await _context.Database.BeginTransactionAsync();
 
         // Bloqueamos esta función mientras comprobamos y guardamos.
         // Este mismo bloqueo debe usarse en futuros caminos de reserva.
@@ -141,19 +106,12 @@ public class ReservaController : Controller
 
         var funcion = funciones.FirstOrDefault();
 
-        if (funcion == null)
-            return NotFound();
+        if (funcion == null) return NotFound();
+        if (!funcion.Estado || funcion.FechaHora <= DateTime.Now) return BadRequest("La función ya no está disponible.");
 
-        if (!funcion.Estado || funcion.FechaHora <= DateTime.Now)
-            return BadRequest("La función ya no está disponible.");
+        var cantidadValida = await _context.Butacas.CountAsync(b => b.SalaID == funcion.SalaID && seleccionadas.Contains(b.ID));
 
-        var cantidadValida = await _context.Butacas
-            .CountAsync(b =>
-                b.SalaID == funcion.SalaID
-                && seleccionadas.Contains(b.ID));
-
-        if (cantidadValida != seleccionadas.Count)
-            return BadRequest("Hay butacas que no pertenecen a esta sala.");
+        if (cantidadValida != seleccionadas.Count) return BadRequest("Hay butacas que no pertenecen a esta sala.");
 
         var hayReservadas = await _context.DetallesReservas
             .AnyAsync(d =>
@@ -162,26 +120,20 @@ public class ReservaController : Controller
                 && d.Reserva.FuncionID == FuncionID
                 && d.Reserva.Estado);
 
-        if (hayReservadas)
-        {
+        if (hayReservadas) {
             await transaccion.RollbackAsync();
-
-            ModelState.AddModelError(
-                "", "Otra persona reservó alguna de esas butacas. Elegí nuevamente.");
-
+            ModelState.AddModelError("", "Otra persona reservó alguna de esas butacas. Elegí nuevamente.");
             return await Crear((int?)FuncionID);
         }
 
-        var reserva = new Reserva
-        {
+        var reserva = new Reserva {
             UsuarioID = usuarioID,
             FuncionID = funcion.ID,
             Fecha_Creacion = DateTime.Now,
             Estado = true,
             Monto = funcion.Precio * seleccionadas.Count,
 
-            Detalles = seleccionadas.Select(id => new DetalleReserva
-            {
+            Detalles = seleccionadas.Select(id => new DetalleReserva {
                 ButacaID = id,
                 Precio = funcion.Precio
             }).ToList()
@@ -191,26 +143,22 @@ public class ReservaController : Controller
         await _context.SaveChangesAsync();
         await transaccion.CommitAsync();
 
-        TempData["Mensaje"] =
-            $"Reserva N.º {reserva.ID} creada correctamente.";
+        TempData["Mensaje"] = $"Reserva N.º {reserva.ID} creada correctamente.";
 
-        return RedirectToAction(nameof(Crear),
-            new { FuncionID = funcion.ID });
+        return RedirectToAction(nameof(Crear), new { FuncionID = funcion.ID });
     }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Editar
     [HttpGet, Authorize(Roles = "Administrador, Empleado")]
-    public async Task<IActionResult> Editar(int id)
-    {
+    public async Task<IActionResult> Editar(int id) {
         var reserva = await _context.Reservas.FindAsync(id);
         if (reserva == null) return NotFound();
         return View(reserva);
     }
 
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador, Empleado")]
-    public async Task<IActionResult> Editar(int id, Reserva reserva)
-    {
+    public async Task<IActionResult> Editar(int id, Reserva reserva) {
         if (id != reserva.ID) return BadRequest();
         if (!ModelState.IsValid) return View(reserva);
 
@@ -223,14 +171,8 @@ public class ReservaController : Controller
     // -----------------------------------------------------------------------------------
     // Funciones para Eliminar
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancelar(int id)
-    {
-        if (!int.TryParse(
-            User.FindFirstValue(ClaimTypes.NameIdentifier),
-            out int usuarioID))
-        {
-            return Challenge();
-        }
+    public async Task<IActionResult> Cancelar(int id) {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
 
         var reserva = await _context.Reservas
             .Include(r => r.Funcion)
@@ -238,37 +180,27 @@ public class ReservaController : Controller
             .FirstOrDefaultAsync(r =>
                 r.ID == id && r.UsuarioID == usuarioID);
 
-        if (reserva == null)
-            return NotFound();
+        if (reserva == null) return NotFound();
 
-        if (!reserva.Estado)
-        {
+        if (!reserva.Estado) {
             TempData["Mensaje"] = "La reserva ya estaba cancelada.";
             return RedirectToAction(nameof(Indice));
         }
 
-        if (reserva.Funcion == null
-            || reserva.Funcion.FechaHora <= DateTime.Now)
-        {
-            TempData["Error"] =
-                "No se puede cancelar una función que ya comenzó.";
-
+        if (reserva.Funcion == null || reserva.Funcion.FechaHora <= DateTime.Now) {
+            TempData["Error"] = "No se puede cancelar una función que ya comenzó.";
             return RedirectToAction(nameof(Indice));
         }
 
-        if (reserva.Pago != null && reserva.Pago.Estado)
-        {
-            TempData["Error"] =
-                "Esta reserva tiene un pago activo. Debe gestionarse su anulación.";
-
+        if (reserva.Pago != null && reserva.Pago.Estado) {
+            TempData["Error"] = "Esta reserva tiene un pago activo. Debe gestionarse su anulación.";
             return RedirectToAction(nameof(Indice));
         }
 
         reserva.Estado = false;
         await _context.SaveChangesAsync();
 
-        TempData["Mensaje"] =
-            $"Reserva N.º {reserva.ID} cancelada correctamente.";
+        TempData["Mensaje"] = $"Reserva N.º {reserva.ID} cancelada correctamente.";
 
         return RedirectToAction(nameof(Indice));
     }

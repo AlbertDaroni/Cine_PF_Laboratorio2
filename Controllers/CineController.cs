@@ -8,7 +8,7 @@ namespace Proyecto_Final.Controllers;
 
 public class CineController : Controller {
     private readonly BD_Context _context;
-    public CineController(BD_Context context) { _context = context; }
+    public CineController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice

@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proyecto_Final.Models;
 
 [Table("butacas")]
-public class Butaca
-{
+public class Butaca {
     [Key]
     public int ID { get; set; }
 
@@ -15,8 +14,7 @@ public class Butaca
 
     public bool Ocupado { get; set; }
 
-    [Required]
-    [Column("sala_id")]
+    [Required, Column("sala_id")]
     public int SalaID { get; set; }
 
     [ForeignKey("SalaID")]

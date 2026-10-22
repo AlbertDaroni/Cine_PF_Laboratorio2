@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proyecto_Final.Models;
 
 [Table("pagos")]
-public class Pago
-{
-    [Key]
-    [Column("id")]
+public class Pago {
+    [Key, Column("id")]
     public int ID { get; set; }
 
     [Required(ErrorMessage = "El concepto es obligatorio")]
@@ -28,8 +26,7 @@ public class Pago
     [Column("estado")]
     public bool Estado { get; set; } = true;
 
-    [Required]
-    [Column("reserva_id")]
+    [Required, Column("reserva_id")]
     public int ReservaID { get; set; }
 
     [ForeignKey(nameof(ReservaID))]

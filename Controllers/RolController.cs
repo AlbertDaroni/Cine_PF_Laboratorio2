@@ -8,7 +8,7 @@ namespace Proyecto_Final.Controllers;
 
 public class RolController : Controller {
     private readonly BD_Context _context;
-    public RolController(BD_Context context) { _context = context; }
+    public RolController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice

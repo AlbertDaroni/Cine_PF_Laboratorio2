@@ -8,7 +8,7 @@ namespace Proyecto_Final.Controllers;
 
 public class PagoController : Controller {
     private readonly BD_Context _context;
-    public PagoController(BD_Context context) { _context = context; }
+    public PagoController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice

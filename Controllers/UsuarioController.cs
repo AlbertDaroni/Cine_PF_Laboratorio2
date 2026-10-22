@@ -11,7 +11,7 @@ namespace Proyecto_Final.Controllers;
 public class UsuarioController : Controller {
     private readonly BD_Context _context;
     private readonly IWebHostEnvironment _environment;
-    public UsuarioController(BD_Context context, IWebHostEnvironment _environment) { _context = context; this._environment = _environment; }
+    public UsuarioController(BD_Context context, IWebHostEnvironment _environment) { this._context = context; this._environment = _environment; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice

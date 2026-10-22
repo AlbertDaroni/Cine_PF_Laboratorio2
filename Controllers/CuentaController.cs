@@ -10,7 +10,7 @@ namespace Proyecto_Final.Controllers;
 
 public class CuentaController : Controller {
     private readonly BD_Context _context;
-    public CuentaController(BD_Context context) { _context = context; }
+    public CuentaController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Inicio de sesión

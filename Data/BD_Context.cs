@@ -3,9 +3,8 @@ using Proyecto_Final.Models;
 
 namespace Proyecto_Final.Data;
 
-public class BD_Context : DbContext
-{
-    public BD_Context(DbContextOptions<BD_Context> options) : base(options) { }
+public class BD_Context : DbContext {
+    public BD_Context(DbContextOptions<BD_Context> options) : base(options) {}
 
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Rol> Roles { get; set; }
@@ -20,8 +19,7 @@ public class BD_Context : DbContext
     public DbSet<Pago> Pagos { get; set; }
     public DbSet<Director> Directores { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Pelicula>().ToTable("peliculas");

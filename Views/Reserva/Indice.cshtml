@@ -8,24 +8,17 @@
 
 <h1>Mis reservas</h1>
 
-@if (TempData["Mensaje"] is string mensaje)
-{
+@if (TempData["Mensaje"] is string mensaje) {
     <div class="alert alert-success">@mensaje</div>
 }
 
-@if (TempData["Error"] is string error)
-{
+@if (TempData["Error"] is string error) {
     <div class="alert alert-danger">@error</div>
 }
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        Todavía no tenés reservas.
-    </div>
-}
-else
-{
+@if (!Model.Any()) {
+    <div class="alert alert-info">Todavía no tenés reservas.</div>
+} else {
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -40,39 +33,21 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var reserva in Model)
-                {
+                @foreach (var reserva in Model) {
                     <tr>
                         <td>@reserva.ID</td>
-                        <td>
-                            @(reserva.Funcion?.Pelicula?.Titulo ?? "Sin título")
-                        </td>
-                        <td>
-                            @(reserva.Funcion?.FechaHora.ToString("dd/MM/yyyy HH:mm")
-                                ?? "Sin fecha")
-                        </td>
-                        <td>
-                            @string.Join(", ",
-                                reserva.Detalles
-                                    .OrderBy(d => d.Butaca?.Numero)
-                                    .Select(d => d.Butaca?.Numero ?? "?"))
-                        </td>
+                        <td>@(reserva.Funcion?.Pelicula?.Titulo ?? "Sin título")</td>
+                        <td>@(reserva.Funcion?.FechaHora.ToString("dd/MM/yyyy HH:mm") ?? "Sin fecha")</td>
+                        <td>@string.Join(", ", reserva.Detalles.OrderBy(d => d.Butaca?.Numero).Select(d => d.Butaca?.Numero ?? "?"))</td>
                         <td>$@reserva.Monto.ToString("N2")</td>
+                        <td> @(reserva.Estado ? "Activa" : "Cancelada")</td>
                         <td>
-                            @(reserva.Estado ? "Activa" : "Cancelada")
-                        </td>
-                        <td>
-                            @if (reserva.Estado
-                                && reserva.Funcion != null
-                                && reserva.Funcion.FechaHora > DateTime.Now)
-                            {
+                            @if (reserva.Estado && reserva.Funcion != null && reserva.Funcion.FechaHora > DateTime.Now) {
                                 <form asp-action="Cancelar" method="post"
                                       onsubmit="return confirm('¿Querés cancelar esta reserva?');">
                                     <input type="hidden" name="id" value="@reserva.ID" />
 
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        Cancelar
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
                                 </form>
                             }
                         </td>
@@ -83,22 +58,14 @@ else
     </div>
 
     <nav aria-label="Páginas de reservas">
-        @if (pagina > 1)
-        {
-            <a asp-action="Indice" asp-route-pagina="@(pagina - 1)" class="btn btn-outline-primary">
-                Anterior
-            </a>
+        @if (pagina > 1) {
+            <a asp-action="Indice" asp-route-pagina="@(pagina - 1)" class="btn btn-outline-primary">Anterior</a>
         }
 
-        <span class="mx-2">
-            Página @pagina de @totalPaginas
-        </span>
+        <span class="mx-2">Página @pagina de @totalPaginas</span>
 
-        @if (pagina < totalPaginas)
-        {
-            <a asp-action="Indice" asp-route-pagina="@(pagina + 1)" class="btn btn-outline-primary">
-                Siguiente
-            </a>
+        @if (pagina < totalPaginas) {
+            <a asp-action="Indice" asp-route-pagina="@(pagina + 1)" class="btn btn-outline-primary">Siguiente</a>
         }
     </nav>
 }
