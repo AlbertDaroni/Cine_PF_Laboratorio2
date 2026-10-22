@@ -35,12 +35,8 @@
                     </div>
 
                     <div class="mt-auto pt-2 border-top d-flex justify-content-between gap-1">
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-                            <a asp-action="Editar" asp-route-id="@pelicula.ID" class="btn btn-outline-warning btn-sm flex-fill">Editar</a>
-                            <a asp-action="Eliminar" asp-route-id="@pelicula.ID" class="btn btn-outline-danger btn-sm px-2">Eliminar</a>
-                        } else {
-                            <a asp-controller="Funcion" asp-action="Indice" asp-route-id="@pelicula.ID" class="btn btn-success btn-sm w-100">Ver Funciones</a>
-                        }
+                        <a asp-action="Detalles" asp-route-id="@pelicula.ID" class="btn btn-info btn-sm">Detalles</a>
+                        <a asp-controller="Funcion" asp-action="Indice" asp-route-id="@pelicula.ID" class="btn btn-success btn-sm w-100">Ver Funciones</a>
                     </div>
                 </div>
             </div>

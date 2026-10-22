@@ -30,6 +30,15 @@ public class PeliculaController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet]
+    public async Task<IActionResult> Detalles(int id) {
+        var pelicula = await _context.Peliculas.Include(p => p.Directores).Include(p => p.Generos).FirstOrDefaultAsync(p => p.ID == id);
+        if (pelicula == null) return NotFound();
+        return View(pelicula);
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Funciones para Crear
+    [HttpGet]
     public IActionResult Crear() { return View(); }
 
     [HttpPost, ValidateAntiForgeryToken]
