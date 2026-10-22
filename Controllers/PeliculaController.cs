@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
+[Authorize(Roles = "Administrador, Empleado")]
 public class PeliculaController : Controller {
     private readonly BD_Context _context;
     private readonly IWebHostEnvironment _environment;
@@ -13,6 +15,7 @@ public class PeliculaController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
+    [AllowAnonymous]
     public async Task<IActionResult> Indice() {
         var peliculas = await _context.Peliculas
             .Include(p => p.Directores)

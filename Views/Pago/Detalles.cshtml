@@ -6,14 +6,13 @@
 
 <div class="card">
     <div class="card-body">
-        <p><strong>ID:</strong> @Model.ID</p>
-        <p><strong>Concepto:</strong> @Model.Concepto</p>
-        <p><strong>Fecha de Pago:</strong> @Model.Fecha_Pago.ToString("dd/MM/yyyy")</p>
-        <p><strong>Fecha de Anulacion:</strong> @(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy") ?? "-")</p>
-        <p><strong>Importe:</strong> @Model.Importe.ToString("C")</p>
-        <p><strong>Estado:</strong> @Model.Estado</p>
+        <p><strong>Concepto:</strong>@Model.Concepto</p>
+        <p><strong>Fecha de Pago:</strong>@Model.Fecha_Pago.ToString("dd/MM/yyyy")</p>
+        <p><strong>Fecha de Anulacion:</strong>@(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy") ?? "-")</p>
+        <p><strong>Importe:</strong>$ @Model.Importe.ToString("C")</p>
+        <p><strong>Estado:</strong>@Model.Estado</p>
 
-        <a asp-action="Modificar" asp-route-id="@Model.ID" class="btn btn-warning">Modificar</a>
+        <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
         <a asp-action="Indice" class="btn btn-secondary">Volver</a>
     </div>
 </div>

@@ -6,14 +6,14 @@ using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Administrador, Empleado")]
 public class FuncionController : Controller {
     private readonly BD_Context _context;
     public FuncionController(BD_Context _context) { this._context = _context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
-    [HttpGet]
+    [HttpGet, AllowAnonymous]
     public async Task<IActionResult> Indice(int id) {
         var funciones = await _context.Funciones
             .Include(f => f.Pelicula)
@@ -26,7 +26,7 @@ public class FuncionController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Obtener
-    [HttpGet]
+    [HttpGet, AllowAnonymous]
     public async Task<IActionResult> Detalles(int id) {
         var funcion = await _context.Funciones.Include(f => f.Pelicula).Include(f => f.Sala).FirstOrDefaultAsync(f => f.ID == id);
         if (funcion == null) return NotFound();
@@ -35,7 +35,7 @@ public class FuncionController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
-    [HttpGet, Authorize(Roles = "Administrador, Empleado")]
+    [HttpGet]
     public IActionResult Crear(int PeliculaID, int SalaID) {
         ViewBag.PeliculaID = PeliculaID;
         ViewBag.SalaID = SalaID;
@@ -43,7 +43,7 @@ public class FuncionController : Controller {
         return View();
     }
 
-    [HttpPost, Authorize(Roles = "Administrador, Empleado")]
+    [HttpPost]
     public async Task<IActionResult> Crear(Funcion funcion) {
         if (!ModelState.IsValid) return View(funcion);
 
@@ -55,14 +55,14 @@ public class FuncionController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Editar
-    [HttpGet, Authorize(Roles = "Administrador, Empleado")]
+    [HttpGet]
     public async Task<IActionResult> Editar(int id) {
         var funcion = await _context.Funciones.Include(f => f.Pelicula).Include(f => f.Sala).FirstOrDefaultAsync(f => f.ID == id);
         if (funcion == null) return NotFound();
         return View(funcion);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador, Empleado")]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Editar(int id, Funcion funcion) {
         if (id != funcion.ID) return BadRequest();
         if (!ModelState.IsValid) return View(funcion);
@@ -75,14 +75,14 @@ public class FuncionController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Eliminar
-    [HttpGet, Authorize(Roles = "Administrador, Empleado")]
+    [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
         var funcion = await _context.Funciones.Include(f => f.Pelicula).Include(f => f.Sala).FirstOrDefaultAsync(f => f.ID == id);
         if (funcion == null) return NotFound();
         return View(funcion);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar"), Authorize(Roles = "Administrador, Empleado")]
+    [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
         var funcion = await _context.Funciones.FindAsync(id);
         if (funcion == null) return NotFound();

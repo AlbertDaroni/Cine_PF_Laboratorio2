@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "teugxLOSsdc=",
+  "dgSpecHash": "XwxjIiEaGYM=",
   "success": true,
-  "projectFilePath": "C:\\univercidad\\2do cuatrimestre\\Laboratorio 2\\Cine_PF_Laboratorio2\\Proyecto Final.csproj",
+  "projectFilePath": "C:\\Users\\Usuario\\OneDrive\\Documentos\\Tecnicatura Universitaria de Desarrollo de Software (Trabajos)\\Laboratorio II\\Proyecto Final\\Proyecto Final.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

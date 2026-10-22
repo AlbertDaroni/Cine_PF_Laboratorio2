@@ -6,12 +6,14 @@ using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
+[Authorize(Roles = "Administrador, Empleado")]
 public class CineController : Controller {
     private readonly BD_Context _context;
     public CineController(BD_Context context) { this._context = context; }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
+    [HttpGet, AllowAnonymous]
     public async Task<IActionResult> Indice() { return View(await _context.Cines.AsNoTracking().ToListAsync()); }
 
     // -----------------------------------------------------------------------------------
@@ -31,6 +33,7 @@ public class CineController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Obtener
+    [HttpGet, AllowAnonymous]
     public async Task<IActionResult> Detalles(int id) {
         var cine = await _context.Cines.FindAsync(id);
         if (cine == null) return NotFound();

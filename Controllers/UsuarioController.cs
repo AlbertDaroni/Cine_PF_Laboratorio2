@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Models;
@@ -15,6 +16,7 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
+    [Authorize(Roles = "Administrador, Empleado")]
     public async Task<IActionResult> Indice() { return View(await _context.Usuarios.Include(u => u.Rol).AsNoTracking().ToListAsync()); }
 
     // -----------------------------------------------------------------------------------
@@ -28,13 +30,13 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
-    [HttpGet]
+    [HttpGet, Authorize(Roles = "Administrador, Empleado")]
     public async Task<IActionResult> Crear() {
         ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
         return View();
     }
 
-    [HttpPost, ValidateAntiForgeryToken]
+    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador, Empleado")]
     public async Task<IActionResult> Crear(Usuario usuario) {
         if (!ModelState.IsValid) return View(usuario);
 

@@ -6,6 +6,7 @@ using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
+[Authorize(Roles = "Administrador, Empleado")]
 public class GeneroController : Controller {
     private readonly BD_Context _context;
     public GeneroController(BD_Context context) { this._context = context; }

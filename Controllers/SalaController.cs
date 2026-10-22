@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
+[Authorize]
 public class SalaController : Controller {
     private readonly BD_Context _context;
     public SalaController(BD_Context context) { this._context = context; }
     
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
+    [AllowAnonymous]
     public async Task<IActionResult> Indice() { return View(await _context.Salas.AsNoTracking().ToListAsync()); }
 
     // -----------------------------------------------------------------------------------

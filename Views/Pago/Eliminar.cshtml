@@ -8,9 +8,9 @@
 
 <div class="card">
     <div class="card-body">
-        <p><strong>Concepto:</strong> @Model.Concepto</p>
-        <p><strong>Importe:</strong> @Model.Importe.ToString("C")</p>
-        <p><strong>Estado:</strong> @Model.Estado</p>
+        <p><strong>Concepto:</strong>@Model.Concepto</p>
+        <p><strong>Importe:</strong>$ @Model.Importe.ToString("C")</p>
+        <p><strong>Estado:</strong>@Model.Estado</p>
 
         <form asp-action="Eliminar" method="post">
             <input type="hidden" asp-for="ID" />
