@@ -35,7 +35,13 @@ public class CineController : Controller {
     // Funciones para Obtener
     [HttpGet, AllowAnonymous]
     public async Task<IActionResult> Detalles(int id) {
-        var cine = await _context.Cines.FindAsync(id);
+        var cine = await _context.Cines
+            .Include(c => c.Salas)
+                .ThenInclude(s => s.Funciones)
+                    .ThenInclude(f => f.Pelicula)
+            .FirstOrDefaultAsync(c => c.ID == id)
+        ;
+
         if (cine == null) return NotFound();
         return View(cine);
     }

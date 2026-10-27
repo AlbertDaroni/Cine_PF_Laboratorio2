@@ -28,6 +28,9 @@
         </select>
         <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
 </form>
 
 @section Scripts { <partial name="_ValidationScriptsPartial"/> }

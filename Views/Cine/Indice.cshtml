@@ -23,13 +23,7 @@
                 <td>@cine.Nombre</td>
                 <td>@cine.Direccion</td>
                 <td>@(cine.Abierto ? "Sí" : "No")</td>
-                <td>
-                    <a asp-action="Detalles" asp-route-id="@cine.ID" class="btn btn-info btn-sm">Detalles</a>
-                    @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-                        <a asp-action="Editar" asp-route-id="@cine.ID" class="btn btn-warning btn-sm">Editar</a>
-                        <a asp-action="Eliminar" asp-route-id="@cine.ID" class="btn btn-danger btn-sm">Eliminar</a>
-                    }
-                </td>
+                <td><a asp-action="Detalles" asp-route-id="@cine.ID" class="btn btn-info btn-sm">Detalles</a></td>
             </tr>
         }
     </tbody>

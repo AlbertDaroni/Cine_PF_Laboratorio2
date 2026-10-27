@@ -18,6 +18,12 @@
             </div>
             
             <div class="mb-3">
+                <label asp-for="Apellido" class="form-label">Apellido</label>
+                <input asp-for="Apellido" class="form-control">
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
                 <label asp-for="DNI" class="form-label">DNI</label>
                 <input asp-for="DNI" class="form-control">
                 <span asp-validation-for="DNI" class="text-danger"></span>

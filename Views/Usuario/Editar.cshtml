@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Editar" asp-route-id="@Model.ID" method="post">
+        <form asp-action="Editar" asp-route-id="@Model.ID" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="ID">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -45,7 +45,7 @@
 
             <div class="mb-3">
                 <label asp-for="Foto_Perfil" class="form-label"></label>
-                <input asp-for="Foto_Perfil" class="form-control" type="file">
+                <input asp-for="Foto_Perfil" class="form-control" type="file" accept="image/*">
                 <span asp-validation-for="Foto_Perfil" class="text-danger"></span>
             </div>
 
@@ -66,6 +66,9 @@
                     </select>
                     <span asp-validation-for="Estado" class="text-danger"></span>
                 </div>
+            } else {
+                <input type="hidden" asp-for="RolID">
+                <input type="hidden" asp-for="Estado">
             }
 
             <button type="submit" class="btn btn-success">Guardar cambios</button>

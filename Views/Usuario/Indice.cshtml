@@ -9,6 +9,13 @@
 }
 
 <p><a asp-action="Crear" class="btn btn-primary">Nuevo Usuario</a></p>
+<form asp-action="Indice" method="get">
+    <label name="rol" class="form-label">Buscar por:</label>
+    <select name="rol" class="form-select" asp-items="(SelectList)ViewBag.Roles">
+        <option value="todos">Todos</option>
+    </select>
+    <button type="submit" class="btn btn-success">🔎</button>
+</form>
 
 <table class="table">
     <thead>

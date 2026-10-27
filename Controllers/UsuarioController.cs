@@ -17,7 +17,18 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
     [Authorize(Roles = "Administrador, Empleado")]
-    public async Task<IActionResult> Indice() { return View(await _context.Usuarios.Include(u => u.Rol).AsNoTracking().ToListAsync()); }
+    public async Task<IActionResult> Indice(string? rol) {
+        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "Nombre", "Nombre", rol);
+        List<Usuario> usuarios;
+
+        if (rol == "todos") {
+            usuarios = await _context.Usuarios.Include(u => u.Rol).AsNoTracking().ToListAsync();
+        } else {
+            usuarios = await _context.Usuarios.Include(u => u.Rol).Where(u => u.Rol.Nombre == rol).AsNoTracking().ToListAsync();
+        }
+
+        return View(usuarios);
+    }
 
     // -----------------------------------------------------------------------------------
     // Funciones para Obtener
@@ -60,15 +71,19 @@ public class UsuarioController : Controller {
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? foto_perfil) {
         if (id != usuario.ID) return BadRequest();
+
+        var usuarioOriginal = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.ID == id);
+        if (usuarioOriginal == null) return NotFound();
+        if (!User.IsInRole("Administrador")) {
+            usuario.RolID = usuarioOriginal.RolID;
+            usuario.Estado = usuarioOriginal.Estado;
+        }
         if (!ModelState.IsValid) {
             ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
             return View(usuario);
         }
 
         try {
-            var usuarioOriginal = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.ID == id);
-            if (usuarioOriginal == null) return NotFound();
-
             usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
 
             if (foto_perfil != null && foto_perfil.Length > 0) {
@@ -93,7 +108,7 @@ public class UsuarioController : Controller {
             else throw;
         }
 
-        return RedirectToAction(nameof(Indice));
+        return RedirectToAction(nameof(Detalles), new { id = usuario.ID });
     }
 
     // -----------------------------------------------------------------------------------

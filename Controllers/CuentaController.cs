@@ -72,6 +72,7 @@ public class CuentaController : Controller {
 
         Usuario usuario = new Usuario {
             Nombre = signup.Nombre,
+            Apellido = signup.Apellido,
             Correo = signup.Correo,
             DNI = signup.DNI,
             Contraseña = signup.Contraseña,

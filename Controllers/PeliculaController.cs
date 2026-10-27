@@ -16,13 +16,25 @@ public class PeliculaController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
     [AllowAnonymous]
-    public async Task<IActionResult> Indice() {
-        var peliculas = await _context.Peliculas
-            .Include(p => p.Directores)
-            .Include(p => p.Generos)
-            .AsNoTracking()
-            .ToListAsync()
-        ;
+    public async Task<IActionResult> Indice(int? id) {
+        List<Pelicula> peliculas;
+
+        if (id == null) {
+            peliculas = await _context.Peliculas
+                .Include(p => p.Directores)
+                .Include(p => p.Generos)
+                .AsNoTracking()
+                .ToListAsync()
+            ;
+        } else {
+            peliculas = await _context.Peliculas
+                .Include(p => p.Directores)
+                .Include(p => p.Generos)
+                .Where(p => p.Funciones.Any(f => f.Sala!.CineID == id))
+                .AsNoTracking()
+                .ToListAsync()
+            ;
+        }
 
         return View(peliculas);
     }

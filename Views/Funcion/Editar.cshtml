@@ -21,6 +21,22 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="PeliculaID" class="form-label">Película</label>
+        <select asp-for="PeliculaID" class="form-select" asp-items="(SelectList)ViewBag.Peliculas">
+            <option value="">-- Seleccioná una película --</option>
+        </select>
+        <span asp-validation-for="PeliculaID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SalaID" class="form-label">Sala</label>
+        <select asp-for="SalaID" class="form-select" asp-items="(SelectList)ViewBag.Salas">
+            <option value="">-- Seleccioná una sala --</option>
+        </select>
+        <span asp-validation-for="SalaID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Estado" class="form-label">Estado</label>
         <select asp-for="Estado" class="form-select">
             <option value="true">Activa</option>
@@ -28,6 +44,9 @@
         </select>
         <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
 </form>
 
 @section Scripts { <partial name="_ValidationScriptsPartial"/> }

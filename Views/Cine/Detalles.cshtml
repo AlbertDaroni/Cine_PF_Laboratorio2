@@ -8,11 +8,14 @@
     <div class="card-body">
         <h4 class="card-title">@Model.Nombre</h4>
 
-        <p><strong>Direccion:</strong> @Model.Direccion</p>
-        <p><strong>Abierto:</strong> @(Model.Abierto ? "Si" : "No")</p>
+        <p><strong>Direccion:</strong>@Model.Direccion</p>
+        <p><strong>Abierto:</strong>@(Model.Abierto ? "Sí" : "No")</p>
+
+        <a asp-action="Indice" asp-controller="Pelicula" asp-route-id="@Model.ID" class="btn btn-success btn-sm w-100">Películas</a>
 
         @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-            <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+            <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning btn-sm">Editar</a>
+            <a asp-action="Eliminar" asp-route-id="@Model.ID" class="btn btn-danger btn-sm">Eliminar</a>
         }
         <a asp-action="Indice" class="btn btn-secondary">Volver</a>
     </div>

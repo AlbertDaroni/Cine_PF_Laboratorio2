@@ -37,6 +37,9 @@
                 <td>@funcion.Sala.Numero</td>
                 <td>
                     @if (funcion.Estado && funcion.FechaHora > DateTime.Now) {
+                        @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+                            <a asp-action="Editar" asp-route-id="@funcion.ID" class="btn btn-warning">Editar</a>
+                        }
                         <a asp-controller="Reserva" asp-action="Crear" asp-route-FuncionID="@funcion.ID" class="btn btn-success btn-sm">Reservar</a>
                     } else {
                         <span class="text-muted">No disponible</span>
