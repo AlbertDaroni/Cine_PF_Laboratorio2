@@ -42,6 +42,7 @@ CREATE TABLE usuarios (
     dni INT NOT NULL UNIQUE,
     foto_perfil TEXT NULL,
     contraseña VARCHAR(255) NOT NULL,
+    password_hasheada TINYINT(1) NOT NULL DEFAULT 0,
     estado TINYINT(1) NOT NULL DEFAULT 1,
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE

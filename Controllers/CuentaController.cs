@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Proyecto_Final.Controllers;
 
-public class CuentaController : Controller {
+public class CuentaController : Controller
+{
     private readonly BD_Context _context;
     public CuentaController(BD_Context context) { this._context = context; }
 
@@ -17,27 +19,79 @@ public class CuentaController : Controller {
     [HttpGet]
     public IActionResult SignIn() { return View(); }
 
-    [HttpPost]
-    public async Task<IActionResult> SignIn(SignInViewModel signin){
-        if (!ModelState.IsValid) return View(signin);
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignIn(SignInViewModel signin)
+    {
+        if (!ModelState.IsValid)
+            return View(signin);
 
-        var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Correo == signin.Correo);
-        if (usuario == null) {
-            ModelState.AddModelError("", "El correo es incorrecto.");
-            return View(signin);
-        }
-        if (!usuario.Estado) {
-            ModelState.AddModelError("", "El usuario se encuentra inactivo.");
-            return View(signin);
-        }
-        if (usuario.Contraseña != signin.Contraseña) {
-            ModelState.AddModelError("", "La contraseña es incorrecta.");
+        var usuario = await _context.Usuarios
+            .Include(u => u.Rol)
+            .FirstOrDefaultAsync(u => u.Correo == signin.Correo);
+
+        if (usuario == null || !usuario.Estado)
+        {
+            ModelState.AddModelError("", "Los datos de acceso no son válidos.");
             return View(signin);
         }
 
-        if (usuario.DNI != signin.DNI) {
-            ModelState.AddModelError("", "El DNI no coincide con el correo ingresado.");
+        if (usuario.DNI != signin.DNI)
+        {
+            ModelState.AddModelError("", "Los datos de acceso no son válidos.");
             return View(signin);
+        }
+
+        var hasher = new PasswordHasher<Usuario>();
+        bool actualizarHash = false;
+
+        if (usuario.PasswordHasheada)
+        {
+            PasswordVerificationResult resultado;
+
+            try
+            {
+                resultado = hasher.VerifyHashedPassword(
+                    usuario,
+                    usuario.Contraseña,
+                    signin.Contraseña);
+            }
+            catch (FormatException)
+            {
+                resultado = PasswordVerificationResult.Failed;
+            }
+
+            if (resultado == PasswordVerificationResult.Failed)
+            {
+                ModelState.AddModelError(
+                    "", "Los datos de acceso no son válidos.");
+
+                return View(signin);
+            }
+
+            actualizarHash =
+                resultado == PasswordVerificationResult.SuccessRehashNeeded;
+        }
+        else
+        {
+            // Compatibilidad temporal con las cuentas antiguas.
+            if (usuario.Contraseña != signin.Contraseña)
+            {
+                ModelState.AddModelError(
+                    "", "Los datos de acceso no son válidos.");
+
+                return View(signin);
+            }
+
+            actualizarHash = true;
+        }
+
+        if (actualizarHash)
+        {
+            usuario.Contraseña = hasher.HashPassword(
+                usuario, signin.Contraseña);
+
+            usuario.PasswordHasheada = true;
+            await _context.SaveChangesAsync();
         }
 
         await AutenticarUsuario(usuario);
@@ -48,7 +102,8 @@ public class CuentaController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Salir de sesión
     [HttpPost]
-    public async Task<IActionResult> Logout() {
+    public async Task<IActionResult> Logout()
+    {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
@@ -56,27 +111,58 @@ public class CuentaController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Registrarse
     [HttpGet]
-    public IActionResult SignUp () { return View(); }
+    public IActionResult SignUp() { return View(); }
 
-    [HttpPost]
-    public async Task<IActionResult> SignUp (SignUpViewModel signup) {
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignUp(SignUpViewModel signup)
+    {
         if (!ModelState.IsValid) return View(signup);
 
         var correoExistente = await _context.Usuarios.AnyAsync(u => u.Correo == signup.Correo);
-        if (correoExistente) {
+        if (correoExistente)
+        {
             ModelState.AddModelError("", "Ese correo ya existe. Intentá con otro.");
+            return View(signup);
+        }
+
+        var dniExistente = await _context.Usuarios
+            .AnyAsync(u => u.DNI == signup.DNI);
+
+        if (dniExistente)
+        {
+            ModelState.AddModelError(
+                "", "Ese DNI ya está registrado.");
+
             return View(signup);
         }
 
         var rol = await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == "Usuario");
 
-        Usuario usuario = new Usuario {
+        if (rol == null)
+        {
+            ModelState.AddModelError(
+                "",
+                "No se pudo completar el registro: falta configurar el rol Usuario.");
+
+            return View(signup);
+        }
+
+        Usuario usuario = new Usuario
+        {
             Nombre = signup.Nombre,
+            Apellido = signup.Apellido,
             Correo = signup.Correo,
             DNI = signup.DNI,
             Contraseña = signup.Contraseña,
             RolID = rol.ID
         };
+
+        var hasher = new PasswordHasher<Usuario>();
+
+        usuario.Contraseña = hasher.HashPassword(
+            usuario, signup.Contraseña);
+
+        usuario.PasswordHasheada = true;
 
         _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
@@ -92,7 +178,8 @@ public class CuentaController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Autenticación (Cookies)
-    private async Task AutenticarUsuario (Usuario usuario) {
+    private async Task AutenticarUsuario(Usuario usuario)
+    {
         var claims = new List<Claim> {
             new Claim(ClaimTypes.NameIdentifier, usuario.ID.ToString()),
             new Claim(ClaimTypes.Name, usuario.Nombre),

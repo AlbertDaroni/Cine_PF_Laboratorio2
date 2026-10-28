@@ -1,6 +1,8 @@
 @model Proyecto_Final.Models.Usuario
 
-@{ ViewData["Title"] = "Editar Usuario"; }
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
 
 <h1>Editar Usuario</h1>
 
@@ -37,11 +39,17 @@
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Contraseña" class="form-label"></label>
-                <input asp-for="Contraseña" type="text" class="form-control">
-                <span asp-validation-for="Contraseña" class="text-danger"></span>
-            </div>
+            <label asp-for="Contraseña" class="form-label">
+                Nueva contraseña
+            </label>
+
+            <input type="password" id="Contraseña" name="Contraseña" autocomplete="new-password" class="form-control">
+
+            <small class="form-text text-muted">
+                Dejá este campo vacío para conservar la contraseña actual.
+            </small>
+
+            <span asp-validation-for="Contraseña" class="text-danger"></span>
 
             <div class="mb-3">
                 <label asp-for="Foto_Perfil" class="form-label"></label>
@@ -49,7 +57,8 @@
                 <span asp-validation-for="Foto_Perfil" class="text-danger"></span>
             </div>
 
-            @if (User.IsInRole("Administrador")) {
+            @if (User.IsInRole("Administrador"))
+            {
                 <div class="mb-3">
                     <label asp-for="RolID" class="form-label"></label>
                     <select asp-for="RolID" class="form-select" asp-items="(SelectList)ViewBag.Roles">
@@ -74,4 +83,9 @@
     </div>
 </div>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

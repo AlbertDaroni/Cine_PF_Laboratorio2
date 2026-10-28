@@ -1,6 +1,8 @@
 @model Proyecto_Final.Models.SignUpViewModel
 
-@{ ViewData["Title"] = "Registrarse"; }
+@{
+    ViewData["Title"] = "Registrarse";
+}
 
 <h1>Registrarse</h1>
 
@@ -9,12 +11,19 @@
 <div class="row">
     <div class="col-md-5">
         <form asp-action="SignUp" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger" role="alert">
+            </div>            
 
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label">Nombre</label>
                 <input asp-for="Nombre" class="form-control">
                 <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Apellido" class="form-label">Apellido</label>
+                <input asp-for="Apellido" class="form-control">
+                <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
             
             <div class="mb-3">

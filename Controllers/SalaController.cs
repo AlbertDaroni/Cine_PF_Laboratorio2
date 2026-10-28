@@ -7,7 +7,7 @@ using Proyecto_Final.Data;
 
 namespace Proyecto_Final.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Administrador, Empleado")]
 public class SalaController : Controller {
     private readonly BD_Context _context;
     public SalaController(BD_Context context) { this._context = context; }

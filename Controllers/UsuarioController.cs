@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Proyecto_Final.Controllers;
 
@@ -63,7 +64,20 @@ public class UsuarioController : Controller
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Crear(Usuario usuario)
     {
-        if (!ModelState.IsValid) return View(usuario);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Roles = new SelectList(
+                await _context.Roles.ToListAsync(), "ID", "Nombre");
+
+            return View(usuario);
+        }
+
+        var hasher = new PasswordHasher<Usuario>();
+
+        usuario.Contraseña = hasher.HashPassword(
+            usuario, usuario.Contraseña);
+
+        usuario.PasswordHasheada = true;
 
         _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
@@ -79,6 +93,8 @@ public class UsuarioController : Controller
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
 
+        usuario.Contraseña = string.Empty;
+
         ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
         return View(usuario);
     }
@@ -87,6 +103,12 @@ public class UsuarioController : Controller
     public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? foto_perfil)
     {
         if (id != usuario.ID) return BadRequest();
+
+        if (string.IsNullOrWhiteSpace(usuario.Contraseña))
+        {
+            ModelState.Remove(nameof(Usuario.Contraseña));
+        }
+
         if (!ModelState.IsValid)
         {
             ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
@@ -97,6 +119,21 @@ public class UsuarioController : Controller
         {
             var usuarioOriginal = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.ID == id);
             if (usuarioOriginal == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(usuario.Contraseña))
+            {
+                usuario.Contraseña = usuarioOriginal.Contraseña;
+                usuario.PasswordHasheada = usuarioOriginal.PasswordHasheada;
+            }
+            else
+            {
+                var hasher = new PasswordHasher<Usuario>();
+
+                usuario.Contraseña = hasher.HashPassword(
+                    usuario, usuario.Contraseña);
+
+                usuario.PasswordHasheada = true;
+            }
 
             usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
 
@@ -260,7 +297,7 @@ public class UsuarioController : Controller
 
         await HttpContext.SignInAsync(
             Microsoft.AspNetCore.Authentication.Cookies
-                .CookieAuthenticationDefaults.AuthenticationScheme ,
+                .CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(identidad));
 
         return RedirectToAction(nameof(Detalles),

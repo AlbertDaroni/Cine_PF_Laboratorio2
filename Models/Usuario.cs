@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proyecto_Final.Models;
 
 [Table("usuarios")]
-public class Usuario {
+public class Usuario
+{
     [Key]
     public int ID { get; set; }
 
@@ -20,20 +21,23 @@ public class Usuario {
     [EmailAddress(ErrorMessage = "El formato del correo no es válido")]
     public string Correo { get; set; } = string.Empty;
 
+    [Column("password_hasheada")]
+    public bool PasswordHasheada { get; set; } = false;
+
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public int DNI { get; set; }
-    
+
     [Column("foto_perfil")]
     public string? Foto_Perfil { get; set; } = "/uploads/profile_picture/image.png";
 
     [Required(ErrorMessage = "Este campo es obligatorio")]
     public string Contraseña { get; set; } = string.Empty;
-    
+
     public bool Estado { get; set; } = true;
 
     [Required, Column("rol_id")]
     public int RolID { get; set; }
-    
+
     [ForeignKey("RolID")]
     public virtual Rol? Rol { get; set; }
 
