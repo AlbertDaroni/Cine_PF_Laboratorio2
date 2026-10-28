@@ -26,6 +26,7 @@ public class BD_Context : DbContext {
         modelBuilder.Entity<Director>().ToTable("directores");
         modelBuilder.Entity<Genero>().ToTable("generos");
         modelBuilder.Entity<Rol>().ToTable("roles");
+        modelBuilder.Entity<Cine>().ToTable("cines");
 
         modelBuilder.Entity<Pelicula>()
             .HasMany(p => p.Generos)

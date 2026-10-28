@@ -1,6 +1,21 @@
 @model Proyecto_Final.Models.Usuario
+@using System.Security.Claims
 
-@{ ViewData["Title"] = "Detalles del Usuario"; }
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+
+    var nombreFoto = string.IsNullOrWhiteSpace(Model.Foto_Perfil)
+        ? "image.png"
+        : System.IO.Path.GetFileName(Model.Foto_Perfil);
+
+    var rutaFoto = Url.Content(
+        "~/uploads/profile_picture/" + nombreFoto);
+
+    var esMiCuenta = int.TryParse(
+        User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+        out int usuarioActualID)
+        && usuarioActualID == Model.ID;
+}
 
 <h1>Detalles del Usuario</h1>
 
@@ -20,31 +35,46 @@
     <dd class="col-sm-9">@Model.Correo</dd>
 
     <dt class="col-sm-3">Foto de perfil</dt>
-    <dd class="col-sm-9"><img src="~/uploads/profile_picture/@Model.Foto_Perfil" width="30" height="30" class="rounded-circle me-2"></dd>
+    <dd class="col-sm-9">
+        <img src="@rutaFoto" alt="Foto de perfil" width="60" height="60" class="rounded-circle me-2" />
+    </dd>
 
     <dt class="col-sm-3">Rol</dt>
-    <dd class="col-sm-9">@Model.Rol.Nombre</dd>
+    <dd class="col-sm-9">@(Model.Rol?.Nombre ?? "Sin rol")</dd>
 
     <dt class="col-sm-3">Estado</dt>
     <dd class="col-sm-9">
-        @if (Model.Estado) {
+        @if (Model.Estado)
+        {
             <span class="badge bg-success">Activo</span>
-        } else {
+        }
+        else
+        {
             <span class="badge bg-danger">Inactivo</span>
         }
     </dd>
 </dl>
 
-@if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+@if (User.IsInRole("Administrador"))
+{
     <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+
     <a asp-action="Eliminar" asp-route-id="@Model.ID" class="btn btn-danger btn-sm">Eliminar</a>
 }
 
-@if (int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value) == Model.ID) {
+@if (esMiCuenta)
+{
     <form asp-controller="Cuenta" asp-action="Logout" method="post" class="d-inline">
-        <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
+        <button type="submit" class="btn btn-danger btn-sm">
+            Cerrar sesión
+        </button>
     </form>
 
+    <a asp-controller="Usuario" asp-action="CambiarAvatar" class="btn btn-primary">
+        Cambiar avatar
+    </a>
 }
 
-<button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+<button type="button" onclick="history.back()" class="btn btn-secondary">
+    Volver
+</button>
