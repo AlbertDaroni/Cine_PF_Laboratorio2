@@ -1,0 +1,6 @@
+# Archivos generados al compilar
+[Bb]in/
+[Oo]bj/
+
+# Archivos locales de Visual Studio
+.vs/
