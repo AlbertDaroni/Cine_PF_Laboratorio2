@@ -16,18 +16,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Cuenta/AccesoDenegado";
     });
 
-// Inyección de dependencia de los repositorios
-/*
-builder.Services.AddScoped<IRepositorio_Propietario, Repositorio_PropietarioMySQL>();
-builder.Services.AddScoped<IRepositorio_Inquilino, Repositorio_InquilinoMySQL>();
-builder.Services.AddScoped<IRepositorio_Inmueble, Repositorio_InmuebleMySQL>();
-builder.Services.AddScoped<IRepositorio_Imagen_Inmueble, Repositorio_Imagen_InmuebleMySQL>();
-builder.Services.AddScoped<IRepositorio_Reserva, Repositorio_ReservaMySQL>();
-builder.Services.AddScoped<IRepositorio_Tipo_Inmueble, Repositorio_Tipo_InmuebleMySQL>();
-builder.Services.AddScoped<IRepositorio_Usuario, Repositorio_UsuarioMySQL>();
-builder.Services.AddScoped<IRepositorio_Pago, Repositorio_PagoMySQL>();
-*/
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) {
