@@ -8,7 +8,7 @@ CREATE TABLE cines (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     direccion VARCHAR(255) NOT NULL,
-    abierto TINYINT(1) DEFAULT 0
+    abierto TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE generos (
@@ -19,11 +19,11 @@ CREATE TABLE generos (
 CREATE TABLE peliculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
-    portada TEXT NOT NULL UNIQUE,
+    portada TEXT NOT NULL,
     clasificacion VARCHAR(10) NOT NULL,
     idioma VARCHAR(255) NOT NULL,
     duracion INT NOT NULL,
-    estado TINYINT(1) DEFAULT 1
+    estado TINYINT(1) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE directores (

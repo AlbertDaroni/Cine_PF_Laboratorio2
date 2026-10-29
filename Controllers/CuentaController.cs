@@ -29,68 +29,46 @@ public class CuentaController : Controller
             .Include(u => u.Rol)
             .FirstOrDefaultAsync(u => u.Correo == signin.Correo);
 
-        if (usuario == null || !usuario.Estado)
+        if (usuario == null
+            || !usuario.Estado
+            || usuario.DNI != signin.DNI
+            || !usuario.PasswordHasheada)
         {
-            ModelState.AddModelError("", "Los datos de acceso no son válidos.");
-            return View(signin);
-        }
+            ModelState.AddModelError(
+                "", "Los datos de acceso no son válidos.");
 
-        if (usuario.DNI != signin.DNI)
-        {
-            ModelState.AddModelError("", "Los datos de acceso no son válidos.");
             return View(signin);
         }
 
         var hasher = new PasswordHasher<Usuario>();
-        bool actualizarHash = false;
 
-        if (usuario.PasswordHasheada)
+        PasswordVerificationResult resultado;
+
+        try
         {
-            PasswordVerificationResult resultado;
-
-            try
-            {
-                resultado = hasher.VerifyHashedPassword(
-                    usuario,
-                    usuario.Contraseña,
-                    signin.Contraseña);
-            }
-            catch (FormatException)
-            {
-                resultado = PasswordVerificationResult.Failed;
-            }
-
-            if (resultado == PasswordVerificationResult.Failed)
-            {
-                ModelState.AddModelError(
-                    "", "Los datos de acceso no son válidos.");
-
-                return View(signin);
-            }
-
-            actualizarHash =
-                resultado == PasswordVerificationResult.SuccessRehashNeeded;
+            resultado = hasher.VerifyHashedPassword(
+                usuario,
+                usuario.Contraseña,
+                signin.Contraseña);
         }
-        else
+        catch (FormatException)
         {
-            // Compatibilidad temporal con las cuentas antiguas.
-            if (usuario.Contraseña != signin.Contraseña)
-            {
-                ModelState.AddModelError(
-                    "", "Los datos de acceso no son válidos.");
-
-                return View(signin);
-            }
-
-            actualizarHash = true;
+            resultado = PasswordVerificationResult.Failed;
         }
 
-        if (actualizarHash)
+        if (resultado == PasswordVerificationResult.Failed)
+        {
+            ModelState.AddModelError(
+                "", "Los datos de acceso no son válidos.");
+
+            return View(signin);
+        }
+
+        if (resultado == PasswordVerificationResult.SuccessRehashNeeded)
         {
             usuario.Contraseña = hasher.HashPassword(
                 usuario, signin.Contraseña);
 
-            usuario.PasswordHasheada = true;
             await _context.SaveChangesAsync();
         }
 
