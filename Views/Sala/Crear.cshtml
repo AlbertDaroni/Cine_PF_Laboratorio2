@@ -1,0 +1,168 @@
+@model Proyecto_Final.Models.Sala
+
+@{
+    ViewData["Title"] = "Crear sala";
+}
+
+<h1>Crear sala</h1>
+
+<form asp-action="Crear" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Numero" class="form-label">
+            Número de sala
+        </label>
+        <input asp-for="Numero" type="number"
+               min="1" class="form-control" />
+        <span asp-validation-for="Numero"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tipo" class="form-label">
+            Tipo de sala
+        </label>
+        <input asp-for="Tipo" class="form-control"
+               placeholder="Ejemplo: 2D, 3D o IMAX" />
+        <span asp-validation-for="Tipo"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Capacidad" class="form-label">
+            Capacidad
+        </label>
+        <input asp-for="Capacidad" type="number"
+               min="1" class="form-control" />
+        <span asp-validation-for="Capacidad"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="buscarCine" class="form-label">
+            Cine
+        </label>
+
+        <input type="text"
+               id="buscarCine"
+               value="@ViewBag.CineSeleccionado"
+               autocomplete="off"
+               class="form-control"
+               placeholder="Escribí al menos 2 caracteres" />
+
+        <input asp-for="CineID" type="hidden" />
+
+        <div id="estadoBusqueda" class="form-text"
+             role="status" aria-live="polite"></div>
+
+        <div id="resultadosCines" class="list-group mt-2"></div>
+
+        <span asp-validation-for="CineID"
+              class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+        <label asp-for="Estado" class="form-check-label">
+            Sala activa
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar sala
+    </button>
+
+    <a asp-action="Indice" class="btn btn-secondary">
+        Volver
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const buscarCine = document.getElementById("buscarCine");
+        const cineID = document.getElementById("CineID");
+        const resultados = document.getElementById("resultadosCines");
+        const estado = document.getElementById("estadoBusqueda");
+        const urlBusqueda = '@Url.Action("BuscarCines", "Sala")';
+
+        let temporizador;
+        let versionBusqueda = 0;
+
+        buscarCine.addEventListener("input", () => {
+            clearTimeout(temporizador);
+
+            const versionActual = ++versionBusqueda;
+            const termino = buscarCine.value.trim();
+
+            cineID.value = "0";
+            resultados.replaceChildren();
+            estado.textContent = "";
+
+            if (termino.length < 2) {
+                return;
+            }
+
+            temporizador = setTimeout(async () => {
+                estado.textContent = "Buscando cines...";
+
+                try {
+                    const respuesta = await fetch(
+                        urlBusqueda + "?termino=" +
+                        encodeURIComponent(termino),
+                        { headers: { "Accept": "application/json" } }
+                    );
+
+                    if (!respuesta.ok || respuesta.redirected) {
+                        throw new Error("No se pudo completar la búsqueda.");
+                    }
+
+                    const cines = await respuesta.json();
+
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    resultados.replaceChildren();
+
+                    estado.textContent = cines.length
+                        ? "Elegí un cine de la lista."
+                        : "No se encontraron cines.";
+
+                    for (const cine of cines) {
+                        const boton = document.createElement("button");
+
+                        boton.type = "button";
+                        boton.className =
+                            "list-group-item list-group-item-action";
+
+                        boton.textContent =
+                            cine.nombre + " — " + cine.direccion;
+
+                        boton.addEventListener("click", () => {
+                            ++versionBusqueda;
+                            cineID.value = cine.id;
+                            buscarCine.value = cine.nombre;
+
+                            resultados.replaceChildren();
+                            estado.textContent =
+                                "Cine seleccionado: " + cine.nombre;
+                        });
+
+                        resultados.appendChild(boton);
+                    }
+                } catch {
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    estado.textContent =
+                        "No se pudo buscar. Intentá nuevamente.";
+                }
+            }, 300);
+        });
+    </script>
+}

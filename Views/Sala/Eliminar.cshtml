@@ -1,0 +1,59 @@
+@model Proyecto_Final.Models.Sala
+
+@{
+    ViewData["Title"] = "Eliminar sala";
+    bool tieneFunciones = ViewBag.TieneFunciones ?? false;
+}
+
+<h1>Eliminar sala</h1>
+
+<div asp-validation-summary="ModelOnly"
+     class="text-danger"></div>
+
+<dl class="row">
+    <dt class="col-sm-3">Cine</dt>
+    <dd class="col-sm-9">@(Model.Cine?.Nombre ?? "Sin cine")</dd>
+
+    <dt class="col-sm-3">Número</dt>
+    <dd class="col-sm-9">@Model.Numero</dd>
+
+    <dt class="col-sm-3">Tipo</dt>
+    <dd class="col-sm-9">@Model.Tipo</dd>
+
+    <dt class="col-sm-3">Capacidad</dt>
+    <dd class="col-sm-9">@Model.Capacidad</dd>
+</dl>
+
+@if (tieneFunciones)
+{
+    <div class="alert alert-warning">
+        Esta sala tiene funciones asociadas y no se puede eliminar.
+        Podés desactivarla desde Editar.
+    </div>
+
+    <a asp-action="Editar"
+       asp-route-id="@Model.ID"
+       class="btn btn-warning">
+        Editar
+    </a>
+}
+else
+{
+    <div class="alert alert-danger">
+        ¿Confirmás que querés eliminar esta sala?
+        También se eliminarán sus butacas.
+        Esta acción no se puede deshacer.
+    </div>
+
+    <form asp-action="Eliminar"
+          asp-route-id="@Model.ID"
+          method="post">
+        <button type="submit" class="btn btn-danger">
+            Confirmar eliminación
+        </button>
+    </form>
+}
+
+<a asp-action="Indice" class="btn btn-secondary mt-2">
+    Volver
+</a>
