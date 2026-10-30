@@ -1,0 +1,61 @@
+@model Proyecto_Final.Models.Sala
+
+@{
+    ViewData["Title"] = "Editar sala";
+}
+
+<h1>Editar sala</h1>
+
+<p>
+    <strong>Cine:</strong> @(Model.Cine?.Nombre ?? "Sin cine")
+</p>
+<p>
+    <strong>Capacidad:</strong> @Model.Capacidad
+</p>
+
+<form asp-action="Editar"
+      asp-route-id="@Model.ID"
+      method="post"
+      class="col-md-6">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Numero" class="form-label">
+            Número de sala
+        </label>
+        <input asp-for="Numero" type="number"
+               min="1" class="form-control" />
+        <span asp-validation-for="Numero"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tipo" class="form-label">
+            Tipo de sala
+        </label>
+        <input asp-for="Tipo" class="form-control" />
+        <span asp-validation-for="Tipo"
+              class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+        <label asp-for="Estado" class="form-check-label">
+            Sala activa
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar cambios
+    </button>
+
+    <a asp-action="Indice" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

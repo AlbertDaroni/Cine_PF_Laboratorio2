@@ -1,0 +1,45 @@
+@model Proyecto_Final.Models.CambiarAvatarViewModel
+
+@{
+    ViewData["Title"] = "Cambiar avatar";
+}
+
+<h1>Cambiar avatar</h1>
+
+<p>Seleccioná una imagen PNG o JPG de hasta 5 MB.</p>
+
+<form asp-action="CambiarAvatar"
+      method="post"
+      enctype="multipart/form-data">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Foto" class="form-label">
+            Nueva foto de perfil
+        </label>
+
+        <input asp-for="Foto"
+               type="file"
+               accept=".png,.jpg,.jpeg"
+               class="form-control" />
+
+        <span asp-validation-for="Foto"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar foto
+    </button>
+
+    <button type="button"
+            onclick="history.back()"
+            class="btn btn-secondary">
+        Volver
+    </button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

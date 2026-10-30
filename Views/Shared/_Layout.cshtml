@@ -1,10 +1,18 @@
 ﻿@{
     var usuarioID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    var Foto_Perfil = User.FindFirst(ClaimTypes.Uri)?.Value;
+    var fotoPerfil = User.FindFirst(ClaimTypes.Uri)?.Value;
+
+    var nombreFotoPerfil = string.IsNullOrWhiteSpace(fotoPerfil)
+        ? "image.png"
+        : System.IO.Path.GetFileName(fotoPerfil);
+
+    var rutaFotoPerfil = Url.Content(
+        "~/uploads/profile_picture/" + nombreFotoPerfil);
 }
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,51 +22,69 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Proyecto_Final.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cine" asp-action="Indice">Cines</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Pelicula" asp-action="Indice">Películas</a></li>
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Sala" asp-action="Indice">Salas</a></li>
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Indice">Usuarios</a></li>
-                        }
-                        @if (User.IsInRole("Administrador")) {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Rol" asp-action="Indice">Roles</a></li>
-                        }
-                        @if (User.Identity != null && User.Identity.IsAuthenticated) {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Reserva" asp-action="Indice">Reservas</a></li>
-                            <li class="nav-item position-absolute end-0">
-                                <a class="nav-link text-success d-flex align-items-center" asp-controller="Usuario" asp-action="Detalles" asp-route-id="@usuarioID">
-                                    <img src="@Foto_Perfil" width="30" height="30" class="rounded-circle me-2">
-                                    <span>Cuenta</span>
-                                </a>
-                            </li>
-                        } else {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cuenta" asp-action="SignIn">Iniciar sesión</a></li>
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cuenta" asp-action="SignUp">Registrarse</a></li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">@RenderBody()</main>
-    </div>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home"
+                                                    asp-action="Index">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cine"
+                                                        asp-action="Indice">Cines</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Pelicula"
+                                                            asp-action="Indice">Películas</a></li>
+                                    @if (User.IsInRole("Administrador") || User.IsInRole("Empleado"))
+                                    {
+                                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Sala"
+                                                                    asp-action="Indice">Salas</a></li>
+                                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Usuario"
+                                                                        asp-action="Indice">Usuarios</a></li>
+                                            }
+                                            @if (User.IsInRole("Administrador"))
+                                            {
+                                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Rol"
+                                                                            asp-action="Indice">Roles</a></li>
+                                                }
+                                                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                                                {
+                                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Reserva"
+                                                                                asp-action="Indice">Reservas</a></li>
+                                                        <li class="nav-item position-absolute end-0">
+                                                            <a class="nav-link text-success d-flex align-items-center" asp-controller="Usuario"
+                                                               asp-action="Detalles" asp-route-id="@usuarioID">
+                                                                <img src="@rutaFotoPerfil" alt="Foto de perfil" width="30" height="30"
+                                                                     class="rounded-circle me-2">
+                                                                <span>Cuenta</span>
+                                                            </a>
+                                                        </li>
+                                                    } else
+                                                    {
+                                                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cuenta"
+                                                                                    asp-action="SignIn">Iniciar sesión</a></li>
+                                                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cuenta"
+                                                                                        asp-action="SignUp">Registrarse</a></li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </nav>
+                                        </header>
+                                        <div class="container">
+                                            <main role="main" class="pb-3">@RenderBody()</main>
+                                        </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Libre Cine - <a asp-area="" asp-controller="Home" asp-action="Privacy">Términos de privacidad</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+                                        <footer class="border-top footer text-muted">
+                                            <div class="container">
+                                                &copy; 2026 - Libre Cine - <a asp-area="" asp-controller="Home" asp-action="Privacy">Términos de
+                                                privacidad</a>
+                                            </div>
+                                        </footer>
+                                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                                        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                                        <script src="~/js/site.js" asp-append-version="true"></script>
+                                        @await RenderSectionAsync("Scripts", required: false)
+                                    </body>
+
+                                </html>

@@ -19,7 +19,7 @@ CREATE TABLE generos (
 CREATE TABLE peliculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
-    portada TEXT NOT NULL UNIQUE,
+    portada TEXT NOT NULL,
     clasificacion VARCHAR(10) NOT NULL,
     idioma VARCHAR(255) NOT NULL,
     duracion INT NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE usuarios (
     dni INT NOT NULL UNIQUE,
     foto_perfil TEXT NULL,
     contraseña VARCHAR(255) NOT NULL,
+    password_hasheada TINYINT(1) NOT NULL DEFAULT 0,
     estado TINYINT(1) NOT NULL DEFAULT 1,
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE
