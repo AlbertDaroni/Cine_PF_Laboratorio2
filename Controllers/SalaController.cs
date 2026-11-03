@@ -57,6 +57,7 @@ public class SalaController : Controller {
             .ToListAsync()
         ;
 
+
         ViewBag.Pagina = pagina;
         ViewBag.totalPaginas = totalPaginas;
 
@@ -77,6 +78,7 @@ public class SalaController : Controller {
         } else {
             ViewBag.CineSeleccionado = cine.Nombre;
             var numeroRepetido = await _context.Salas.AnyAsync(s => s.CineID == sala.CineID && s.Numero == sala.Numero);
+
             if (numeroRepetido) ModelState.AddModelError("Numero", "Ese cine ya tiene una sala con ese numero.");
         }
 
@@ -100,7 +102,6 @@ public class SalaController : Controller {
     [HttpPost, ValidateAntiForgeryToken, ActionName("Editar")]
     public async Task<IActionResult> GuardarEditar(int id) {
         var sala = await _context.Salas.Include(s => s.Cine).FirstOrDefaultAsync(s => s.ID == id);
-
         if (sala == null) return NotFound();
 
         bool datosValidos = await TryUpdateModelAsync<Sala>(sala, "", s => s.Numero, s => s.Tipo, s => s.Estado);
@@ -108,7 +109,6 @@ public class SalaController : Controller {
         if (!datosValidos) return View(sala);
 
         bool numeroRepetido = await _context.Salas.AnyAsync(s => s.CineID == sala.CineID && s.Numero == sala.Numero && s.ID != sala.ID);
-
         if (numeroRepetido) {
             ModelState.AddModelError("Numero", "Ese cine ya tiene una sala con ese numero.");
             return View(sala);
@@ -124,7 +124,6 @@ public class SalaController : Controller {
     [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
         var sala = await _context.Salas.AsNoTracking().Include(s => s.Cine).FirstOrDefaultAsync(s => s.ID == id);
-
         if (sala == null) return NotFound();
 
         ViewBag.TieneFunciones = await _context.Funciones.AnyAsync(f => f.SalaID == id);
@@ -135,7 +134,6 @@ public class SalaController : Controller {
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
         var sala = await _context.Salas.Include(s => s.Cine).FirstOrDefaultAsync(s => s.ID == id);
-
         if (sala == null) return NotFound();
 
         bool tieneFunciones = await _context.Funciones.AnyAsync(f => f.SalaID == id);
