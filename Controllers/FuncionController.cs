@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Proyecto_Final.Models;
 using Proyecto_Final.Data;
 
@@ -54,7 +55,6 @@ public class FuncionController : Controller {
     [HttpGet]
     public async Task<IActionResult> Crear(int PeliculaID, int CineID) {
         ViewBag.PeliculaID = PeliculaID;
-        ViewBag.SalaID = SalaID;
         ViewBag.CineID = CineID;
         ViewBag.Salas = new SelectList(await _context.Salas.Where(s => s.CineID == CineID).ToListAsync(), "ID", "Numero");
         
