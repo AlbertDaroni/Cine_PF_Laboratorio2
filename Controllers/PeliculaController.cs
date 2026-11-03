@@ -27,6 +27,7 @@ public class PeliculaController : Controller {
                 .ToListAsync()
             ;
         } else {
+            ViewBag.CineID = id;
             peliculas = await _context.Peliculas
                 .Include(p => p.Directores)
                 .Include(p => p.Generos)
@@ -133,5 +134,12 @@ public class PeliculaController : Controller {
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SeleccionarPelicula(int CineID) {
+        ViewBag.CineID = CineID;
+        var peliculas = await _context.Peliculas.AsNoTracking().ToListAsync();
+        return View(peliculas);
     }
 }

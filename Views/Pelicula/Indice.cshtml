@@ -5,7 +5,11 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Cartelera de Películas</h1>
     @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-        <a asp-action="Crear" class="btn btn-primary">Agregar</a>
+        @if (ViewBag.CineID?.ToString() == "0") {
+            <a asp-action="Crear" class="btn btn-primary">Agregar</a>
+        } else {
+            <a asp-action="SeleccionarPelicula" asp-route-CineID="@ViewBag.CineID" class="btn btn-primary">Agregar</a>
+        }
     }
 </div>
 
@@ -38,7 +42,7 @@
                         @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
                             <a asp-action="Detalles" asp-route-id="@pelicula.ID" class="btn btn-info btn-sm">Detalles</a>
                         }
-                        <a asp-controller="Funcion" asp-action="Indice" asp-route-id="@pelicula.ID" class="btn btn-success btn-sm w-100">Ver Funciones</a>
+                        <a asp-controller="Funcion" asp-action="Indice" asp-route-PeliculaID="@pelicula.ID" asp-route-CineID="@ViewBag.CineID" class="btn btn-success btn-sm w-100">Ver Funciones</a>
                     </div>
                 </div>
             </div>

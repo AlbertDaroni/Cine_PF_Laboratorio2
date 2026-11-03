@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proyecto_Final.Models;
 
 [Table("usuarios")]
-public class Usuario
-{
+public class Usuario {
     [Key]
     public int ID { get; set; }
 

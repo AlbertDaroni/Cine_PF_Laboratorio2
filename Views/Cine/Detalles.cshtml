@@ -8,8 +8,8 @@
     <div class="card-body">
         <h4 class="card-title">@Model.Nombre</h4>
 
-        <p><strong>Direccion:</strong>@Model.Direccion</p>
-        <p><strong>Abierto:</strong>@(Model.Abierto ? "Sí" : "No")</p>
+        <p><strong>Direccion:</strong>&nbsp;@Model.Direccion</p>
+        <p><strong>Abierto:</strong>&nbsp;@(Model.Abierto ? "Sí" : "No")</p>
 
         <a asp-action="Indice" asp-controller="Pelicula" asp-route-id="@Model.ID" class="btn btn-success btn-sm w-100">Películas</a>
 

@@ -21,6 +21,13 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="SalaID" class="form-label">Sala</label>
+        <select asp-for="SalaID" class="form-select" asp-items="(SelectList)ViewBag.Salas">
+            <option value="">-- Seleccioná una sala --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Estado" class="form-label">Estado</label>
         <select asp-for="Estado" class="form-select">
             <option value="true">Activa</option>

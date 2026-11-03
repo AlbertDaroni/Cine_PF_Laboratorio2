@@ -14,13 +14,29 @@ public class FuncionController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> Indice(int id) {
-        var funciones = await _context.Funciones
-            .Include(f => f.Pelicula)
+    public async Task<IActionResult> Indice(int PeliculaID, int CineID) {
+        List<Funcion> funciones;
+        ViewBag.PeliculaID = PeliculaID;
+        ViewBag.CineID = CineID;
+
+        funciones = await _context.Funciones
             .Include(f => f.Sala)
-            .Where(f => f.PeliculaID == id)
-            .AsNoTracking().ToListAsync();
-            
+                .ThenInclude(s => s!.Cine)
+            .Where(f => f.PeliculaID == PeliculaID && f.Sala!.CineID == CineID)
+            .AsNoTracking()
+            .ToListAsync()
+        ;
+
+        if (funciones.Count == 0) {
+            funciones = await _context.Funciones
+                .Include(f => f.Sala)
+                    .ThenInclude(s => s!.Cine)
+                .Where(f => f.PeliculaID == PeliculaID)
+                .AsNoTracking()
+                .ToListAsync()
+            ;
+        }
+
         return View(funciones);
     }
 
@@ -36,16 +52,23 @@ public class FuncionController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet]
-    public IActionResult Crear(int PeliculaID, int SalaID) {
+    public async Task<IActionResult> Crear(int PeliculaID, int CineID) {
         ViewBag.PeliculaID = PeliculaID;
         ViewBag.SalaID = SalaID;
+        ViewBag.CineID = CineID;
+        ViewBag.Salas = new SelectList(await _context.Salas.Where(s => s.CineID == CineID).ToListAsync(), "ID", "Numero");
         
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Crear(Funcion funcion) {
-        if (!ModelState.IsValid) return View(funcion);
+    public async Task<IActionResult> Crear(int PeliculaID, int CineID, Funcion funcion) {
+        if (!ModelState.IsValid) {
+            ViewBag.PeliculaID = PeliculaID;
+            ViewBag.CineID = CineID;
+            ViewBag.Salas = new SelectList(await _context.Salas.Where(s => s.CineID == CineID).ToListAsync(), "ID", "Numero");
+            return View(funcion);
+        }
 
         _context.Funciones.Add(funcion);
         await _context.SaveChangesAsync();
@@ -91,5 +114,14 @@ public class FuncionController : Controller {
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> CrearDesdeCartelera(int PeliculaID, int CineID) {
+        ViewBag.PeliculaID = PeliculaID;
+        ViewBag.CineID = CineID;
+        ViewBag.Salas = new SelectList(await _context.Salas.Where(s => s.CineID == CineID).ToListAsync(), "ID", "Numero");
+
+        return View(nameof(Crear));
     }
 }

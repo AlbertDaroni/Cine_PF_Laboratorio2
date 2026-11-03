@@ -5,28 +5,18 @@
 
     int pagina = ViewBag.Pagina ?? 1;
     int totalPaginas = ViewBag.TotalPaginas ?? 1;
-
-    bool puedeGestionar = User.IsInRole("Administrador")
-        || User.IsInRole("Empleado");
+    bool puedeGestionar = User.IsInRole("Administrador") || User.IsInRole("Empleado");
 }
 
 <h1>Listado de salas</h1>
 
-@if (puedeGestionar)
-{
-    <a asp-action="Crear" class="btn btn-primary mb-3">
-        Nueva sala
-    </a>
+@if (puedeGestionar) {
+    <a asp-action="Crear" class="btn btn-primary mb-3">Nueva sala</a>
 }
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        Todavía no hay salas registradas.
-    </div>
-}
-else
-{
+@if (!Model.Any()) {
+    <div class="alert alert-info">Todavía no hay salas registradas.</div>
+} else {
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -37,37 +27,23 @@ else
                     <th>Capacidad</th>
                     <th>Estado</th>
 
-                    @if (puedeGestionar)
-                    {
+                    @if (puedeGestionar) {
                         <th>Acciones</th>
                     }
                 </tr>
             </thead>
-
             <tbody>
-                @foreach (var sala in Model)
-                {
+                @foreach (var sala in Model) {
                     <tr>
                         <td>@(sala.Cine?.Nombre ?? "Sin cine")</td>
                         <td>@sala.Numero</td>
                         <td>@sala.Tipo</td>
                         <td>@sala.Capacidad</td>
                         <td>@(sala.Estado ? "Activa" : "Inactiva")</td>
-
-                        @if (puedeGestionar)
-                        {
+                        @if (puedeGestionar) {
                             <td>
-                                <a asp-action="Editar"
-                                   asp-route-id="@sala.ID"
-                                   class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <a asp-action="Eliminar"
-                                   asp-route-id="@sala.ID"
-                                   class="btn btn-danger btn-sm">
-                                    Eliminar
-                                </a>
+                                <a asp-action="Editar"asp-route-id="@sala.ID"class="btn btn-warning btn-sm">Editar</a>
+                                <a asp-action="Eliminar"asp-route-id="@sala.ID"class="btn btn-danger btn-sm">Eliminar</a>
                             </td>
                         }
                     </tr>
@@ -77,26 +53,14 @@ else
     </div>
 
     <nav aria-label="Páginas de salas">
-        @if (pagina > 1)
-        {
-            <a asp-action="Indice"
-               asp-route-pagina="@(pagina - 1)"
-               class="btn btn-outline-primary">
-                Anterior
-            </a>
+        @if (pagina > 1) {
+            <a asp-action="Indice" asp-route-pagina="@(pagina - 1)" class="btn btn-outline-primary">Anterior</a>
         }
 
-        <span class="mx-2">
-            Página @pagina de @totalPaginas
-        </span>
+        <span class="mx-2">Página @pagina de @totalPaginas</span>
 
-        @if (pagina < totalPaginas)
-        {
-            <a asp-action="Indice"
-               asp-route-pagina="@(pagina + 1)"
-               class="btn btn-outline-primary">
-                Siguiente
-            </a>
+        @if (pagina < totalPaginas) {
+            <a asp-action="Indice" asp-route-pagina="@(pagina + 1)" class="btn btn-outline-primary">Siguiente</a>
         }
     </nav>
 }

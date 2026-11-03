@@ -5,6 +5,8 @@
 <h1>Agregar una Película</h1>
 
 <form asp-action="Crear" method="post" enctype="multipart/form-data">
+    <input type="hidden" value="@ViewBag.CineID">
+
     <div class="form-group mb-3">
         <label asp-for="Titulo"></label>
         <input asp-for="Titulo" class="form-control" />
@@ -19,7 +21,12 @@
 
     <div class="form-group mb-3">
         <label asp-for="Clasificacion"></label>
-        <input asp-for="Clasificacion" class="form-control" />
+        <select asp-for="Clasificacion" class="form-select">
+            <option value="ATP">ATP</option>
+            <option value="+13">+13</option>
+            <option value="+16">+16</option>
+            <option value="+18">+18</option>
+        </select>
         <span asp-validation-for="Clasificacion" class="text-danger"></span>
     </div>
 
