@@ -1,0 +1,5 @@
+1. Agregar estilos (dejar las vistas bonitas). Y al menos una debe hacerse utilizando Vue.
+2. La vista "Indice" de cada sala debe mostrarse para cada cine, no todas juntas.
+3. Mostrar todos los usuarios por defecto en la vista "Usuario/Indice".
+4. Comprobar si el botón "Cambiar avatar" en "Usuario/Detalles" es útil.
+5. 
