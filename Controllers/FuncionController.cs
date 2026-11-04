@@ -73,7 +73,7 @@ public class FuncionController : Controller {
         _context.Funciones.Add(funcion);
         await _context.SaveChangesAsync();
 
-        return RedirectToAction("Indice", "Pelicula");
+        return RedirectToAction("SeleccionarPelicula", "Pelicula");
     }
 
     // -----------------------------------------------------------------------------------
@@ -114,14 +114,5 @@ public class FuncionController : Controller {
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> CrearDesdeCartelera(int PeliculaID, int CineID) {
-        ViewBag.PeliculaID = PeliculaID;
-        ViewBag.CineID = CineID;
-        ViewBag.Salas = new SelectList(await _context.Salas.Where(s => s.CineID == CineID).ToListAsync(), "ID", "Numero");
-
-        return View(nameof(Crear));
     }
 }

@@ -45,14 +45,14 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Foto_Perfil" class="form-label"></label>
+                <label asp-for="Foto_Perfil" class="form-label">Foto de perfil</label>
                 <input asp-for="Foto_Perfil" class="form-control" type="file" accept="image/*">
                 <span asp-validation-for="Foto_Perfil" class="text-danger"></span>
             </div>
 
             @if (User.IsInRole("Administrador")) {
                 <div class="mb-3">
-                    <label asp-for="RolID" class="form-label"></label>
+                    <label asp-for="RolID" class="form-label">Rol</label>
                     <select asp-for="RolID" class="form-select" asp-items="(SelectList)ViewBag.Roles">
                         <option value="">-- Seleccioná un rol --</option>
                     </select>

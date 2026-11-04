@@ -5,8 +5,8 @@
 <h1>Crear</h1>
 
 <form asp-action="Crear" method="post">
-    <input type="hidden" asp-for="PeliculaID" value=ViewBag.PeliculaID>
-    <input type="hidden" asp-for="SalaID" value=ViewBag.SalaID>
+    <input type="hidden" asp-for="PeliculaID" value=@ViewBag.PeliculaID>
+    <input type="hidden" value=@ViewBag.CineID>
 
     <div class="mb-3">
         <label asp-for="FechaHora" class="form-label">Fecha y Hora</label>

@@ -9,7 +9,7 @@
         <p><strong>Concepto:</strong>@Model.Concepto</p>
         <p><strong>Fecha de Pago:</strong>@Model.Fecha_Pago.ToString("dd/MM/yyyy")</p>
         <p><strong>Fecha de Anulacion:</strong>@(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy") ?? "-")</p>
-        <p><strong>Importe:</strong>$ @Model.Importe.ToString("C")</p>
+        <p><strong>Importe:</strong>$&nbsp;@Model.Importe.ToString("C")</p>
         <p><strong>Estado:</strong>@Model.Estado</p>
 
         <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>

@@ -8,9 +8,9 @@
 
 <div class="card">
     <div class="card-body">
-        <p><strong>Nombre:</strong> @Model.Nombre</p>
-        <p><strong>Direccion:</strong> @Model.Direccion</p>
-        <p><strong>Abierto:</strong> @(Model.Abierto ? "Si" : "No")</p>
+        <p><strong>Nombre:</strong>&nbsp;@Model.Nombre</p>
+        <p><strong>Direccion:</strong>&nbsp;@Model.Direccion</p>
+        <p><strong>Abierto:</strong>&nbsp;@(Model.Abierto ? "Si" : "No")</p>
 
         <form asp-action="Eliminar" method="post">
             <input type="hidden" asp-for="ID" />

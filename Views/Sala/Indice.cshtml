@@ -42,8 +42,7 @@
                         <td>@(sala.Estado ? "Activa" : "Inactiva")</td>
                         @if (puedeGestionar) {
                             <td>
-                                <a asp-action="Editar"asp-route-id="@sala.ID"class="btn btn-warning btn-sm">Editar</a>
-                                <a asp-action="Eliminar"asp-route-id="@sala.ID"class="btn btn-danger btn-sm">Eliminar</a>
+                                <a asp-action="Detalles"asp-route-id="@sala.ID"class="btn btn-warning btn-sm">Detalles</a>
                             </td>
                         }
                     </tr>
