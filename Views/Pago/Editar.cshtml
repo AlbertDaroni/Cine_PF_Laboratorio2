@@ -1,45 +1,82 @@
 @model Proyecto_Final.Models.Pago
 
-@{ ViewData["Title"] = "Editar Pago"; }
+@{
+    ViewData["Title"] = "Editar pago";
 
-<h1>Editar Pago</h1>
+    var cultura = System.Globalization.CultureInfo
+        .GetCultureInfo("es-AR");
+}
 
-<form asp-action="Editar" method="post">
-    <input type="hidden" asp-for="ID" />
+<h1>Editar pago</h1>
 
-    <div class="form-group mb-3">
-        <label asp-for="Concepto"></label>
-        <input asp-for="Concepto" class="form-control" />
-        <span asp-validation-for="Concepto" class="text-danger"></span>
+<dl class="row">
+    <dt class="col-sm-3">Reserva</dt>
+    <dd class="col-sm-9">N.º @Model.ReservaID</dd>
+
+    <dt class="col-sm-3">Fecha de pago</dt>
+    <dd class="col-sm-9">
+        @Model.Fecha_Pago.ToString("dd/MM/yyyy HH:mm")
+    </dd>
+
+    <dt class="col-sm-3">Importe</dt>
+    <dd class="col-sm-9">
+        @Model.Importe.ToString("C", cultura)
+    </dd>
+</dl>
+
+<form asp-action="Editar"
+      asp-route-id="@Model.ID"
+      method="post"
+      class="col-md-6">
+
+    <input asp-for="ID" type="hidden" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Concepto" class="form-label"></label>
+        <input asp-for="Concepto"
+               class="form-control"
+               maxlength="50" />
+        <span asp-validation-for="Concepto"
+              class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Fecha_Pago"></label>
-        <input asp-for="Fecha_Pago" type="date" class="form-control" />
-        <span asp-validation-for="Fecha_Pago" class="text-danger"></span>
-    </div>
+    @if (Model.Estado)
+    {
+        <div class="mb-3">
+            <label asp-for="Estado" class="form-label"></label>
+            <select asp-for="Estado" class="form-select">
+                <option value="true">Pagado</option>
+                <option value="false">Anulado</option>
+            </select>
+            <span asp-validation-for="Estado"
+                  class="text-danger"></span>
+        </div>
+    }
+    else
+    {
+        <input asp-for="Estado" type="hidden" />
 
-    <div class="form-group mb-3">
-        <label asp-for="Fecha_Anulacion"></label>
-        <input asp-for="Fecha_Anulacion" type="date" class="form-control" />
-    </div>
+        <div class="alert alert-secondary">
+            Pago anulado.
+            Fecha: @(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+        </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Importe"></label>
-        <input asp-for="Importe" class="form-control" />
-        <span asp-validation-for="Importe" class="text-danger"></span>
-    </div>
+        <span asp-validation-for="Estado"
+              class="text-danger"></span>
+    }
 
-    <div class="form-group mb-3">
-        <label asp-for="Estado"></label>
-        <select asp-for="Estado" class="form-control">
-            <option value="true">Pagado</option>
-            <option value="false">Anulado</option>
-        </select>
-    </div>
+    <button type="submit" class="btn btn-success">
+        Guardar cambios
+    </button>
 
-    <button type="submit" class="btn btn-success">Guardar cambios</button>
-    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
+    <a asp-action="Indice" class="btn btn-secondary">
+        Volver
+    </a>
 </form>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

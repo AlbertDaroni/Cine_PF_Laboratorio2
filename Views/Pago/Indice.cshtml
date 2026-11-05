@@ -1,6 +1,8 @@
 @model IEnumerable<Proyecto_Final.Models.Pago>
 
-@{ ViewData["Title"] = "Listado de Pagos"; }
+@{
+    ViewData["Title"] = "Listado de Pagos";
+}
 
 <h1>Listado de Pagos</h1>
 
@@ -18,13 +20,26 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var pago in Model) {
+        @foreach (var pago in Model)
+        {
             <tr>
                 <td>@pago.Concepto</td>
                 <td>@pago.Fecha_Pago.ToString("dd/MM/yyyy")</td>
                 <td>@(pago.Fecha_Anulacion?.ToString("dd/MM/yyyy") ?? "-")</td>
-                <td>$&nbsp;@pago.Importe.ToString("C")</td>
-                <td>@pago.Estado</td>
+                <td>
+                    @pago.Importe.ToString(
+                        "C", System.Globalization.CultureInfo.GetCultureInfo("es-AR"))
+                </td>
+                <td>
+                    @if (pago.Estado)
+                    {
+                        <span class="badge bg-success">Pagado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Anulado</span>
+                    }
+                </td>
                 <td>
                     <a asp-action="Detalles" asp-route-id="@pago.ID" class="btn btn-info btn-sm">Detalles</a>
                     <a asp-action="Editar" asp-route-id="@pago.ID" class="btn btn-warning btn-sm">Editar</a>
