@@ -1,6 +1,8 @@
 @model Proyecto_Final.Models.Usuario
 
-@{ ViewData["Title"] = "Nuevo Usuario"; }
+@{
+    ViewData["Title"] = "Nuevo Usuario";
+}
 
 <h1>Nuevo Usuario</h1>
 
@@ -48,10 +50,17 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="RolID" class="form-label">Rol</label>
-                <select asp-for="RolID" class="form-select" asp-items="(SelectList)ViewBag.Roles">
-                    <option value="">-- Seleccioná un rol --</option>
-                </select>
+                <label for="buscarRol" class="form-label">Rol</label>
+
+                <input id="buscarRol" type="text" value="@ViewBag.RolSeleccionado" class="form-control"
+                       autocomplete="off" placeholder="Escribí al menos 2 caracteres" />
+
+                <input asp-for="RolID" type="hidden" />
+
+                <div id="estadoRoles" class="form-text" role="status" aria-live="polite"></div>
+
+                <div id="resultadosRoles" class="list-group mt-2"></div>
+
                 <span asp-validation-for="RolID" class="text-danger"></span>
             </div>
 
@@ -70,4 +79,95 @@
     </div>
 </div>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const buscarRol = document.getElementById("buscarRol");
+        const rolID = document.getElementById("RolID");
+        const resultados = document.getElementById("resultadosRoles");
+        const estado = document.getElementById("estadoRoles");
+
+        const urlBusqueda = '@Url.Action("BuscarRoles", "Usuario")';
+
+        let temporizador;
+        let versionBusqueda = 0;
+
+        buscarRol.addEventListener("input", () => {
+            clearTimeout(temporizador);
+
+            const versionActual = ++versionBusqueda;
+            const termino = buscarRol.value.trim();
+
+            rolID.value = "0";
+            resultados.replaceChildren();
+            estado.textContent = "";
+
+            if (termino.length < 2) {
+                return;
+            }
+
+            temporizador = setTimeout(async () => {
+                estado.textContent = "Buscando roles...";
+
+                try {
+                    const respuesta = await fetch(
+                        urlBusqueda + "?termino=" +
+                        encodeURIComponent(termino),
+                        {
+                            headers: {
+                                "Accept": "application/json"
+                            }
+                        }
+                    );
+
+                    if (!respuesta.ok || respuesta.redirected) {
+                        throw new Error("Error de búsqueda.");
+                    }
+
+                    const roles = await respuesta.json();
+
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    resultados.replaceChildren();
+
+                    estado.textContent = roles.length
+                        ? "Seleccioná un rol de la lista."
+                        : "No se encontraron roles.";
+
+                    for (const rol of roles) {
+                        const boton = document.createElement("button");
+
+                        boton.type = "button";
+                        boton.className =
+                            "list-group-item list-group-item-action";
+                        boton.textContent = rol.nombre;
+
+                        boton.addEventListener("click", () => {
+                            clearTimeout(temporizador);
+                            ++versionBusqueda;
+
+                            rolID.value = rol.id;
+                            buscarRol.value = rol.nombre;
+
+                            resultados.replaceChildren();
+                            estado.textContent =
+                                "Rol seleccionado: " + rol.nombre;
+                        });
+
+                        resultados.appendChild(boton);
+                    }
+                } catch {
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    estado.textContent =
+                        "No se pudo buscar. Intentá nuevamente.";
+                }
+            }, 300);
+        });
+    </script>
+}

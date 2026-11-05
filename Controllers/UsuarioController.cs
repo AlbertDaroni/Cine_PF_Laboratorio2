@@ -11,21 +11,57 @@ using Microsoft.AspNetCore.Identity;
 namespace Proyecto_Final.Controllers;
 
 [Authorize]
-public class UsuarioController : Controller {
+public class UsuarioController : Controller
+{
     private readonly BD_Context _context;
     private readonly IWebHostEnvironment _environment;
     public UsuarioController(BD_Context context, IWebHostEnvironment _environment) { this._context = context; this._environment = _environment; }
 
+    [HttpGet, Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> BuscarRoles(string? termino)
+    {
+        termino = termino?.Trim();
+
+        if (string.IsNullOrEmpty(termino) || termino.Length < 2)
+        {
+            return Json(Array.Empty<object>());
+        }
+
+        if (termino.Length > 100)
+        {
+            return BadRequest("La búsqueda es demasiado larga.");
+        }
+
+        var roles = await _context.Roles
+            .AsNoTracking()
+            .Where(r => r.Nombre.Contains(termino))
+            .OrderBy(r => r.Nombre)
+            .ThenBy(r => r.ID)
+            .Select(r => new
+            {
+                id = r.ID,
+                nombre = r.Nombre
+            })
+            .Take(10)
+            .ToListAsync();
+
+        return Json(roles);
+    }
+
     // -----------------------------------------------------------------------------------
     // Funciones para Índice
     [Authorize(Roles = "Administrador, Empleado")]
-    public async Task<IActionResult> Indice(string? rol) {
+    public async Task<IActionResult> Indice(string? rol)
+    {
         ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "Nombre", "Nombre", rol);
         List<Usuario> usuarios;
 
-        if (rol == "todos") {
+        if (rol == "todos")
+        {
             usuarios = await _context.Usuarios.Include(u => u.Rol).AsNoTracking().ToListAsync();
-        } else {
+        }
+        else
+        {
             usuarios = await _context.Usuarios.Include(u => u.Rol).Where(u => u.Rol.Nombre == rol).AsNoTracking().ToListAsync();
         }
 
@@ -35,7 +71,8 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Obtener
     [HttpGet]
-    public async Task<IActionResult> Detalles(int id) {
+    public async Task<IActionResult> Detalles(int id)
+    {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
 
         bool esPersonal = User.IsInRole("Administrador") || User.IsInRole("Empleado");
@@ -50,21 +87,49 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet, Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Crear() {
-        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
-        return View();
+    public IActionResult Crear()
+    {
+        return View(new Usuario());
     }
 
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Crear(Usuario usuario) {
-        if (!ModelState.IsValid) {
-            ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+    public async Task<IActionResult> Crear(
+        [Bind("Nombre,Apellido,DNI,Correo,Contraseña,Foto_Perfil,RolID,Estado")]
+    Usuario usuario)
+    {
+        var rol = await _context.Roles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.ID == usuario.RolID);
+
+        if (rol == null)
+        {
+            ModelState.AddModelError(
+                "RolID", "Seleccioná un rol válido.");
+        }
+
+        if (await _context.Usuarios.AnyAsync(u => u.Correo == usuario.Correo))
+        {
+            ModelState.AddModelError(
+                "Correo", "Ese correo ya está registrado.");
+        }
+
+        if (await _context.Usuarios.AnyAsync(u => u.DNI == usuario.DNI))
+        {
+            ModelState.AddModelError(
+                "DNI", "Ese DNI ya está registrado.");
+        }
+
+        ViewBag.RolSeleccionado = rol?.Nombre;
+
+        if (!ModelState.IsValid)
+        {
             return View(usuario);
         }
 
         var hasher = new PasswordHasher<Usuario>();
 
-        usuario.Contraseña = hasher.HashPassword(usuario, usuario.Contraseña);
+        usuario.Contraseña = hasher.HashPassword(
+            usuario, usuario.Contraseña);
 
         usuario.PasswordHasheada = true;
 
@@ -77,38 +142,57 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Editar
     [HttpGet, Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Editar(int id) {
+    public async Task<IActionResult> Editar(int id)
+    {
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
 
         usuario.Contraseña = string.Empty;
 
-        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+        ViewBag.RolSeleccionado = usuario.Rol?.Nombre;
         return View(usuario);
     }
 
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador"), RequestSizeLimit(5 * 1024 * 1024)]
-    public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? Foto_Perfil) {
+    public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? Foto_Perfil)
+    {
         if (id != usuario.ID) return BadRequest();
+        var rol = await _context.Roles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.ID == usuario.RolID);
+
+        ViewBag.RolSeleccionado = rol?.Nombre;
+
+        if (rol == null)
+        {
+            ModelState.AddModelError(
+                "RolID", "Seleccioná un rol válido.");
+        }
         if (string.IsNullOrWhiteSpace(usuario.Contraseña)) ModelState.Remove(nameof(Usuario.Contraseña));
-        if (Foto_Perfil != null) {
-            if (Foto_Perfil.Length == 0 || Foto_Perfil.Length > 5 * 1024 * 1024) {
+        if (Foto_Perfil != null)
+        {
+            if (Foto_Perfil.Length == 0 || Foto_Perfil.Length > 5 * 1024 * 1024)
+            {
                 ModelState.AddModelError("Foto", "La imagen debe pesar entre 1B y 5 MB.");
                 return View(usuario);
             }
         }
-        if (!ModelState.IsValid) {
-            ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+        if (!ModelState.IsValid)
+        {
             return View(usuario);
         }
 
-        try {
+        try
+        {
             var usuarioOriginal = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.ID == id);
             if (usuarioOriginal == null) return NotFound();
-            if (string.IsNullOrWhiteSpace(usuario.Contraseña))  {
+            if (string.IsNullOrWhiteSpace(usuario.Contraseña))
+            {
                 usuario.Contraseña = usuarioOriginal.Contraseña;
                 usuario.PasswordHasheada = usuarioOriginal.PasswordHasheada;
-            } else {
+            }
+            else
+            {
                 var hasher = new PasswordHasher<Usuario>();
                 usuario.Contraseña = hasher.HashPassword(usuario, usuario.Contraseña);
                 usuario.PasswordHasheada = true;
@@ -116,8 +200,10 @@ public class UsuarioController : Controller {
 
             usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
 
-            if (Foto_Perfil != null && Foto_Perfil.Length > 0) {
-                if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "image.png") {
+            if (Foto_Perfil != null && Foto_Perfil.Length > 0)
+            {
+                if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "image.png")
+                {
                     string rutaFotoVieja = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture", usuarioOriginal.Foto_Perfil);
 
                     if (System.IO.File.Exists(rutaFotoVieja)) System.IO.File.Delete(rutaFotoVieja);
@@ -127,14 +213,17 @@ public class UsuarioController : Controller {
                 string direccion = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture");
                 string direccionCompleta = Path.Combine(direccion, nombre);
 
-                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await Foto_Perfil.CopyToAsync(stream); };
+                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await Foto_Perfil.CopyToAsync(stream); }
+                ;
 
                 usuario.Foto_Perfil = nombre;
             }
 
             _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();
-        } catch (DbUpdateConcurrencyException) {
+        }
+        catch (DbUpdateConcurrencyException)
+        {
             if (!_context.Usuarios.Any(u => u.ID == usuario.ID)) return NotFound();
             else throw;
         }
@@ -145,14 +234,16 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Eliminar
     [HttpGet, Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Eliminar(int id) {
+    public async Task<IActionResult> Eliminar(int id)
+    {
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
         return View(usuario);
     }
 
     [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar"), Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> ConfirmarEliminar(int id) {
+    public async Task<IActionResult> ConfirmarEliminar(int id)
+    {
         var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null) return NotFound();
 

@@ -1,43 +1,179 @@
 @model Proyecto_Final.Models.Pago
 
-@{ ViewData["Title"] = "Crear Pago"; }
+@{
+    ViewData["Title"] = "Crear pago";
+}
 
-<h1>Crear Pago</h1>
+<h1>Crear pago</h1>
 
-<form asp-action="Crear" method="post">
-    <div class="form-group mb-3">
-        <label asp-for="Concepto"></label>
-        <input asp-for="Concepto" class="form-control" />
-        <span asp-validation-for="Concepto" class="text-danger"></span>
+<form asp-action="Crear" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label for="buscarReserva" class="form-label">
+            Reserva
+        </label>
+
+        <input id="buscarReserva"
+               type="text"
+               value="@ViewBag.ReservaSeleccionada"
+               class="form-control"
+               autocomplete="off"
+               placeholder="Buscá por usuario o número de reserva" />
+
+        <input asp-for="ReservaID" type="hidden" />
+
+        <div id="estadoReservas"
+             class="form-text"
+             role="status"
+             aria-live="polite"></div>
+
+        <div id="resultadosReservas"
+             class="list-group mt-2"></div>
+
+        <span asp-validation-for="ReservaID"
+              class="text-danger"></span>
+
+        <small class="form-text text-muted">
+            Escribí al menos 2 caracteres.
+            Para la reserva 4, escribí 04.
+        </small>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Fecha_Pago"></label>
-        <input asp-for="Fecha_Pago" type="date" class="form-control" />
-        <span asp-validation-for="Fecha_Pago" class="text-danger"></span>
+    <div class="mb-3">
+        <label asp-for="Concepto" class="form-label"></label>
+        <input asp-for="Concepto"
+               class="form-control"
+               maxlength="50"
+               placeholder="Ejemplo: Entradas de cine" />
+        <span asp-validation-for="Concepto"
+              class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Fecha_Anulacion"></label>
-        <input asp-for="Fecha_Anulacion" type="date" class="form-control" />
+    <div class="alert alert-info">
+        Importe de la reserva:
+        <strong id="montoReserva">@(ViewBag.MontoReserva == null
+            ? "Seleccioná una reserva"
+            : ViewBag.MontoReserva)</strong>
+
+        <div>
+            El importe y la fecha del pago se asignan en el servidor.
+        </div>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Importe"></label>
-        <input asp-for="Importe" class="form-control" />
-        <span asp-validation-for="Importe" class="text-danger"></span>
-    </div>
+    <button type="submit" class="btn btn-success">
+        Registrar pago
+    </button>
 
-    <div class="form-group mb-3">
-        <label asp-for="Estado"></label>
-        <select asp-for="Estado" class="form-control">
-            <option value="true">Pagado</option>
-            <option value="false">Anulado</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
+    <a asp-action="Indice" class="btn btn-secondary">
+        Volver
+    </a>
 </form>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const entrada = document.getElementById("buscarReserva");
+        const reservaID = document.getElementById("ReservaID");
+        const resultados = document.getElementById("resultadosReservas");
+        const estado = document.getElementById("estadoReservas");
+        const monto = document.getElementById("montoReserva");
+
+        const urlBusqueda = '@Url.Action("BuscarReservas", "Pago")';
+
+        const formatoMonto = new Intl.NumberFormat("es-AR", {
+            style: "currency",
+            currency: "ARS"
+        });
+
+        let temporizador;
+        let versionBusqueda = 0;
+
+        entrada.addEventListener("input", () => {
+            clearTimeout(temporizador);
+
+            const versionActual = ++versionBusqueda;
+            const termino = entrada.value.trim();
+
+            reservaID.value = "0";
+            resultados.replaceChildren();
+            estado.textContent = "";
+            monto.textContent = "Seleccioná una reserva";
+
+            if (termino.length < 2) {
+                return;
+            }
+
+            temporizador = setTimeout(async () => {
+                estado.textContent = "Buscando reservas...";
+
+                try {
+                    const respuesta = await fetch(
+                        urlBusqueda + "?termino=" +
+                        encodeURIComponent(termino),
+                        {
+                            headers: {
+                                "Accept": "application/json"
+                            }
+                        }
+                    );
+
+                    if (!respuesta.ok || respuesta.redirected) {
+                        throw new Error("Error de búsqueda.");
+                    }
+
+                    const reservas = await respuesta.json();
+
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    resultados.replaceChildren();
+
+                    estado.textContent = reservas.length
+                        ? "Seleccioná una reserva."
+                        : "No se encontraron reservas pendientes de pago.";
+
+                    for (const reserva of reservas) {
+                        const boton = document.createElement("button");
+
+                        boton.type = "button";
+                        boton.className =
+                            "list-group-item list-group-item-action";
+
+                        boton.textContent =
+                            `Reserva ${reserva.id} — ${reserva.nombre}` +
+                            ` — ${reserva.pelicula}` +
+                            ` — ${formatoMonto.format(reserva.monto)}`;
+
+                        boton.addEventListener("click", () => {
+                            clearTimeout(temporizador);
+                            ++versionBusqueda;
+
+                            reservaID.value = reserva.id;
+                            entrada.value =
+                                `Reserva ${reserva.id} — ${reserva.nombre}`;
+
+                            monto.textContent =
+                                formatoMonto.format(reserva.monto);
+
+                            resultados.replaceChildren();
+                            estado.textContent = "Reserva seleccionada.";
+                        });
+
+                        resultados.appendChild(boton);
+                    }
+                } catch {
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    estado.textContent =
+                        "No se pudo buscar. Intentá nuevamente.";
+                }
+            }, 300);
+        });
+    </script>
+}
