@@ -43,17 +43,14 @@
     </dd>
 </dl>
 
-@if (User.IsInRole("Administrador")) {
+@if (esMiCuenta || (User.IsInRole("Administrador") || User.IsInRole("Empleado"))) {
     <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
     <a asp-action="Eliminar" asp-route-id="@Model.ID" class="btn btn-danger btn-sm">Eliminar</a>
-}
-
-@if (esMiCuenta) {
-    <form asp-controller="Cuenta" asp-action="Logout" method="post" class="d-inline">
-        <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
-    </form>
-
-    <a asp-controller="Usuario" asp-action="CambiarAvatar" class="btn btn-primary">Cambiar avatar</a>
+    if(esMiCuenta) {
+        <form asp-controller="Cuenta" asp-action="Logout" asp-route-UsuarioID="@Model.ID" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
+        </form>
+    }
 }
 
 <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>

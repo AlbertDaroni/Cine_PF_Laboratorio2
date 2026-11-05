@@ -53,15 +53,16 @@ public class ReservaController : Controller {
         var funcion = await _context.Funciones
             .Include(f => f.Pelicula)
             .AsNoTracking()
-            .FirstOrDefaultAsync(f => f.ID == FuncionID.Value);
+            .FirstOrDefaultAsync(f => f.ID == FuncionID.Value)
+        ;
 
         if (funcion == null) return NotFound();
-
         if (!funcion.Estado || funcion.FechaHora <= DateTime.Now) return BadRequest("Esta función no está disponible para reservar.");
 
         var butacasReservadas = _context.DetallesReservas
             .Where(d => d.Reserva != null && d.Reserva.FuncionID == funcion.ID && d.Reserva.Estado)
-            .Select(d => d.ButacaID);
+            .Select(d => d.ButacaID)
+        ;
 
         var modelo = new CrearReservaViewModel {
             FuncionID = funcion.ID,
@@ -110,7 +111,6 @@ public class ReservaController : Controller {
         if (!funcion.Estado || funcion.FechaHora <= DateTime.Now) return BadRequest("La función ya no está disponible.");
 
         var cantidadValida = await _context.Butacas.CountAsync(b => b.SalaID == funcion.SalaID && seleccionadas.Contains(b.ID));
-
         if (cantidadValida != seleccionadas.Count) return BadRequest("Hay butacas que no pertenecen a esta sala.");
 
         var hayReservadas = await _context.DetallesReservas
@@ -118,7 +118,8 @@ public class ReservaController : Controller {
                 seleccionadas.Contains(d.ButacaID)
                 && d.Reserva != null
                 && d.Reserva.FuncionID == FuncionID
-                && d.Reserva.Estado);
+                && d.Reserva.Estado)
+        ;
 
         if (hayReservadas) {
             await transaccion.RollbackAsync();

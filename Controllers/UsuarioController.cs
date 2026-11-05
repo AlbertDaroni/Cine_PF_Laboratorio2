@@ -87,12 +87,16 @@ public class UsuarioController : Controller {
         return View(usuario);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? foto_perfil) {
+    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador"), RequestSizeLimit(5 * 1024 * 1024)]
+    public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? Foto_Perfil) {
         if (id != usuario.ID) return BadRequest();
-
         if (string.IsNullOrWhiteSpace(usuario.Contraseña)) ModelState.Remove(nameof(Usuario.Contraseña));
-
+        if (Foto_Perfil != null) {
+            if (Foto_Perfil.Length == 0 || Foto_Perfil.Length > 5 * 1024 * 1024) {
+                ModelState.AddModelError("Foto", "La imagen debe pesar entre 1B y 5 MB.");
+                return View(usuario);
+            }
+        }
         if (!ModelState.IsValid) {
             ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
             return View(usuario);
@@ -112,18 +116,18 @@ public class UsuarioController : Controller {
 
             usuario.Foto_Perfil = usuarioOriginal.Foto_Perfil;
 
-            if (foto_perfil != null && foto_perfil.Length > 0) {
+            if (Foto_Perfil != null && Foto_Perfil.Length > 0) {
                 if (!string.IsNullOrEmpty(usuarioOriginal.Foto_Perfil) && usuarioOriginal.Foto_Perfil != "image.png") {
                     string rutaFotoVieja = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture", usuarioOriginal.Foto_Perfil);
 
                     if (System.IO.File.Exists(rutaFotoVieja)) System.IO.File.Delete(rutaFotoVieja);
                 }
 
-                string nombre = Guid.NewGuid().ToString() + "_" + Path.GetFileName(foto_perfil.FileName);
+                string nombre = Guid.NewGuid().ToString() + "_" + Path.GetFileName(Foto_Perfil.FileName);
                 string direccion = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture");
                 string direccionCompleta = Path.Combine(direccion, nombre);
 
-                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await foto_perfil.CopyToAsync(stream); };
+                using (var stream = new FileStream(direccionCompleta, FileMode.Create)) { await Foto_Perfil.CopyToAsync(stream); };
 
                 usuario.Foto_Perfil = nombre;
             }
@@ -156,81 +160,5 @@ public class UsuarioController : Controller {
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Indice));
-    }
-
-
-    [HttpGet]
-    public IActionResult CambiarAvatar() { return View(new CambiarAvatarViewModel()); }
-
-    [HttpPost, ValidateAntiForgeryToken]
-    [RequestSizeLimit(6 * 1024 * 1024)]
-    public async Task<IActionResult> CambiarAvatar(CambiarAvatarViewModel modelo) {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
-        if (!ModelState.IsValid) return View(modelo);
-
-        var foto = modelo.Foto!;
-
-        // Permitimos imágenes de hasta 2 MB.
-        if (foto.Length == 0 || foto.Length > 5 * 1024 * 1024) {
-            ModelState.AddModelError("Foto", "La imagen debe pesar entre 1 byte y 5 MB.");
-            return View(modelo);
-        }
-
-        // Comprobamos el contenido, además de la extensión.
-        byte[] contenido;
-
-        using (var memoria = new MemoryStream()) {
-            await foto.CopyToAsync(memoria);
-            contenido = memoria.ToArray();
-        }
-
-        var extension = Path.GetExtension(foto.FileName).ToLowerInvariant();
-        bool esPng = contenido.Length >= 8 && contenido.Take(8).SequenceEqual(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 });
-        bool esJpeg = contenido.Length >= 3 && contenido[0] == 255 && contenido[1] == 216 && contenido[2] == 255;
-        bool formatoValido = (extension == ".png" && esPng) || ((extension == ".jpg" || extension == ".jpeg") && esJpeg);
-
-        if (!formatoValido) {
-            ModelState.AddModelError("Foto", "Seleccioná una imagen PNG o JPG válida.");
-            return View(modelo);
-        }
-
-        var usuario = await _context.Usuarios.FindAsync(usuarioID);
-        if (usuario == null) return NotFound();
-
-        var carpeta = Path.Combine(_environment.WebRootPath, "uploads", "profile_picture");
-
-        Directory.CreateDirectory(carpeta);
-
-        var nombreArchivo = Guid.NewGuid().ToString("N") + (esPng ? ".png" : ".jpg");
-        var rutaArchivo = Path.Combine(carpeta, nombreArchivo);
-
-        await System.IO.File.WriteAllBytesAsync(rutaArchivo, contenido);
-
-        usuario.Foto_Perfil = nombreArchivo;
-
-        try {
-            await _context.SaveChangesAsync();
-        } catch {
-            System.IO.File.Delete(rutaArchivo);
-            throw;
-        }
-
-        // -----------------------------------------------------------------------------------
-        // Actualizamos la foto de la sesion para el menu superior.
-        var identidad = new ClaimsIdentity((ClaimsIdentity)User.Identity!);
-
-        foreach (var claim in identidad.FindAll(ClaimTypes.Uri).ToList()) {
-            identidad.RemoveClaim(claim);
-        }
-
-        identidad.AddClaim(new Claim(ClaimTypes.Uri, nombreArchivo));
-
-        await HttpContext.SignInAsync(
-            Microsoft.AspNetCore.Authentication.Cookies
-                .CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(identidad)
-        );
-
-        return RedirectToAction(nameof(Detalles), new { id = usuarioID });
     }
 }

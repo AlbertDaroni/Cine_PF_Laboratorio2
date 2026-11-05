@@ -38,7 +38,13 @@
                         <td>@(reserva.Funcion?.FechaHora.ToString("dd/MM/yyyy HH:mm") ?? "Sin fecha")</td>
                         <td>@string.Join(", ", reserva.Detalles.OrderBy(d => d.Butaca?.Numero).Select(d => d.Butaca?.Numero ?? "?"))</td>
                         <td>$&nbsp;@reserva.Monto.ToString("N2")</td>
-                        <td>@(reserva.Estado ? "Activa" : "Cancelada")</td>
+                        <td>
+                            @if (reserva.Estado) {
+                                <span class="badge bg-success">Activa</span>
+                            } else {
+                                <span class="badge bg-danger">Cancelada</span>
+                            }
+                        </td>
                         <td>
                             @if (reserva.Estado && reserva.Funcion != null && reserva.Funcion.FechaHora > DateTime.Now) {
                                 <form asp-action="Cancelar" method="post"

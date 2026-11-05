@@ -23,7 +23,7 @@ public class CuentaController : Controller {
         if (!ModelState.IsValid) return View(signin);
 
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Correo == signin.Correo);
-        if (usuario == null || !usuario.Estado || usuario.DNI != signin.DNI || !usuario.PasswordHasheada){
+        if (usuario == null || usuario.DNI != signin.DNI || !usuario.PasswordHasheada) {
             ModelState.AddModelError("", "Los datos de acceso no son válidos.");
             return View(signin);
         }
@@ -45,6 +45,7 @@ public class CuentaController : Controller {
 
         if (resultado == PasswordVerificationResult.SuccessRehashNeeded) {
             usuario.Contraseña = hasher.HashPassword(usuario, signin.Contraseña);
+            usuario.Estado = true;
 
             await _context.SaveChangesAsync();
         }
@@ -57,8 +58,15 @@ public class CuentaController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Salir de sesión
     [HttpPost]
-    public async Task<IActionResult> Logout() {
+    public async Task<IActionResult> Logout(int UsuarioID) {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var usuario = await _context.Usuarios.FindAsync(UsuarioID);
+        if (usuario == null) return NotFound();
+
+        usuario.Estado = false;
+        await _context.SaveChangesAsync();
+
         return RedirectToAction("Index", "Home");
     }
 
