@@ -1,0 +1,65 @@
+
+@model IEnumerable<Proyecto_Final.Models.Butaca>
+
+@{
+    ViewData["Title"] = "Butacas";
+    int? salaID = ViewBag.SalaID;
+}
+
+<h1>Gestión de Butacas</h1>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<a asp-action="Crear" class="btn btn-primary mb-3">
+    Nueva butaca
+</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No hay butacas registradas.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Sala</th>
+                    <th>Cine</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var butaca in Model)
+                {
+                    <tr>
+                        <td>@butaca.Numero</td>
+                        <td>@butaca.Sala?.Numero</td>
+                        <td>@butaca.Sala?.Cine?.Nombre</td>
+                        <td>
+                            <a asp-action="Editar"
+                               asp-route-id="@butaca.ID"
+                               class="btn btn-warning btn-sm">
+                                Editar
+                            </a>
+
+                            <a asp-action="Eliminar"
+                               asp-route-id="@butaca.ID"
+                               class="btn btn-danger btn-sm">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
