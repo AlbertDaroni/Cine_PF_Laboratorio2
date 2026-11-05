@@ -47,11 +47,7 @@
                         </td>
                         <td>
                             @if (reserva.Estado && reserva.Funcion != null && reserva.Funcion.FechaHora > DateTime.Now) {
-                                <form asp-action="Cancelar" method="post"
-                                      onsubmit="return confirm('¿Querés cancelar esta reserva?');">
-                                    <input type="hidden" name="id" value="@reserva.ID" />
-                                    <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
-                                </form>
+                                <a asp-action="Detalles" asp-route-id="@reserva.ID" class="btn btn-info btn-sm">Detalles</a>
                             }
                         </td>
                     </tr>

@@ -1,69 +1,138 @@
 @model Proyecto_Final.Models.Reserva
 
-@{ ViewData["Title"] = "Detalles de la Reserva"; }
+@{
+    ViewData["Title"] = "Detalles de la Reserva";
+
+    var Reserva = Model;
+    var Funcion = Model.Funcion;
+    var Pelicula = Model.Funcion.Pelicula;
+    var Sala = Model.Funcion.Sala;
+    var Cine = Model.Funcion.Sala.Cine;
+    var Pago = Model.Pago;
+    var Detalles = Model.Detalles;
+}
 
 <h1>Detalles de la Reserva</h1>
 
 <hr />
-@* <!--
+
 <dl class="row">
+    <dt class="col-sm-3">N.º de la reserva</dt>
+    <dd class="col-sm-9">@Reserva.ID</dd>
+
     <dt class="col-sm-3">Fecha de creación</dt>
-    <dd class="col-sm-9">@Model.Fecha_Creacion</dd>
-
-    <dt class="col-sm-3">Fecha de inicio</dt>
-    <dd class="col-sm-9">@Model.Fecha_Inicio</dd>
-
-    <dt class="col-sm-3">Fecha fin efectiva</dt>
-    <dd class="col-sm-9">@Model.Fecha_Fin_Efectiva</dd>
-
-    <dt class="col-sm-3">Fecha fin original</dt>
-    <dd class="col-sm-9">@Model.Fecha_Fin_Original</dd>
+    <dd class="col-sm-9">@Reserva.Fecha_Creacion</dd>
 
     <dt class="col-sm-3">Monto</dt>
-    <dd class="col-sm-9">$ @Model.Monto_Dia</dd>
+    <dd class="col-sm-9">$&nbsp;@Reserva.Monto</dd>
 
-    <dt class="col-sm-3">Multa</dt>
-    <dd class="col-sm-9">$ @Model.Multa</dd>
-
-    <dt class="col-sm-3">Estado</dt>
+    <dt class="col-sm-3">Estado de la reserva</dt>
     <dd class="col-sm-9">
-        @if (Model.Estado == "1") {
+        @if (Reserva.Estado) {
+            <span class="badge bg-success">Activa</span>
+        } else {
+            <span class="badge bg-danger">Cancelada</span>
+        }
+    </dd>
+
+    <hr>
+
+    <dt class="col-sm-3">Fecha de pago</dt>
+    <dd class="col-sm-9">@Pago.Fecha_Pago</dd>
+
+    <dt class="col-sm-3">Concepto</dt>
+    <dd class="col-sm-9">@Pago.Concepto</dd>
+
+    @if (Pago.Fecha_Anulacion != null) {
+        <dt class="col-sm-3">Fecha de pago</dt>
+        <dd class="col-sm-9">@Pago.Fecha_Anulacion</dd>
+    }
+
+    <dt class="col-sm-3">Importe</dt>
+    <dd class="col-sm-9">$&nbsp;@Pago.Importe</dd>
+
+    <dt class="col-sm-3">Estado del pago</dt>
+    <dd class="col-sm-9">
+        @if (Pago.Estado) {
+            <span class="badge bg-success">Activo</span>
+        } else {
+            <span class="badge bg-danger">Anulado</span>
+        }
+    </dd>
+
+    <hr>
+
+    <dt class="col-sm-3">Cine</dt>
+    <dd class="col-sm-9">
+        @if (Cine.Abierto) {
+            <span class="badge bg-success">
+                <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@Cine.ID">
+                    @(Cine.Nombre) - @(Cine.Direccion)
+                </a>
+            </span>
+        } else {
+            <span class="badge bg-danger">
+                <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@Cine.ID">
+                    @(Cine.Nombre) - @(Cine.Direccion)
+                </a>
+            </span>
+        }
+    </dd>
+
+    <dt class="col-sm-3">Butacas</dt>
+    <dd class="col-sm-9">@string.Join(", ", Detalles.OrderBy(d => d.Butaca?.Numero).Select(d => d.Butaca?.Numero ?? "?"))</dd>
+
+    <hr>
+
+    <dt class="col-sm-3">Fecha y hora de la función</dt>
+    <dd class="col-sm-9">@Funcion.FechaHora</dd>
+
+    <dt class="col-sm-3">Estado de la función</dt>
+    <dd class="col-sm-9">
+        @if (Funcion.Estado) {
             <span class="badge bg-success">Activa</span>
         } else {
             <span class="badge bg-danger">Inactiva</span>
         }
     </dd>
 
-    <dt class="col-sm-3">Inquilino</dt>
-    <dd class="col-sm-9">@(Model.Inquilino.ApellidoYNombre)
-        <a href="/Inquilino_/Detalles/@Model.Inquilino.id">Detalles</a>
+    <dt class="col-sm-3">Portada</dt>
+    <dd class="col-sm-9"><img src="~/uploads/portada/@Pelicula.Portada"></dd>
+
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Pelicula.Titulo</dd>
+
+    <dt class="col-sm-3">Clasificación</dt>
+    <dd class="col-sm-9">@Pelicula.Clasificacion</dd>
+
+    <dt class="col-sm-3">Idioma</dt>
+    <dd class="col-sm-9">@Pelicula.Idioma</dd>
+
+    <dt class="col-sm-3">Duración</dt>
+    <dd class="col-sm-9">@Pelicula.Duracion m</dd>
+
+    <dt class="col-sm-3">Estado de la película</dt>
+    <dd class="col-sm-9">
+        @if (Pelicula.Estado) {
+            <span class="badge bg-success">Activa</span>
+        } else {
+            <span class="badge bg-danger">Inactiva</span>
+        }
     </dd>
-
-    <dt class="col-sm-3">Inmueble</dt>
-    <dd class="col-sm-9"><a href="/Inmueble_/Detalles/@Model.Inmueble.id">Detalles</a></dd>
-
-    @if (User.IsInRole("Administrador")) {
-        <dt class="col-sm-3">Usuario creador</dt>
-        <dd class="col-sm-9">
-            <p class="col-sm-9">@Model.Usuario_Creador.Avatar</p>
-            <p class="col-sm-9">@(Model.Usuario_Creador.ApellidoYNombre)</p>
-            <p class="col-sm-9">@Model.Usuario_Creador.Correo</p>
-        </dd>
-
-        <dt class="col-sm-3">Usuario finalizador</dt>
-        <dd class="col-sm-9">
-            @if (Model.Usuario_Finalizador != null) {
-                <p>@Model.Usuario_Finalizador.Avatar</p>
-                <p>@Model.Usuario_Finalizador.ApellidoYNombre</p>
-                <p>@Model.Usuario_Finalizador.Correo</p>
-            } else {
-                <p>No finalizada</p>
-            }
-        </dd>
-    }
 </dl>
---> *@
+
+<hr>
+
 <div>
-    <a asp-action="Modificar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+        <a asp-action="Editar" asp-route-id="@Model.ID" class="btn btn-warning">Editar</a>
+        <a asp-action="Eliminar" asp-route-id="@Model.ID" class="btn btn-danger">Eliminar</a>
+    }
+
+    <form asp-action="Cancelar" method="post" onsubmit="return confirm('¿Querés cancelar esta reserva?');">
+        <input type="hidden" name="id" value="@Model.ID" />
+        <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+    </form>
+
     <a asp-action="Indice" class="btn btn-secondary">Volver</a>
 </div>

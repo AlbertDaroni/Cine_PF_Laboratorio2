@@ -36,12 +36,36 @@ public class ReservaController : Controller {
             .ThenByDescending(r => r.ID)
             .Skip((pagina - 1) * tamanioPagina)
             .Take(tamanioPagina)
-            .ToListAsync();
+            .ToListAsync()
+        ;
 
         ViewBag.Pagina = pagina;
         ViewBag.TotalPaginas = totalPaginas;
 
         return View(reservas);
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Funciones para Obtener
+    [HttpGet]
+    public async Task<IActionResult> Detalles(int id) {
+        var reserva = await _context.Reservas
+            .Include(r => r.Pago)
+            .Include(r => r.Detalles)
+                .ThenInclude(d => d.Butaca)
+            .Include(r => r.Funcion)
+                .ThenInclude(f => f!.Pelicula)
+            .Include(r => r.Funcion)
+                .ThenInclude(f => f!.Sala)
+                    .ThenInclude(s => s!.Cine)
+            .AsSplitQuery()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.ID == id)
+        ;
+
+        if (reserva == null) return NotFound();
+
+        return View(reserva);
     }
 
     // -----------------------------------------------------------------------------------
@@ -85,15 +109,13 @@ public class ReservaController : Controller {
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Crear(int FuncionID, List<int>? ButacasSeleccionadas) {
+    public async Task<IActionResult> Crear(int FuncionID, List<int>? ButacasSeleccionadas, string Concepto) {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
+        if (string.IsNullOrEmpty(Concepto)) ModelState.AddModelError("", "Debés seleccionar un método de pago válido.");
 
         var seleccionadas = ButacasSeleccionadas?.Distinct().ToList() ?? new List<int>();
-
-        if (!ModelState.IsValid || seleccionadas.Count == 0) {
-            ModelState.AddModelError("", "Seleccioná al menos una butaca válida.");
-            return await Crear((int?)FuncionID);
-        }
+        if (seleccionadas.Count == 0) ModelState.AddModelError("", "Seleccioná al menos una butaca válida.");
+        if (!ModelState.IsValid) return BadRequest();
 
         // La transacción permite guardar la reserva y sus detalles juntos.
         await using var transaccion = await _context.Database.BeginTransactionAsync();
@@ -101,9 +123,9 @@ public class ReservaController : Controller {
         // Bloqueamos esta función mientras comprobamos y guardamos.
         // Este mismo bloqueo debe usarse en futuros caminos de reserva.
         var funciones = await _context.Funciones
-            .FromSqlInterpolated(
-                $"SELECT * FROM funciones WHERE id = {FuncionID} FOR UPDATE")
-            .ToListAsync();
+            .FromSqlInterpolated($"SELECT * FROM funciones WHERE id = {FuncionID} FOR UPDATE")
+            .ToListAsync()
+        ;
 
         var funcion = funciones.FirstOrDefault();
 
@@ -124,7 +146,7 @@ public class ReservaController : Controller {
         if (hayReservadas) {
             await transaccion.RollbackAsync();
             ModelState.AddModelError("", "Otra persona reservó alguna de esas butacas. Elegí nuevamente.");
-            return await Crear((int?)FuncionID);
+            return View(Crear(FuncionID));
         }
 
         var reserva = new Reserva {
@@ -137,7 +159,13 @@ public class ReservaController : Controller {
             Detalles = seleccionadas.Select(id => new DetalleReserva {
                 ButacaID = id,
                 Precio = funcion.Precio
-            }).ToList()
+            }).ToList(),
+
+        };
+
+        reserva.Pago = new Pago {
+            Concepto = Concepto,
+            Importe = reserva.Monto
         };
 
         _context.Reservas.Add(reserva);
@@ -146,7 +174,7 @@ public class ReservaController : Controller {
 
         TempData["Mensaje"] = $"Reserva N.º {reserva.ID} creada correctamente.";
 
-        return RedirectToAction(nameof(Crear), new { FuncionID = funcion.ID });
+        return RedirectToAction(nameof(Detalles), new { id = reserva.ID });
     }
 
     // -----------------------------------------------------------------------------------
@@ -171,6 +199,26 @@ public class ReservaController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Eliminar
+    [HttpGet, Authorize(Roles = "Administrador, Empleado")]
+    public async Task<IActionResult> Eliminar(int id) {
+        var reserva = await _context.Reservas.FindAsync(id);
+        if (reserva == null) return NotFound();
+        return View(reserva);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar"), Authorize(Roles = "Administrador, Empleado")]
+    public async Task<IActionResult> ConfirmarEliminar(int id) {
+        var reserva = await _context.Reservas.FindAsync(id);
+        if (reserva == null) return NotFound();
+
+        _context.Reservas.Remove(reserva);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Indice));
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Funciones para Cancelar
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancelar(int id) {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
@@ -178,21 +226,18 @@ public class ReservaController : Controller {
         var reserva = await _context.Reservas
             .Include(r => r.Funcion)
             .Include(r => r.Pago)
-            .FirstOrDefaultAsync(r =>
-                r.ID == id && r.UsuarioID == usuarioID);
+            .FirstOrDefaultAsync(r => r.ID == id && r.UsuarioID == usuarioID)
+        ;
 
         if (reserva == null) return NotFound();
-
         if (!reserva.Estado) {
             TempData["Mensaje"] = "La reserva ya estaba cancelada.";
             return RedirectToAction(nameof(Indice));
         }
-
         if (reserva.Funcion == null || reserva.Funcion.FechaHora <= DateTime.Now) {
             TempData["Error"] = "No se puede cancelar una función que ya comenzó.";
             return RedirectToAction(nameof(Indice));
         }
-
         if (reserva.Pago != null && reserva.Pago.Estado) {
             TempData["Error"] = "Esta reserva tiene un pago activo. Debe gestionarse su anulación.";
             return RedirectToAction(nameof(Indice));

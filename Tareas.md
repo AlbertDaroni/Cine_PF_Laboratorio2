@@ -19,18 +19,8 @@ Matriz de Evidencias de Requerimientos Mínimos *(Tabla que certifique el cumpli
 - Se debe poder agregar, quitar y modificar las salas de un cine.
 - Se debe poder agregar, quitar y modificar las butacas de una sala.
 
-6. **Detalles del pago y de la reserva**:
-- Agregar un botón en la vista "Indice" de Reserva para mostrar los detalles completos de esa reserva:
-    - Nombre del cine.
-    - Número de sala.
-    - Butaca/s reservada/s.
-    - Fecha del pago.
-    - Importe.
-    - Estado del pago.
-    - Estado de la reserva.
-    - Estado de la función.
-    - Hora de la función.
-    - Datos de la película.
+6. **Actualización de estados**:
+- Si la fecha y la hora de una función ya pasó, actualizar todas las tablas correspondientes *(Butacas, DetalleReserva, Reservas, Funciones)*.
 
 <hr>
 
@@ -51,3 +41,16 @@ Matriz de Evidencias de Requerimientos Mínimos *(Tabla que certifique el cumpli
 4. **Paginado por Servidor (Server-Side Pagination)**:
 - Todos los listados principales deben contar con paginado servido desde el backend *(se debe solicitar y recibir únicamente la página actual por petición)*.
 Quedan exceptuadas solo tablas maestras muy pequeñas.
+
+5. **Detalles del pago y de la reserva**:
+- Agregar un botón en la vista "Indice" de Reserva para mostrar los detalles completos de esa reserva:
+    - Nombre del cine.
+    - Número de sala.
+    - Butaca/s reservada/s.
+    - Fecha del pago.
+    - Importe.
+    - Estado del pago.
+    - Estado de la reserva.
+    - Estado de la función.
+    - Hora de la función.
+    - Datos de la película.

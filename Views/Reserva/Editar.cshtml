@@ -3,59 +3,55 @@
 @{ ViewData["Title"] = "Editar Reserva"; }
 
 <h1>Editar Reserva</h1>
-@* <!--
-<form asp-action="Modificar" method="post">
-    <input type="hidden" asp-for="ID">
-    <input type="hidden" asp-for="ID_Inmueble">
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@if (TempData["Mensaje"] is string mensaje) {
+    <div class="alert alert-success">@mensaje</div>
+}
 
-    <div class="mb-3">
-        <label asp-for="ID_Inmueble" class="form-label">Inmueble</label>
-        <input class="form-control" type="text" value="@Model.Inmueble?.Direccion" readonly>
-    </div>
+<h2>@Model.TituloPelicula</h2>
 
-    <div class="mb-3">
-        <label asp-for="Monto_Dia" class="form-label">Monto</label>
-        <input asp-for="Monto_Dia" class="form-control" type="number">
-        <span asp-validation-for="Monto_Dia" class="text-danger"></span>
-    </div>
+<p>Función: @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+<p>Precio por entrada: $@Model.PrecioEntrada.ToString("N2")</p>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="FuncionID" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Multa" class="form-label">Multa</label>
-        <input asp-for="Multa" class="form-control" type="number">
-        <span asp-validation-for="Multa" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Fecha_Inicio" class="form-label">Fecha de inicio</label>
-        <input asp-for="Fecha_Inicio" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Inicio" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Fecha_Fin_Original" class="form-label">Fecha fin original</label>
-        <input asp-for="Fecha_Fin_Original" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Fin_Original" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Fecha_Fin_Efectiva" class="form-label">Fecha fin efectiva</label>
-        <input asp-for="Fecha_Fin_Efectiva" class="form-control" type="datetime-local">
-        <span asp-validation-for="Fecha_Fin_Efectiva" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Estado" class="form-label">Estado</label>
-        <select asp-for="Estado" class="form-control">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
+        <label class="form-label" for="Concepto">Concepto</label>
+        <select class="form-select" name="Concepto">
+            <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+            <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+            <option value="Tarjeta Prepago / Recargable">Tarjeta Prepago / Recargable</option>
+            <option value="Tarjeta Corporativa / Empresarial">Tarjeta Corporativa / Empresarial</option>
+            <option value="Virtual / Tarjeta Digital">Virtual / Tarjeta Digital</option>
+            <option value="Efectivo / Contante">Efectivo / Contante</option>
+            <option value="Mobile Wallet">Mobile Wallet</option>
+            <option value="Móvil Directo (P2P)">Móvil Directo (P2P)</option>
+            <option value="Enlace de Pago / Link de Pago">Enlace de Pago / Link de Pago</option>
         </select>
-        <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Indice" class="btn btn-secondary">Cancelar</a>
+    <fieldset class="mb-3">
+        <legend>Seleccioná tus butacas</legend>
+        @foreach (var butaca in Model.Butacas) {
+            <div class="form-check">
+                @if (butaca.Disponible) {
+                    <input class="form-check-input" type="checkbox" name="ButacasSeleccionadas" value="@butaca.ID" id="butaca_@butaca.ID" />
+                } else {
+                    <input class="form-check-input" type="checkbox" id="butaca_@butaca.ID" disabled />
+                }
+
+                <label class="form-check-label" for="butaca_@butaca.ID">
+                    @butaca.Numero
+                    @(butaca.Disponible ? "Disponible" : "Reservada")
+                </label>
+            </div>
+        }
+    </fieldset>
+
+    <button type="submit" class="btn btn-success">Guardar cambios</button>
 </form>
- --> *@
+
 @section Scripts { <partial name="_ValidationScriptsPartial"> }

@@ -18,6 +18,21 @@
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
+    <div class="mb-3">
+        <label class="form-label" for="Concepto">Concepto</label>
+        <select class="form-select" name="Concepto">
+            <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+            <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+            <option value="Tarjeta Prepago / Recargable">Tarjeta Prepago / Recargable</option>
+            <option value="Tarjeta Corporativa / Empresarial">Tarjeta Corporativa / Empresarial</option>
+            <option value="Virtual / Tarjeta Digital">Virtual / Tarjeta Digital</option>
+            <option value="Efectivo / Contante">Efectivo / Contante</option>
+            <option value="Mobile Wallet">Mobile Wallet</option>
+            <option value="Móvil Directo (P2P)">Móvil Directo (P2P)</option>
+            <option value="Enlace de Pago / Link de Pago">Enlace de Pago / Link de Pago</option>
+        </select>
+    </div>
+
     <fieldset class="mb-3">
         <legend>Seleccioná tus butacas</legend>
         @foreach (var butaca in Model.Butacas) {
