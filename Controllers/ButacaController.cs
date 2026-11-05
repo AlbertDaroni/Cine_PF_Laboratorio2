@@ -1,6 +1,5 @@
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Models;
@@ -47,7 +46,6 @@ public class ButacaController : Controller
     [HttpGet]
     public async Task<IActionResult> Crear()
     {
-        await CargarSalas();
         return View(new Butaca());
     }
 
@@ -60,12 +58,18 @@ public class ButacaController : Controller
                         ?? string.Empty;
 
         var sala = await _context.Salas
+            .AsNoTracking()
+            .Include(s => s.Cine)
             .FirstOrDefaultAsync(s => s.ID == butaca.SalaID);
 
-        if (sala == null)
+        ViewBag.SalaSeleccionada = sala == null
+            ? ""
+            : $"{sala.Cine?.Nombre} — Sala {sala.Numero} ({sala.Tipo})";
+
+        if (sala == null || !sala.Estado)
         {
             ModelState.AddModelError(
-                nameof(Butaca.SalaID), "Seleccioná una sala válida.");
+                nameof(Butaca.SalaID), "Seleccioná una sala activa.");
         }
         else
         {
@@ -89,7 +93,6 @@ public class ButacaController : Controller
 
         if (!ModelState.IsValid)
         {
-            await CargarSalas(butaca.SalaID);
             return View(butaca);
         }
 
@@ -108,10 +111,14 @@ public class ButacaController : Controller
     [HttpGet]
     public async Task<IActionResult> Editar(int id)
     {
-        var butaca = await _context.Butacas.FindAsync(id);
+        var butaca = await _context.Butacas
+            .AsNoTracking()
+            .Include(b => b.Sala)
+                .ThenInclude(s => s!.Cine)
+            .FirstOrDefaultAsync(b => b.ID == id);
+
         if (butaca == null) return NotFound();
 
-        await CargarSalas(butaca.SalaID);
         return View(butaca);
     }
 
@@ -119,7 +126,10 @@ public class ButacaController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Editar(int id, string Numero)
     {
-        var butaca = await _context.Butacas.FindAsync(id);
+        var butaca = await _context.Butacas
+            .Include(b => b.Sala)
+                .ThenInclude(s => s!.Cine)
+            .FirstOrDefaultAsync(b => b.ID == id);
         if (butaca == null) return NotFound();
 
         Numero = Numero?.Trim().ToUpperInvariant() ?? string.Empty;
@@ -141,7 +151,6 @@ public class ButacaController : Controller
 
         if (!ModelState.IsValid)
         {
-            await CargarSalas(butaca.SalaID);
             return View(butaca);
         }
 
@@ -196,24 +205,5 @@ public class ButacaController : Controller
 
         TempData["Mensaje"] = "Butaca eliminada correctamente.";
         return RedirectToAction(nameof(Indice));
-    }
-
-    // Cargar lista de salas
-    private async Task CargarSalas(int? seleccionada = null)
-    {
-        var salas = await _context.Salas
-            .Include(s => s.Cine)
-            .AsNoTracking()
-            .OrderBy(s => s.CineID)
-            .ThenBy(s => s.Numero)
-            .ToListAsync();
-
-        ViewBag.Salas = new SelectList(
-            salas.Select(s => new
-            {
-                s.ID,
-                Nombre = $"{s.Cine?.Nombre} - Sala {s.Numero}"
-            }),
-            "ID", "Nombre", seleccionada);
-    }
+    }    
 }

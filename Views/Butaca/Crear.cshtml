@@ -1,69 +1,154 @@
-
 @model Proyecto_Final.Models.Butaca
 
 @{
-    ViewData["Title"] = "Nueva Butaca";
+    ViewData["Title"] = "Crear butaca";
 }
 
-<h1>Registrar nueva butaca</h1>
+<h1>Crear butaca</h1>
 
-<hr />
+<form asp-action="Crear" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
 
-<div class="row">
-    <div class="col-md-6">
+    <div class="mb-3">
+        <label asp-for="Numero" class="form-label">
+            Número de butaca
+        </label>
 
-        <form asp-action="Crear" method="post">
+        <input asp-for="Numero"
+               class="form-control"
+               maxlength="3"
+               placeholder="Ejemplo: A1" />
 
-            <div asp-validation-summary="ModelOnly"
-                 class="text-danger"></div>
-
-            <div class="mb-3">
-                <label asp-for="Numero"
-                       class="form-label">
-                    Número de butaca
-                </label>
-
-                <input asp-for="Numero"
-                       class="form-control"
-                       maxlength="3"
-                       placeholder="Ejemplo: A1, A2, B1" />
-
-                <span asp-validation-for="Numero"
-                      class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="SalaID"
-                       class="form-label">
-                    Sala
-                </label>
-
-                <select asp-for="SalaID"
-                        asp-items="ViewBag.Salas"
-                        class="form-select">
-                    <option value="0">
-                        Seleccioná una sala
-                    </option>
-                </select>
-
-                <span asp-validation-for="SalaID"
-                      class="text-danger"></span>
-            </div>
-
-            <button type="submit"
-                    class="btn btn-success">
-                Guardar
-            </button>
-
-            <a asp-action="Indice"
-               class="btn btn-secondary">
-                Volver
-            </a>
-
-        </form>
+        <span asp-validation-for="Numero"
+              class="text-danger"></span>
     </div>
-</div>
+
+    <div class="mb-3">
+        <label for="buscarSala" class="form-label">Sala</label>
+
+        <input id="buscarSala"
+               type="text"
+               value="@ViewBag.SalaSeleccionada"
+               class="form-control"
+               autocomplete="off"
+               placeholder="Escribí el nombre del cine o tipo de sala" />
+
+        <input asp-for="SalaID" type="hidden" />
+
+        <div id="estadoSalas"
+             class="form-text"
+             role="status"
+             aria-live="polite"></div>
+
+        <div id="resultadosSalas" class="list-group mt-2"></div>
+
+        <span asp-validation-for="SalaID"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a asp-action="Indice" class="btn btn-secondary">
+        Volver
+    </a>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const entrada = document.getElementById("buscarSala");
+        const salaID = document.getElementById("SalaID");
+        const resultados = document.getElementById("resultadosSalas");
+        const estado = document.getElementById("estadoSalas");
+
+        const urlBusqueda = '@Url.Action("BuscarSalas", "Funcion")';
+
+        let temporizador;
+        let versionBusqueda = 0;
+
+        entrada.addEventListener("input", () => {
+            clearTimeout(temporizador);
+
+            const versionActual = ++versionBusqueda;
+            const termino = entrada.value.trim();
+
+            salaID.value = "0";
+            resultados.replaceChildren();
+            estado.textContent = "";
+
+            if (termino.length < 2) {
+                return;
+            }
+
+            temporizador = setTimeout(async () => {
+                estado.textContent = "Buscando salas...";
+
+                try {
+                    const respuesta = await fetch(
+                        urlBusqueda + "?termino=" +
+                        encodeURIComponent(termino),
+                        {
+                            headers: {
+                                "Accept": "application/json"
+                            }
+                        }
+                    );
+
+                    if (!respuesta.ok || respuesta.redirected) {
+                        throw new Error("Error de búsqueda.");
+                    }
+
+                    const salas = await respuesta.json();
+
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    resultados.replaceChildren();
+
+                    estado.textContent = salas.length
+                        ? "Seleccioná una sala."
+                        : "No se encontraron salas activas.";
+
+                    for (const sala of salas) {
+                        const boton = document.createElement("button");
+
+                        boton.type = "button";
+                        boton.className =
+                            "list-group-item list-group-item-action";
+
+                        const texto =
+                            `${sala.cine} — Sala ${sala.numero}` +
+                            ` (${sala.tipo}), capacidad ${sala.capacidad}`;
+
+                        boton.textContent = texto;
+
+                        boton.addEventListener("click", () => {
+                            clearTimeout(temporizador);
+                            ++versionBusqueda;
+
+                            salaID.value = sala.id;
+                            entrada.value = texto;
+
+                            resultados.replaceChildren();
+                            estado.textContent = "Sala seleccionada.";
+                        });
+
+                        resultados.appendChild(boton);
+                    }
+                } catch {
+                    if (versionActual !== versionBusqueda) {
+                        return;
+                    }
+
+                    estado.textContent =
+                        "No se pudo buscar. Intentá nuevamente.";
+                }
+            }, 300);
+        });
+    </script>
 }
