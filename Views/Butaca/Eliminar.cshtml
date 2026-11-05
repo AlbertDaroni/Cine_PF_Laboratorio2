@@ -1,0 +1,74 @@
+
+@model Proyecto_Final.Models.Butaca
+
+@{
+    ViewData["Title"] = "Eliminar butaca";
+    bool tieneReservas = ViewBag.TieneReservas ?? false;
+}
+
+<h1>Eliminar butaca</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div asp-validation-summary="All"
+             class="text-danger"></div>
+
+        <div class="card">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    ¿Estás seguro de eliminar esta butaca?
+                </h5>
+
+                <dl class="row mt-3">
+                    <dt class="col-sm-4">Número</dt>
+                    <dd class="col-sm-8">@Model.Numero</dd>
+
+                    <dt class="col-sm-4">Sala</dt>
+                    <dd class="col-sm-8">
+                        @Model.Sala?.Numero
+                    </dd>
+                </dl>
+
+                @if (tieneReservas)
+                {
+                    <div class="alert alert-warning">
+                        Esta butaca tiene reservas asociadas
+                        y no puede eliminarse porque
+                        se perdería su historial.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        Esta acción eliminará la butaca
+                        de forma permanente.
+                    </div>
+                }
+
+                <form asp-action="Eliminar"
+                      asp-route-id="@Model.ID"
+                      method="post">
+
+                    @if (!tieneReservas)
+                    {
+                        <button type="submit"
+                                class="btn btn-danger">
+                            Confirmar eliminación
+                        </button>
+                    }
+
+                    <a asp-action="Indice"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
