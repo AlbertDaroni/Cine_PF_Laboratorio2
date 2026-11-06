@@ -253,6 +253,34 @@ El repositorio contiene los módulos principales y datos de prueba, pero sigue s
 
 **Proyecto Final — Laboratorio II**. Trabajo grupal orientado a aplicar el patrón MVC, el modelado de entidades y relaciones, la persistencia en base de datos relacional, la autenticación y la implementación de operaciones CRUD.
 
+
+### CRUD de Géneros con Vue.js + AJAX
+
+Se implementó un CRUD completo mediante Vue.js 3,
+ASP.NET Core MVC y solicitudes AJAX con fetch.
+
+Operaciones implementadas:
+- GET: listado de géneros.
+- POST: creación de géneros.
+- PUT: modificación de géneros.
+- DELETE: eliminación de géneros.
+
+Todas las operaciones se realizan sin recargar la página.
+
+**Demostración:**
+
+![CRUD de Géneros con Vue.js](docs/evidencias/crud-genero-vue-demo.gif)
+
+**Solicitudes AJAX:**
+
+![Evidencia de Network](docs/evidencias/crud-genero-vue-network.png)
+
+
+
+
 ---
+
+
+
 
 **Repositorio:** [AlbertDaroni/Cine_PF_Laboratorio2](https://github.com/AlbertDaroni/Cine_PF_Laboratorio2)
