@@ -173,18 +173,24 @@ erDiagram
 
 ```text
 Cine_PF_Laboratorio2/
-├── Controllers/       # Acciones HTTP y reglas de los módulos
-├── Models/            # Entidades y modelos de vista
-├── Views/             # Vistas Razor
+├── Controllers/               # MVC y endpoints API
 ├── Data/
-│   └── BD_Context.cs  # Contexto de Entity Framework Core
+│   └── BD_Context.cs          # EF Core y relaciones
 ├── DataBase/
-│   ├── cine.sql       # Creación de tablas y relaciones
-│   └── datos.sql      # Datos de prueba
-├── wwwroot/            # CSS, JavaScript, bibliotecas e imágenes
-├── Program.cs         # Servicios, base de datos y autenticación
-├── appsettings.json   # Configuración de la aplicación
-└── Proyecto Final.csproj
+│   ├── cine.sql               # Esquema SQL
+│   └── datos.sql              # Datos de prueba
+├── Models/                    # Entidades y viewmodels
+├── Views/                     # Vistas MVC y módulo Géneros Vue
+│   └── Genero/
+│       └── Vue.cshtml
+├── docs/
+│   └── evidencias/
+│       ├── crud-genero-vue-demo.gif
+│       └── crud-genero-vue-network.png
+├── wwwroot/                   # Archivos estáticos e imágenes
+├── Program.cs
+├── Proyecto Final.csproj
+└── README.md
 ```
 
 ## 🚀 Instalación y ejecución local
@@ -267,18 +273,53 @@ Operaciones implementadas:
 
 Todas las operaciones se realizan sin recargar la página.
 
-**Demostración:**
+## . Matriz de evidencias de requerimientos mínimos
 
-![CRUD de Géneros con Vue.js](docs/evidencias/crud-genero-vue-demo.gif)
+Esta matriz es una **evaluación del estado actual**, no una certificación de pruebas que todavía no se realizaron. Los enlaces al código apuntan a la rama `main` y pueden modificarse con nuevos commits.
 
-**Solicitudes AJAX:**
+| Requerimiento mínimo | Estado | Enlace al código / implementación | Evidencia / pendiente |
+| --- | --- | --- | --- |
+| **1. ≥6 entidades, relación 1:N y N:M** | ✅ Cumplido | [BD_Context.cs](Data/BD_Context.cs), [Models](Models/) | DER Mermaid de la sección 3 y tablas de `DataBase/cine.sql`. |
+| **2. Login, Logout, Roles y Avatar** | 🟡 Parcial | [CuentaController.cs](Controllers/CuentaController.cs), [UsuarioController.cs](Controllers/UsuarioController.cs), [Program.cs](Program.cs) | Login y roles implementados. **Pendiente:** edición segura de avatar propio por cada usuario y capturas de prueba de los tres roles. |
+| **3. Manejo adicional de imágenes** | 🟡 Implementado; evidencia pendiente | [PeliculaController.cs](Controllers/PeliculaController.cs), [Portadas](wwwroot/uploads/portada/) | Existe carga de portadas, separada del avatar. **Pendiente:** captura/GIF de la carga de una portada nueva. |
+| **4. CRUD completo Vue.js + AJAX/JSON** | ✅ Cumplido y probado | [Vista Vue.cshtml](Views/Genero/Vue.cshtml), [GeneroApiController.cs](Controllers/GeneroApiController.cs) | [GIF del CRUD](docs/evidencias/crud-genero-vue-demo.gif) y [captura Network GET/POST/PUT/DELETE](docs/evidencias/crud-genero-vue-network.png). |
+| **5. Paginación por servidor** | 🟡 Parcial | [SalaController.cs](Controllers/SalaController.cs), [ReservaController.cs](Controllers/ReservaController.cs) | Implementada con `Skip/Take` en Salas y Reservas. **Pendiente:** Butacas, Usuarios, Películas y otros listados principales; captura `pagina=2` y respuesta paginada. |
+| **6. Búsqueda asíncrona de entidades relacionadas** | 🟡 Implementado; pruebas/evidencia pendientes | [SalaController.cs](Controllers/SalaController.cs), [FuncionController.cs](Controllers/FuncionController.cs), [PagoController.cs](Controllers/PagoController.cs), [UsuarioController.cs](Controllers/UsuarioController.cs), [Crear Butaca.cshtml](Views/Butaca/Crear.cshtml) | Hay endpoints de búsqueda limitada y formularios que usan `fetch()`. **Pendiente:** verificar todos los formularios relevantes y capturar GIF de una búsqueda AJAX. |
+| **7. Web API REST autenticada con JWT** | 🟡 Implementado; pruebas pendientes | [AutenticadorController.cs](Controllers/AutenticadorController.cs), [Program.cs](Program.cs) | `POST /api/Autenticador/login` y `GET /api/Autenticador/mis-datos`. **Pendiente:** probar Bearer válido, ausente e inválido y subir colección de Postman/Bruno/Insomnia. |
 
-![Evidencia de Network](docs/evidencias/crud-genero-vue-network.png)
+**Criterio:** ✅ indica cumplimiento corroborado por código y/o pruebas realizadas; 🟡 indica desarrollo existente con requisitos o evidencias todavía pendientes. Los requisitos parciales **no se consideran completados al 100 %**.
 
+### Evidencia visual — CRUD de Géneros
 
+**Demostración de alta, modificación y baja sin recargar:**
 
+![CRUD Vue.js de Géneros](docs/evidencias/crud-genero-vue-demo.gif)
 
----
+**Inspector de red — GET, POST, PUT y DELETE con HTTP 200:**
+
+![Peticiones AJAX del CRUD de Géneros](docs/evidencias/crud-genero-vue-network.png)
+
+**Reglas validadas:** rechazo de géneros duplicados y bloqueo de eliminación de géneros asociados a películas.
+
+## 6. API y endpoints principales
+
+### CRUD AJAX de Géneros (sesión web)
+
+| Método | Ruta | Función | Autenticación |
+| --- | --- | --- | --- |
+| `GET` | `/api/generos` | Listar | Cookies; Administrador o Empleado |
+| `POST` | `/api/generos` | Crear | Cookies + token antifalsificación |
+| `PUT` | `/api/generos/{id}` | Editar | Cookies + token antifalsificación |
+| `DELETE` | `/api/generos/{id}` | Eliminar | Cookies + token antifalsificación |
+
+### API JWT (implementada; pruebas pendientes)
+
+| Método | Ruta | Función |
+| --- | --- | --- |
+| `POST` | `/api/Autenticador/login` | Recibe correo y contraseña y, con credenciales válidas, entrega JWT. |
+| `GET` | `/api/Autenticador/mis-datos` | Requiere cabecera `Authorization: Bearer <token>` y devuelve datos autenticados. |
+
+**Aclaración:** el CRUD Vue utiliza la sesión web y un token antifalsificación; **no consume JWT**. Por eso, para promoción corresponde adjuntar una colección exportada de pruebas de la API JWT.
 
 
 
