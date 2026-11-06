@@ -1,35 +1,21 @@
 
 @model IEnumerable<Proyecto_Final.Models.Genero>
 
-@{
-    ViewData["Title"] = "Géneros";
-}
+@{ ViewData["Title"] = "Géneros"; }
 
 <h1>Gestión de Géneros</h1>
 
 <hr />
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Mensaje"]
-    </div>
+@if (TempData["Mensaje"] != null) {
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
 }
 
-<p>
-    <a asp-action="Crear" class="btn btn-primary">
-        Nuevo género
-    </a>
-</p>
+<p><a asp-action="Crear" class="btn btn-primary">Nuevo género</a></p>
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        No hay géneros registrados.
-    </div>
-}
-else
-{
+@if (!Model.Any()) {
+    <div class="alert alert-info">No hay géneros registrados.</div>
+} else {
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -39,25 +25,14 @@ else
                     <th>Acciones</th>
                 </tr>
             </thead>
-
             <tbody>
-                @foreach (var genero in Model)
-                {
+                @foreach (var genero in Model) {
                     <tr>
                         <td>@genero.ID</td>
                         <td>@genero.Nombre</td>
                         <td>
-                            <a asp-action="Editar"
-                               asp-route-id="@genero.ID"
-                               class="btn btn-warning btn-sm">
-                                Editar
-                            </a>
-
-                            <a asp-action="Eliminar"
-                               asp-route-id="@genero.ID"
-                               class="btn btn-danger btn-sm">
-                                Eliminar
-                            </a>
+                            <a asp-action="Editar" asp-route-id="@genero.ID" class="btn btn-warning btn-sm">Editar</a>
+                            <a asp-action="Eliminar" asp-route-id="@genero.ID" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
                     </tr>
                 }

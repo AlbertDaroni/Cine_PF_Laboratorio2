@@ -1,9 +1,7 @@
 
 @model Proyecto_Final.Models.Genero
 
-@{
-    ViewData["Title"] = "Nuevo género";
-}
+@{ ViewData["Title"] = "Nuevo género"; }
 
 <h1>Registrar nuevo género</h1>
 
@@ -11,41 +9,20 @@
 
 <div class="row">
     <div class="col-md-6">
-
         <form asp-action="Crear" method="post">
-
-            <div asp-validation-summary="ModelOnly"
-                 class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="Nombre" class="form-label">
-                    Nombre del género
-                </label>
-
-                <input asp-for="Nombre"
-                       class="form-control"
-                       maxlength="50"
-                       placeholder="Ejemplo: Acción, Comedia, Terror" />
-
-                <span asp-validation-for="Nombre"
-                      class="text-danger"></span>
+                <label asp-for="Nombre" class="form-label">Nombre del género</label>
+                <input asp-for="Nombre" class="form-control" maxlength="50" placeholder="Ejemplo: Acción, Comedia, Terror" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
-            <button type="submit"
-                    class="btn btn-success">
-                Guardar género
-            </button>
+            <button type="submit" class="btn btn-success">Guardar género</button>
 
-            <a asp-action="Indice"
-               class="btn btn-secondary">
-                Volver
-            </a>
-
+            <a asp-action="Indice" class="btn btn-secondary">Volver</a>
         </form>
-
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

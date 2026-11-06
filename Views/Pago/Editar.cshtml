@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Editar pago";
 
-    var cultura = System.Globalization.CultureInfo
-        .GetCultureInfo("es-AR");
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("es-AR");
 }
 
 <h1>Editar pago</h1>
@@ -14,69 +13,40 @@
     <dd class="col-sm-9">N.º @Model.ReservaID</dd>
 
     <dt class="col-sm-3">Fecha de pago</dt>
-    <dd class="col-sm-9">
-        @Model.Fecha_Pago.ToString("dd/MM/yyyy HH:mm")
-    </dd>
+    <dd class="col-sm-9">@Model.Fecha_Pago.ToString("dd/MM/yyyy HH:mm")</dd>
 
     <dt class="col-sm-3">Importe</dt>
-    <dd class="col-sm-9">
-        @Model.Importe.ToString("C", cultura)
-    </dd>
+    <dd class="col-sm-9">@Model.Importe.ToString("C", cultura)</dd>
 </dl>
 
-<form asp-action="Editar"
-      asp-route-id="@Model.ID"
-      method="post"
-      class="col-md-6">
-
+<form asp-action="Editar" asp-route-id="@Model.ID" method="post" class="col-md-6">
     <input asp-for="ID" type="hidden" />
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
         <label asp-for="Concepto" class="form-label"></label>
-        <input asp-for="Concepto"
-               class="form-control"
-               maxlength="50" />
-        <span asp-validation-for="Concepto"
-              class="text-danger"></span>
+        <input asp-for="Concepto" class="form-control" maxlength="50" />
+        <span asp-validation-for="Concepto" class="text-danger"></span>
     </div>
 
-    @if (Model.Estado)
-    {
+    @if (Model.Estado) {
         <div class="mb-3">
             <label asp-for="Estado" class="form-label"></label>
             <select asp-for="Estado" class="form-select">
                 <option value="true">Pagado</option>
                 <option value="false">Anulado</option>
             </select>
-            <span asp-validation-for="Estado"
-                  class="text-danger"></span>
+            <span asp-validation-for="Estado" class="text-danger"></span>
         </div>
-    }
-    else
-    {
+    } else {
         <input asp-for="Estado" type="hidden" />
-
-        <div class="alert alert-secondary">
-            Pago anulado.
-            Fecha: @(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy HH:mm") ?? "-")
-        </div>
-
-        <span asp-validation-for="Estado"
-              class="text-danger"></span>
+        <div class="alert alert-secondary">Pago anulado. Fecha: @(Model.Fecha_Anulacion?.ToString("dd/MM/yyyy HH:mm") ?? "-")</div>
+        <span asp-validation-for="Estado" class="text-danger"></span>
     }
 
-    <button type="submit" class="btn btn-success">
-        Guardar cambios
-    </button>
-
-    <a asp-action="Indice" class="btn btn-secondary">
-        Volver
-    </a>
+    <button type="submit" class="btn btn-success">Guardar cambios</button>
+    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
 </form>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
