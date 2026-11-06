@@ -65,7 +65,6 @@ public class UsuarioController : Controller {
         var hasher = new PasswordHasher<Usuario>();
 
         usuario.Contraseña = hasher.HashPassword(usuario, usuario.Contraseña);
-
         usuario.PasswordHasheada = true;
 
         _context.Usuarios.Add(usuario);
@@ -76,7 +75,7 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Editar
-    [HttpGet, Authorize(Roles = "Administrador")]
+    [HttpGet]
     public async Task<IActionResult> Editar(int id) {
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
@@ -87,7 +86,7 @@ public class UsuarioController : Controller {
         return View(usuario);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador"), RequestSizeLimit(5 * 1024 * 1024)]
+    [HttpPost, ValidateAntiForgeryToken, RequestSizeLimit(5 * 1024 * 1024)]
     public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? Foto_Perfil) {
         if (id != usuario.ID) return BadRequest();
         if (string.IsNullOrWhiteSpace(usuario.Contraseña)) ModelState.Remove(nameof(Usuario.Contraseña));
@@ -144,14 +143,14 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Eliminar
-    [HttpGet, Authorize(Roles = "Administrador")]
+    [HttpGet]
     public async Task<IActionResult> Eliminar(int id) {
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
         return View(usuario);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar"), Authorize(Roles = "Administrador")]
+    [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
     public async Task<IActionResult> ConfirmarEliminar(int id) {
         var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null) return NotFound();

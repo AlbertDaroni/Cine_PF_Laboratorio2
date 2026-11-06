@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 
 // Configuración de Autenticación Híbrida (COOKIES + JWT)
 builder.Services.AddAuthentication(options => {
-    // Por defecto del sistema usa Cookies
+    // El sistema usa Cookies por defecto
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;

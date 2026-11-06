@@ -4,55 +4,55 @@
 
 <h1>Funciones</h1>
 
-@if (!Model.Any()) {
-    <div class="alert alert-info">Esta película todavía no tiene funciones cargadas.</div>
-}
 @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
     <a asp-action="Crear" class="btn btn-primary">Agregar</a>
 } else if ((User.IsInRole("Administrador") || User.IsInRole("Empleado")) && ViewBag.CineID?.ToString() != "0") {
     <a asp-action="Crear" asp-route-PeliculaID="@ViewBag.PeliculaID" asp-route-CineID="@ViewBag.CineID" class="btn btn-primary">Agregar</a>
 }
-
-<table class="table table-striped">
-    <thead>
-        <th>Cine</th>
-        <th>Sala</th>
-        <th>Fecha y Hora</th>
-        <th>Precio</th>
-        <th>Acciones</th>
-    </thead>
-    <tbody>
-        @foreach (var funcion in Model) {
-            <tr>
-                <td>
-                    @if (funcion.Sala.Cine.Abierto) {
-                        <span class="badge bg-success">
-                            <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@funcion.Sala.Cine.ID">
-                                @(funcion.Sala.Cine.Nombre) - @(funcion.Sala.Cine.Direccion)
-                            </a>
-                        </span>
-                    } else {
-                        <span class="badge bg-danger">
-                            <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@funcion.Sala.Cine.ID">
-                                @(funcion.Sala.Cine.Nombre) - @(funcion.Sala.Cine.Direccion)
-                            </a>
-                        </span>
-                    }
-                </td>
-                <td>@funcion.Sala.Numero</td>
-                <td>@funcion.FechaHora</td>
-                <td>@funcion.Precio</td>
-                <td>
-                    @if (funcion.Estado && funcion.FechaHora > DateTime.Now) {
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
-                            <a asp-action="Editar" asp-route-id="@funcion.ID" class="btn btn-warning">Editar</a>
+@if (!Model.Any()) {
+    <div class="alert alert-info">Esta película todavía no tiene funciones cargadas.</div>
+} else {
+    <table class="table table-striped">
+        <thead>
+            <th>Cine</th>
+            <th>Sala</th>
+            <th>Fecha y Hora</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+            @foreach (var funcion in Model) {
+                <tr>
+                    <td>
+                        @if (funcion.Sala.Cine.Abierto) {
+                            <span class="badge bg-success">
+                                <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@funcion.Sala.Cine.ID">
+                                    @(funcion.Sala.Cine.Nombre) - @(funcion.Sala.Cine.Direccion)
+                                </a>
+                            </span>
+                        } else {
+                            <span class="badge bg-danger">
+                                <a asp-action="Detalles" asp-controller="Cine" asp-route-id="@funcion.Sala.Cine.ID">
+                                    @(funcion.Sala.Cine.Nombre) - @(funcion.Sala.Cine.Direccion)
+                                </a>
+                            </span>
                         }
-                        <a asp-controller="Reserva" asp-action="Crear" asp-route-FuncionID="@funcion.ID" class="btn btn-success btn-sm">Reservar</a>
-                    } else {
-                        <span class="text-muted">No disponible</span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    </td>
+                    <td>@funcion.Sala.Numero</td>
+                    <td>@funcion.FechaHora</td>
+                    <td>@funcion.Precio</td>
+                    <td>
+                        @if (funcion.Estado && funcion.FechaHora > DateTime.Now) {
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
+                                <a asp-action="Editar" asp-route-id="@funcion.ID" class="btn btn-warning">Editar</a>
+                            }
+                            <a asp-controller="Reserva" asp-action="Crear" asp-route-FuncionID="@funcion.ID" class="btn btn-success btn-sm">Reservar</a>
+                        } else {
+                            <span class="text-muted">No disponible</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

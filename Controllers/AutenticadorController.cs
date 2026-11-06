@@ -13,7 +13,7 @@ namespace Proyecto_Final.Controllers.Api;
 
 [Route("api/[controller]"), ApiController]
 public class AutenticadorController : ControllerBase {
-    private readonly CineContext _context;
+    private readonly BD_Context _context;
     private readonly IConfiguration _configuration;
 
     public class LoginRequest {
@@ -21,7 +21,7 @@ public class AutenticadorController : ControllerBase {
         public string Contraseña { get; set; } = null!;
     }
 
-    public AutenticadorController(CineContext context, IConfiguration configuration) {
+    public AutenticadorController(BD_Context context, IConfiguration configuration) {
         _context = context;
         _configuration = configuration;
     }
@@ -37,7 +37,7 @@ public class AutenticadorController : ControllerBase {
         var resultado = hasher.VerifyHashedPassword(usuario, usuario.Contraseña, request.Contraseña);
         if (resultado == PasswordVerificationResult.Failed) return Unauthorized(new { mensaje = "Credenciales inválidas." });
 
-        // Generamos el Token JWT
+        // Generar el Token JWT
         var token = GenerarJwtToken(usuario);
 
         return Ok(new { 
@@ -52,20 +52,20 @@ public class AutenticadorController : ControllerBase {
     public IActionResult ObtenerDatosProtegidos() {
         // Al estar autenticado, podemos leer los Claims del token enviado por el cliente
         var UsuarioID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var Correo = User.FindFirstValue(ClaimTypes.Email);
+        var Foto_Perfil = User.FindFirstValue(ClaimTypes.Uri);
         var Rol = User.FindFirstValue(ClaimTypes.Role);
 
         return Ok(new { 
             mensaje = "Acceso concedido", 
             UsuarioID, 
-            Correo, 
+            Foto_Perfil, 
             Rol 
         });
     }
 
     // Método auxiliar para construir el JWT
     private string GenerarJwtToken(Usuario usuario) {
-        var claims = new[] {
+        var claims = new List<Claim> {
             new Claim(ClaimTypes.NameIdentifier, usuario.ID.ToString()),
             new Claim(ClaimTypes.Email, usuario.Correo),
             new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario")

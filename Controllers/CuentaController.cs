@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -43,7 +42,6 @@ public class CuentaController : Controller {
             ModelState.AddModelError("", "Los datos de acceso no son válidos.");
             return View(signin);
         }
-
         if (resultado == PasswordVerificationResult.SuccessRehashNeeded) {
             usuario.Contraseña = hasher.HashPassword(usuario, signin.Contraseña);
             usuario.Estado = true;

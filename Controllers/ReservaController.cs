@@ -182,19 +182,107 @@ public class ReservaController : Controller {
     [HttpGet, Authorize(Roles = "Administrador, Empleado")]
     public async Task<IActionResult> Editar(int id) {
         var reserva = await _context.Reservas.FindAsync(id);
-        if (reserva == null) return NotFound();
-        return View(reserva);
+        if (reserva == null) return BadRequest();
+
+        var funcion = await _context.Funciones
+            .Include(f => f.Pelicula)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(f => f.ID == reserva.FuncionID)
+        ;
+
+        if (funcion == null) return NotFound();
+
+        var butacasReservadas = _context.DetallesReservas
+            .Where(d => d.Reserva != null && d.Reserva.FuncionID == funcion.ID && d.Reserva.Estado)
+            .Select(d => d.ButacaID)
+        ;
+
+        var modelo = new CrearReservaViewModel {
+            FuncionID = funcion.ID,
+            TituloPelicula = funcion.Pelicula?.Titulo ?? "Sin título",
+            FechaHora = funcion.FechaHora,
+            PrecioEntrada = funcion.Precio,
+
+            Butacas = await _context.Butacas
+                .Where(b => b.SalaID == funcion.SalaID)
+                .OrderBy(b => b.Numero)
+                .Select(b => new ButacaDisponibleViewModel {
+                    ID = b.ID,
+                    Numero = b.Numero,
+                    Disponible = !butacasReservadas.Contains(b.ID)
+                })
+                .ToListAsync()
+        };
+
+        return View(modelo);
     }
 
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador, Empleado")]
-    public async Task<IActionResult> Editar(int id, Reserva reserva) {
-        if (id != reserva.ID) return BadRequest();
+    public async Task<IActionResult> Editar(int id, Reserva reserva, List<int>? ButacasSeleccionadas, string Concepto) {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int usuarioID)) return Challenge();
+        if (string.IsNullOrEmpty(Concepto)) ModelState.AddModelError("", "Debés seleccionar un método de pago válido.");
+
+        var seleccionadas = ButacasSeleccionadas?.Distinct().ToList() ?? new List<int>();
+        if (seleccionadas.Count == 0) ModelState.AddModelError("", "Seleccioná al menos una butaca válida.");
         if (!ModelState.IsValid) return View(reserva);
 
-        _context.Reservas.Update(reserva);
-        await _context.SaveChangesAsync();
+        // La transacción permite guardar la reserva y sus detalles juntos.
+        await using var transaccion = await _context.Database.BeginTransactionAsync();
 
-        return RedirectToAction(nameof(Indice));
+        // Bloqueamos esta función mientras comprobamos y guardamos.
+        // Este mismo bloqueo debe usarse en futuros caminos de reserva.
+        var funciones = await _context.Funciones
+            .FromSqlInterpolated($"SELECT * FROM funciones WHERE id = {reserva.FuncionID} FOR UPDATE")
+            .ToListAsync()
+        ;
+
+        var funcion = funciones.FirstOrDefault();
+
+        if (funcion == null) return NotFound();
+        if (!funcion.Estado || funcion.FechaHora <= DateTime.Now) return BadRequest("La función ya no está disponible.");
+
+        var cantidadValida = await _context.Butacas.CountAsync(b => b.SalaID == funcion.SalaID && seleccionadas.Contains(b.ID));
+        if (cantidadValida != seleccionadas.Count) return BadRequest("Hay butacas que no pertenecen a esta sala.");
+
+        var hayReservadas = await _context.DetallesReservas
+            .AnyAsync(d =>
+                seleccionadas.Contains(d.ButacaID)
+                && d.Reserva != null
+                && d.Reserva.FuncionID == reserva.FuncionID
+                && d.Reserva.Estado)
+        ;
+
+        if (hayReservadas) {
+            await transaccion.RollbackAsync();
+            ModelState.AddModelError("", "Otra persona reservó alguna de esas butacas. Elegí nuevamente.");
+            return View(Editar(reserva.ID));
+        }
+
+        reserva = new Reserva {
+            UsuarioID = usuarioID,
+            FuncionID = reserva.FuncionID,
+            Estado = true,
+            Monto = funcion.Precio * seleccionadas.Count,
+
+            Detalles = seleccionadas.Select(id => new DetalleReserva {
+                ButacaID = id,
+                Precio = funcion.Precio
+            }).ToList(),
+
+        };
+
+        reserva.Pago = new Pago {
+            Concepto = Concepto,
+            Importe = reserva.Monto
+        };
+
+        _context.Reservas.Add(reserva);
+        await _context.SaveChangesAsync();
+        await transaccion.CommitAsync();
+
+        TempData["Mensaje"] = $"Reserva N.º {reserva.ID} creada correctamente.";
+
+        return RedirectToAction(nameof(Detalles), new { id = reserva.ID });
     }
 
     // -----------------------------------------------------------------------------------
