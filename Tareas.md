@@ -1,25 +1,21 @@
 ### TAREAS PENDIENTES
-1. **Búsqueda Asíncrona de Entidades Relacionadas**:
-- Al seleccionar entidades relacionadas en un formulario *(ej. seleccionar un Cliente al crear una Orden)*, debe hacerse mediante búsqueda
-asíncrona vía AJAX en el servidor. Está prohibido traer todos los registros de la base de datos para llenar un `<select>` masivo.
-
-2. **Web API REST con JWT**:
+1. **Web API REST con JWT**:
 - Implementación de endpoints de Web API autenticados mediante JSON Web Tokens (JWT). Si la aplicación web no consume esta
 API de manera nativa, se debe adjuntar la colección de pruebas correspondiente.
 
-3. **Archivo README.md obligatorio que contenga**:
+2. **Archivo README.md obligatorio que contenga**:
 - Descripción general del proyecto y el problema que resuelve.
 Matriz de Evidencias de Requerimientos Mínimos *(Tabla que certifique el cumplimiento de cada punto)*.
 
-4. **Estilos**:
+3. **Estilos**:
 - Dejar todo bonito.
 
-5. **Edición de salas de un cine**:
+4. **Edición de salas de un cine**:
 - Mostrar cada sala de un cine en su vista "Detalles", y mostrar las butacas correspondientes de cada sala.
 - Se debe poder agregar, quitar y modificar las salas de un cine.
 - Se debe poder agregar, quitar y modificar las butacas de una sala.
 
-6. **Actualización de estados**:
+5. **Actualización de estados**:
 - Si la fecha y la hora de una función ya pasó, actualizar todas las tablas correspondientes *(Butacas, DetalleReserva, Reservas, Funciones)*.
 
 <hr>
@@ -54,3 +50,7 @@ Quedan exceptuadas solo tablas maestras muy pequeñas.
     - Estado de la función.
     - Hora de la función.
     - Datos de la película.
+
+6. **Búsqueda Asíncrona de Entidades Relacionadas**:
+- Al seleccionar entidades relacionadas en un formulario *(ej. seleccionar un Cliente al crear una Orden)*, debe hacerse mediante búsqueda
+asíncrona vía AJAX en el servidor. Está prohibido traer todos los registros de la base de datos para llenar un `<select>` masivo.

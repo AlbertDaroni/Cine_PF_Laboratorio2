@@ -1,57 +1,18 @@
 @model Proyecto_Final.Models.CrearReservaViewModel
 
-@{ ViewData["Title"] = "Editar Reserva"; }
-
-<h1>Editar Reserva</h1>
-
-@if (TempData["Mensaje"] is string mensaje) {
-    <div class="alert alert-success">@mensaje</div>
+@{
+    ViewData["Title"] = "Editar reserva";
 }
 
-<h2>@Model.TituloPelicula</h2>
+<h1>Editar reserva</h1>
 
-<p>Función: @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
-<p>Precio por entrada: $@Model.PrecioEntrada.ToString("N2")</p>
+<div class="alert alert-info">
+    Las reservas no se modifican desde esta pantalla.
+    Para cambiar la función o las butacas, utilizá el flujo
+    de cancelación y creá una nueva reserva.
+    La cancelación está sujeta a las restricciones de la reserva.
+</div>
 
-<form asp-action="Editar" method="post">
-    <input type="hidden" asp-for="FuncionID" />
-
-    <div asp-validation-summary="All" class="text-danger"></div>
-
-    <div class="mb-3">
-        <label class="form-label" for="Concepto">Concepto</label>
-        <select class="form-select" name="Concepto">
-            <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-            <option value="Tarjeta de Débito">Tarjeta de Débito</option>
-            <option value="Tarjeta Prepago / Recargable">Tarjeta Prepago / Recargable</option>
-            <option value="Tarjeta Corporativa / Empresarial">Tarjeta Corporativa / Empresarial</option>
-            <option value="Virtual / Tarjeta Digital">Virtual / Tarjeta Digital</option>
-            <option value="Efectivo / Contante">Efectivo / Contante</option>
-            <option value="Mobile Wallet">Mobile Wallet</option>
-            <option value="Móvil Directo (P2P)">Móvil Directo (P2P)</option>
-            <option value="Enlace de Pago / Link de Pago">Enlace de Pago / Link de Pago</option>
-        </select>
-    </div>
-
-    <fieldset class="mb-3">
-        <legend>Seleccioná tus butacas</legend>
-        @foreach (var butaca in Model.Butacas) {
-            <div class="form-check">
-                @if (butaca.Disponible) {
-                    <input class="form-check-input" type="checkbox" name="ButacasSeleccionadas" value="@butaca.ID" id="butaca_@butaca.ID" />
-                } else {
-                    <input class="form-check-input" type="checkbox" id="butaca_@butaca.ID" disabled />
-                }
-
-                <label class="form-check-label" for="butaca_@butaca.ID">
-                    @butaca.Numero
-                    @(butaca.Disponible ? "Disponible" : "Reservada")
-                </label>
-            </div>
-        }
-    </fieldset>
-
-    <button type="submit" class="btn btn-success">Guardar cambios</button>
-</form>
-
-@section Scripts { <partial name="_ValidationScriptsPartial"> }
+<a asp-action="Indice" class="btn btn-secondary">
+    Volver a reservas
+</a>

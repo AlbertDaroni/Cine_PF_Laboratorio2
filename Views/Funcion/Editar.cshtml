@@ -1,52 +1,191 @@
 @model Proyecto_Final.Models.Funcion
 
-@{ ViewData["Title"] = "Editar Función"; }
+@{
+    ViewData["Title"] = "Editar función";
+}
 
-<h1>Editar</h1>
+<h1>Editar función</h1>
 
-<form asp-action="Editar" method="post">
-    <input type="hidden" asp-for="PeliculaID" value=ViewBag.PeliculaID>
-    <input type="hidden" asp-for="SalaID" value=ViewBag.SalaID>
-
-    <div class="mb-3">
-        <label asp-for="FechaHora" class="form-label">Fecha y Hora</label>
-        <input asp-for="FechaHora" class="form-control" type="datetime-local" />
-        <span asp-validation-for="FechaHora" class="text-danger"></span>
-    </div>
+<form asp-action="Editar" asp-route-id="@Model.ID" method="post" class="col-md-6">
+    <input asp-for="ID" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Precio" class="form-label">Precio</label>
-        <input asp-for="Precio" class="form-control" />
-        <span asp-validation-for="Precio" class="text-danger"></span>
-    </div>
+        <label for="buscarPelicula" class="form-label">
+            Película
+        </label>
 
-    <div class="mb-3">
-        <label asp-for="PeliculaID" class="form-label">Película</label>
-        <select asp-for="PeliculaID" class="form-select" asp-items="(SelectList)ViewBag.Peliculas">
-            <option value="">-- Seleccioná una película --</option>
-        </select>
+        <input id="buscarPelicula" type="text" value="@ViewBag.PeliculaSeleccionada" class="form-control"
+               autocomplete="off" placeholder="Escribí al menos 2 caracteres" />
+
+        <input asp-for="PeliculaID" type="hidden" />
+
+        <div id="estadoPeliculas" class="form-text" role="status" aria-live="polite"></div>
+
+        <div id="resultadosPeliculas" class="list-group mt-2"></div>
+
         <span asp-validation-for="PeliculaID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="SalaID" class="form-label">Sala</label>
-        <select asp-for="SalaID" class="form-select" asp-items="(SelectList)ViewBag.Salas">
-            <option value="">-- Seleccioná una sala --</option>
-        </select>
+        <label for="buscarSala" class="form-label">
+            Sala
+        </label>
+
+        <input id="buscarSala" type="text" value="@ViewBag.SalaSeleccionada" class="form-control" autocomplete="off"
+               placeholder="Buscá por cine o tipo de sala" />
+
+        <input asp-for="SalaID" type="hidden" />
+
+        <div id="estadoSalas" class="form-text" role="status" aria-live="polite"></div>
+
+        <div id="resultadosSalas" class="list-group mt-2"></div>
+
         <span asp-validation-for="SalaID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Estado" class="form-label">Estado</label>
-        <select asp-for="Estado" class="form-select">
-            <option value="true">Activa</option>
-            <option value="false">Inactiva</option>
-        </select>
-        <span asp-validation-for="Estado" class="text-danger"></span>
+        <label asp-for="FechaHora" class="form-label">
+            Fecha y hora
+        </label>
+        <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+        <span asp-validation-for="FechaHora" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+    <div class="mb-3">
+        <label asp-for="Precio" class="form-label"></label>
+        <input asp-for="Precio" class="form-control" />
+        <span asp-validation-for="Precio" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+        <label asp-for="Estado" class="form-check-label">
+            Función activa
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a asp-controller="Pelicula" asp-action="Indice" class="btn btn-secondary">
+        Volver
+    </a>
 </form>
 
-@section Scripts { <partial name="_ValidationScriptsPartial"/> }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function configurarBusqueda(
+            entradaId, campoId, resultadosId,
+            estadoId, url, obtenerTexto) {
+
+            const entrada = document.getElementById(entradaId);
+            const campo = document.getElementById(campoId);
+            const resultados = document.getElementById(resultadosId);
+            const estado = document.getElementById(estadoId);
+
+            let temporizador;
+            let version = 0;
+
+            entrada.addEventListener("input", () => {
+                clearTimeout(temporizador);
+
+                const versionActual = ++version;
+                const termino = entrada.value.trim();
+
+                campo.value = "0";
+                resultados.replaceChildren();
+                estado.textContent = "";
+
+                if (termino.length < 2) {
+                    return;
+                }
+
+                temporizador = setTimeout(async () => {
+                    estado.textContent = "Buscando...";
+
+                    try {
+                        const respuesta = await fetch(
+                            url + "?termino=" +
+                            encodeURIComponent(termino),
+                            {
+                                headers: {
+                                    "Accept": "application/json"
+                                }
+                            }
+                        );
+
+                        if (!respuesta.ok || respuesta.redirected) {
+                            throw new Error("Error de búsqueda.");
+                        }
+
+                        const elementos = await respuesta.json();
+
+                        if (versionActual !== version) {
+                            return;
+                        }
+
+                        resultados.replaceChildren();
+
+                        estado.textContent = elementos.length
+                            ? "Seleccioná un resultado."
+                            : "No se encontraron resultados.";
+
+                        for (const elemento of elementos) {
+                            const boton = document.createElement("button");
+
+                            boton.type = "button";
+                            boton.className =
+                                "list-group-item list-group-item-action";
+
+                            const texto = obtenerTexto(elemento);
+                            boton.textContent = texto;
+
+                            boton.addEventListener("click", () => {
+                                clearTimeout(temporizador);
+                                ++version;
+
+                                campo.value = elemento.id;
+                                entrada.value = texto;
+
+                                resultados.replaceChildren();
+                                estado.textContent =
+                                    "Seleccionado: " + texto;
+                            });
+
+                            resultados.appendChild(boton);
+                        }
+                    } catch {
+                        if (versionActual !== version) {
+                            return;
+                        }
+
+                        estado.textContent =
+                            "No se pudo buscar. Intentá nuevamente.";
+                    }
+                }, 300);
+            });
+        }
+
+        configurarBusqueda(
+            "buscarPelicula",
+            "PeliculaID",
+            "resultadosPeliculas",
+            "estadoPeliculas",
+            '@Url.Action("BuscarPeliculas", "Funcion")',
+            pelicula => pelicula.nombre
+        );
+
+        configurarBusqueda(
+            "buscarSala",
+            "SalaID",
+            "resultadosSalas",
+            "estadoSalas",
+            '@Url.Action("BuscarSalas", "Funcion")',
+            sala => `${sala.cine} — Sala ${sala.numero} (${sala.tipo}), capacidad ${sala.capacidad}`
+        );
+    </script>
+}

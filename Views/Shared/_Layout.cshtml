@@ -27,6 +27,11 @@
                         <li class="nav-item"><a class="nav-link text-dark" asp-controller="Pelicula" asp-action="Indice" asp-route-id="">Películas</a></li>
                         @if (User.IsInRole("Administrador") || User.IsInRole("Empleado")) {
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Sala" asp-action="Indice">Salas</a></li>
+                            
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Butaca" asp-action="Indice">Butacas</a></li>
+                          
+                            <li class="nav-item"><a class="nav-link text-dark"asp-controller="Genero"asp-action="Indice">Géneros</a></li>
+
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Indice">Usuarios</a></li>
                         }
                         @if (User.IsInRole("Administrador")) {

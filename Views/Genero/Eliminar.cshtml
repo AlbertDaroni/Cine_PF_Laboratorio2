@@ -1,0 +1,71 @@
+
+@model Proyecto_Final.Models.Genero
+
+@{
+    ViewData["Title"] = "Eliminar género";
+}
+
+<h1>Eliminar género</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div asp-validation-summary="All"
+             class="text-danger"></div>
+
+        <div class="card">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    ¿Estás seguro de eliminar este género?
+                </h5>
+
+                <dl class="row mt-3">
+                    <dt class="col-sm-4">ID</dt>
+                    <dd class="col-sm-8">@Model.ID</dd>
+
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">@Model.Nombre</dd>
+                </dl>
+
+                @if (ViewBag.TienePeliculas == true)
+                {
+                    <div class="alert alert-warning">
+                        Este género está asociado a una o más películas.
+                        No se recomienda eliminarlo mientras tenga
+                        relaciones registradas.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        Esta acción eliminará el género
+                        de forma permanente.
+                    </div>
+                }
+
+                <form asp-action="Eliminar"
+                      asp-route-id="@Model.ID"
+                      method="post">
+
+                    @if (ViewBag.TienePeliculas != true)
+                    {
+                        <button type="submit"
+                                class="btn btn-danger">
+                            Confirmar eliminación
+                        </button>
+                    }
+
+                    <a asp-action="Indice"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
