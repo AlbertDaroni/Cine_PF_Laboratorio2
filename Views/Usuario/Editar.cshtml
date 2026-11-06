@@ -1,8 +1,6 @@
 @model Proyecto_Final.Models.Usuario
 
-@{
-    ViewData["Title"] = "Editar Usuario";
-}
+@{ ViewData["Title"] = "Editar Usuario"; }
 
 <h1>Editar Usuario</h1>
 
@@ -41,8 +39,7 @@
 
             <div class="mb-3">
                 <label asp-for="Contraseña" class="form-label">Nueva contraseña</label>
-                <input type="password" id="Contraseña" name="Contraseña" autocomplete="new-password"
-                       class="form-control">
+                <input type="password" id="Contraseña" name="Contraseña" autocomplete="new-password" class="form-control">
                 <small class="form-text text-muted">Dejá este campo vacío para conservar la contraseña actual.</small>
                 <span asp-validation-for="Contraseña" class="text-danger"></span>
             </div>
@@ -53,18 +50,13 @@
                 <span asp-validation-for="Foto_Perfil" class="text-danger"></span>
             </div>
 
-            @if (User.IsInRole("Administrador"))
-            {
+            @if (User.IsInRole("Administrador")) {
                 <div class="mb-3">
                     <label for="buscarRol" class="form-label">Rol</label>
-
-                    <input id="buscarRol" type="text" value="@ViewBag.RolSeleccionado" class="form-control"
-                           autocomplete="off" placeholder="Escribí al menos 2 caracteres" />
-
+                    <input id="buscarRol" type="text" value="@ViewBag.RolSeleccionado" class="form-control" autocomplete="off" placeholder="Escribí al menos 2 caracteres" />
                     <input asp-for="RolID" type="hidden" />
 
                     <div id="estadoRoles" class="form-text" role="status" aria-live="polite"></div>
-
                     <div id="resultadosRoles" class="list-group mt-2"></div>
 
                     <span asp-validation-for="RolID" class="text-danger"></span>
@@ -78,9 +70,7 @@
                     </select>
                     <span asp-validation-for="Estado" class="text-danger"></span>
                 </div>
-            }
-            else
-            {
+            } else {
                 <input type="hidden" asp-for="RolID">
                 <input type="hidden" asp-for="Estado">
             }
@@ -115,46 +105,33 @@
             resultados.replaceChildren();
             estado.textContent = "";
 
-            if (termino.length < 2) {
-                return;
-            }
+            if (termino.length < 2) return;
 
             temporizador = setTimeout(async () => {
                 estado.textContent = "Buscando roles...";
 
                 try {
-                    const respuesta = await fetch(
-                        urlBusqueda + "?termino=" +
-                        encodeURIComponent(termino),
-                        {
-                            headers: {
-                                "Accept": "application/json"
-                            }
+                    const respuesta = await fetch(urlBusqueda + "?termino=" + encodeURIComponent(termino), {
+                        headers: {
+                            "Accept": "application/json"
                         }
-                    );
+                    });
 
-                    if (!respuesta.ok || respuesta.redirected) {
-                        throw new Error("Error de búsqueda.");
-                    }
+                    if (!respuesta.ok || respuesta.redirected) throw new Error("Error de búsqueda.");
 
                     const roles = await respuesta.json();
 
-                    if (versionActual !== versionBusqueda) {
-                        return;
-                    }
+                    if (versionActual !== versionBusqueda) return;
 
                     resultados.replaceChildren();
 
-                    estado.textContent = roles.length
-                        ? "Seleccioná un rol de la lista."
-                        : "No se encontraron roles.";
+                    estado.textContent = roles.length ? "Seleccioná un rol de la lista." : "No se encontraron roles.";
 
                     for (const rol of roles) {
                         const boton = document.createElement("button");
 
                         boton.type = "button";
-                        boton.className =
-                            "list-group-item list-group-item-action";
+                        boton.className = "list-group-item list-group-item-action";
                         boton.textContent = rol.nombre;
 
                         boton.addEventListener("click", () => {
@@ -172,12 +149,9 @@
                         resultados.appendChild(boton);
                     }
                 } catch {
-                    if (versionActual !== versionBusqueda) {
-                        return;
-                    }
+                    if (versionActual !== versionBusqueda) return;
 
-                    estado.textContent =
-                        "No se pudo buscar. Intentá nuevamente.";
+                    estado.textContent = "No se pudo buscar. Intentá nuevamente.";
                 }
             }, 300);
         });

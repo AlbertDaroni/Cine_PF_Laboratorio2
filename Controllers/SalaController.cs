@@ -105,7 +105,6 @@ public class SalaController : Controller {
         if (sala == null) return NotFound();
 
         bool datosValidos = await TryUpdateModelAsync<Sala>(sala, "", s => s.Numero, s => s.Tipo, s => s.Estado);
-
         if (!datosValidos) return View(sala);
 
         bool numeroRepetido = await _context.Salas.AnyAsync(s => s.CineID == sala.CineID && s.Numero == sala.Numero && s.ID != sala.ID);
@@ -137,7 +136,6 @@ public class SalaController : Controller {
         if (sala == null) return NotFound();
 
         bool tieneFunciones = await _context.Funciones.AnyAsync(f => f.SalaID == id);
-
         if (tieneFunciones) {
             ViewBag.TieneFunciones = true;
             ModelState.AddModelError("", "No se puede eliminar esta sala porque tiene funciones asociadas. Podés desactivarla desde Editar.");

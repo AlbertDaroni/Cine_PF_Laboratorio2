@@ -1,39 +1,21 @@
 @model Proyecto_Final.Models.Pago
 
-@{
-    ViewData["Title"] = "Crear pago";
-}
+@{ ViewData["Title"] = "Crear pago"; }
 
 <h1>Crear pago</h1>
 
 <form asp-action="Crear" method="post" class="col-md-6">
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label for="buscarReserva" class="form-label">
-            Reserva
-        </label>
-
-        <input id="buscarReserva"
-               type="text"
-               value="@ViewBag.ReservaSeleccionada"
-               class="form-control"
-               autocomplete="off"
-               placeholder="Buscá por usuario o número de reserva" />
-
+        <label for="buscarReserva" class="form-label">Reserva</label>
+        <input id="buscarReserva" type="text" value="@ViewBag.ReservaSeleccionada" class="form-control" autocomplete="off" placeholder="Buscá por usuario o número de reserva" />
         <input asp-for="ReservaID" type="hidden" />
 
-        <div id="estadoReservas"
-             class="form-text"
-             role="status"
-             aria-live="polite"></div>
+        <div id="estadoReservas" class="form-text" role="status" aria-live="polite"></div>
+        <div id="resultadosReservas" class="list-group mt-2"></div>
 
-        <div id="resultadosReservas"
-             class="list-group mt-2"></div>
-
-        <span asp-validation-for="ReservaID"
-              class="text-danger"></span>
+        <span asp-validation-for="ReservaID" class="text-danger"></span>
 
         <small class="form-text text-muted">
             Escribí al menos 2 caracteres.
@@ -43,32 +25,19 @@
 
     <div class="mb-3">
         <label asp-for="Concepto" class="form-label"></label>
-        <input asp-for="Concepto"
-               class="form-control"
-               maxlength="50"
-               placeholder="Ejemplo: Entradas de cine" />
-        <span asp-validation-for="Concepto"
-              class="text-danger"></span>
+        <input asp-for="Concepto" class="form-control" maxlength="50" placeholder="Ejemplo: Entradas de cine" />
+        <span asp-validation-for="Concepto" class="text-danger"></span>
     </div>
 
     <div class="alert alert-info">
         Importe de la reserva:
-        <strong id="montoReserva">@(ViewBag.MontoReserva == null
-            ? "Seleccioná una reserva"
-            : ViewBag.MontoReserva)</strong>
+        <strong id="montoReserva">@(ViewBag.MontoReserva == null ? "Seleccioná una reserva" : ViewBag.MontoReserva)</strong>
 
-        <div>
-            El importe y la fecha del pago se asignan en el servidor.
-        </div>
+        <div>El importe y la fecha del pago se asignan en el servidor.</div>
     </div>
 
-    <button type="submit" class="btn btn-success">
-        Registrar pago
-    </button>
-
-    <a asp-action="Indice" class="btn btn-secondary">
-        Volver
-    </a>
+    <button type="submit" class="btn btn-success">Registrar pago</button>
+    <a asp-action="Indice" class="btn btn-secondary">Volver</a>
 </form>
 
 @section Scripts {
@@ -102,9 +71,7 @@
             estado.textContent = "";
             monto.textContent = "Seleccioná una reserva";
 
-            if (termino.length < 2) {
-                return;
-            }
+            if (termino.length < 2) return;
 
             temporizador = setTimeout(async () => {
                 estado.textContent = "Buscando reservas...";
@@ -120,44 +87,35 @@
                         }
                     );
 
-                    if (!respuesta.ok || respuesta.redirected) {
-                        throw new Error("Error de búsqueda.");
-                    }
+                    if (!respuesta.ok || respuesta.redirected) throw new Error("Error de búsqueda.");
 
                     const reservas = await respuesta.json();
 
-                    if (versionActual !== versionBusqueda) {
-                        return;
-                    }
+                    if (versionActual !== versionBusqueda) return;
 
                     resultados.replaceChildren();
 
-                    estado.textContent = reservas.length
-                        ? "Seleccioná una reserva."
-                        : "No se encontraron reservas pendientes de pago.";
+                    estado.textContent = reservas.length ? "Seleccioná una reserva." : "No se encontraron reservas pendientes de pago.";
 
                     for (const reserva of reservas) {
                         const boton = document.createElement("button");
 
                         boton.type = "button";
-                        boton.className =
-                            "list-group-item list-group-item-action";
+                        boton.className =  "list-group-item list-group-item-action";
 
                         boton.textContent =
                             `Reserva ${reserva.id} — ${reserva.nombre}` +
                             ` — ${reserva.pelicula}` +
-                            ` — ${formatoMonto.format(reserva.monto)}`;
+                            ` — ${formatoMonto.format(reserva.monto)}`
+                        ;
 
                         boton.addEventListener("click", () => {
                             clearTimeout(temporizador);
                             ++versionBusqueda;
 
                             reservaID.value = reserva.id;
-                            entrada.value =
-                                `Reserva ${reserva.id} — ${reserva.nombre}`;
-
-                            monto.textContent =
-                                formatoMonto.format(reserva.monto);
+                            entrada.value = `Reserva ${reserva.id} — ${reserva.nombre}`;
+                            monto.textContent = formatoMonto.format(reserva.monto);
 
                             resultados.replaceChildren();
                             estado.textContent = "Reserva seleccionada.";
@@ -166,12 +124,9 @@
                         resultados.appendChild(boton);
                     }
                 } catch {
-                    if (versionActual !== versionBusqueda) {
-                        return;
-                    }
+                    if (versionActual !== versionBusqueda) return;
 
-                    estado.textContent =
-                        "No se pudo buscar. Intentá nuevamente.";
+                    estado.textContent = "No se pudo buscar. Intentá nuevamente.";
                 }
             }, 300);
         });

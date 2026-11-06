@@ -1,97 +1,53 @@
 @model Proyecto_Final.Models.Funcion
 
-@{
-    ViewData["Title"] = "Crear función";
-}
+@{ ViewData["Title"] = "Crear función"; }
 
 <h1>Crear función</h1>
 
 <form asp-action="Crear" method="post" class="col-md-6">
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label for="buscarPelicula" class="form-label">
-            Película
-        </label>
-
-        <input id="buscarPelicula"
-               type="text"
-               value="@ViewBag.PeliculaSeleccionada"
-               class="form-control"
-               autocomplete="off"
-               placeholder="Escribí al menos 2 caracteres" />
-
+        <label for="buscarPelicula" class="form-label">Película</label>
+        <input id="buscarPelicula" type="text" value="@ViewBag.PeliculaSeleccionada" class="form-control" autocomplete="off" placeholder="Escribí al menos 2 caracteres" />
         <input asp-for="PeliculaID" type="hidden" />
 
-        <div id="estadoPeliculas" class="form-text"
-             role="status" aria-live="polite"></div>
+        <div id="estadoPeliculas" class="form-text" role="status" aria-live="polite"></div>
+        <div id="resultadosPeliculas" class="list-group mt-2"></div>
 
-        <div id="resultadosPeliculas"
-             class="list-group mt-2"></div>
-
-        <span asp-validation-for="PeliculaID"
-              class="text-danger"></span>
+        <span asp-validation-for="PeliculaID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label for="buscarSala" class="form-label">
-            Sala
-        </label>
-
-        <input id="buscarSala"
-               type="text"
-               value="@ViewBag.SalaSeleccionada"
-               class="form-control"
-               autocomplete="off"
-               placeholder="Buscá por cine o tipo de sala" />
-
+        <label for="buscarSala" class="form-label">Sala</label>
+        <input id="buscarSala" type="text" value="@ViewBag.SalaSeleccionada" class="form-control" autocomplete="off" placeholder="Buscá por cine o tipo de sala" />
         <input asp-for="SalaID" type="hidden" />
 
-        <div id="estadoSalas" class="form-text"
-             role="status" aria-live="polite"></div>
+        <div id="estadoSalas" class="form-text" role="status" aria-live="polite"></div>
+        <div id="resultadosSalas" class="list-group mt-2"></div>
 
-        <div id="resultadosSalas"
-             class="list-group mt-2"></div>
-
-        <span asp-validation-for="SalaID"
-              class="text-danger"></span>
+        <span asp-validation-for="SalaID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="FechaHora" class="form-label">
-            Fecha y hora
-        </label>
-        <input asp-for="FechaHora"
-               type="datetime-local"
-               class="form-control" />
-        <span asp-validation-for="FechaHora"
-              class="text-danger"></span>
+        <label asp-for="FechaHora" class="form-label">Fecha y hora</label>
+        <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+        <span asp-validation-for="FechaHora" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Precio" class="form-label"></label>
         <input asp-for="Precio" class="form-control" />
-        <span asp-validation-for="Precio"
-              class="text-danger"></span>
+        <span asp-validation-for="Precio" class="text-danger"></span>
     </div>
 
     <div class="form-check mb-3">
         <input asp-for="Estado" class="form-check-input" />
-        <label asp-for="Estado" class="form-check-label">
-            Función activa
-        </label>
+        <label asp-for="Estado" class="form-check-label">Función activa</label>
     </div>
 
-    <button type="submit" class="btn btn-success">
-        Guardar
-    </button>
-
-    <a asp-controller="Pelicula"
-       asp-action="Indice"
-       class="btn btn-secondary">
-        Volver
-    </a>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-controller="Pelicula" asp-action="Indice" class="btn btn-secondary">Volver</a>
 </form>
 
 @section Scripts {
@@ -120,46 +76,33 @@
                 resultados.replaceChildren();
                 estado.textContent = "";
 
-                if (termino.length < 2) {
-                    return;
-                }
+                if (termino.length < 2) return;
 
                 temporizador = setTimeout(async () => {
                     estado.textContent = "Buscando...";
 
                     try {
-                        const respuesta = await fetch(
-                            url + "?termino=" +
-                            encodeURIComponent(termino),
-                            {
-                                headers: {
-                                    "Accept": "application/json"
-                                }
+                        const respuesta = await fetch(url + "?termino=" + encodeURIComponent(termino), {
+                            headers: {
+                                "Accept": "application/json"
                             }
-                        );
+                        });
 
-                        if (!respuesta.ok || respuesta.redirected) {
-                            throw new Error("Error de búsqueda.");
-                        }
+                        if (!respuesta.ok || respuesta.redirected) throw new Error("Error de búsqueda.");
 
                         const elementos = await respuesta.json();
 
-                        if (versionActual !== version) {
-                            return;
-                        }
+                        if (versionActual !== version) return;
 
                         resultados.replaceChildren();
 
-                        estado.textContent = elementos.length
-                            ? "Seleccioná un resultado."
-                            : "No se encontraron resultados.";
+                        estado.textContent = elementos.length ? "Seleccioná un resultado." : "No se encontraron resultados.";
 
                         for (const elemento of elementos) {
                             const boton = document.createElement("button");
 
                             boton.type = "button";
-                            boton.className =
-                                "list-group-item list-group-item-action";
+                            boton.className = "list-group-item list-group-item-action";
 
                             const texto = obtenerTexto(elemento);
                             boton.textContent = texto;
@@ -172,19 +115,15 @@
                                 entrada.value = texto;
 
                                 resultados.replaceChildren();
-                                estado.textContent =
-                                    "Seleccionado: " + texto;
+                                estado.textContent = "Seleccionado: " + texto;
                             });
 
                             resultados.appendChild(boton);
                         }
                     } catch {
-                        if (versionActual !== version) {
-                            return;
-                        }
+                        if (versionActual !== version) return;
 
-                        estado.textContent =
-                            "No se pudo buscar. Intentá nuevamente.";
+                        estado.textContent = "No se pudo buscar. Intentá nuevamente.";
                     }
                 }, 300);
             });
