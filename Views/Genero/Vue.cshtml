@@ -1,0 +1,396 @@
+
+@{
+    ViewData["Title"] = "Gestión de Géneros con Vue";
+}
+
+<h2 class="mb-4">Gestión de Géneros - Vue.js</h2>
+
+<div id="app-generos" v-cloak>
+
+    <!-- FORMULARIO PARA CREAR GÉNEROS -->
+    <form v-on:submit.prevent="crearGenero" class="mb-4">
+
+        @Html.AntiForgeryToken()
+
+        <div class="row g-2 align-items-end">
+
+            <div class="col-md-8">
+                <label class="form-label">
+                    Nombre del género
+                </label>
+
+                <input type="text"
+                       class="form-control"
+                       v-model="nuevoNombre"
+                       maxlength="50"
+                       placeholder="Ej: Musical"
+                       required />
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit"
+                        class="btn btn-success w-100"
+                        :disabled="guardando">
+                    {{ guardando ? "Guardando..." : "Agregar género" }}
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- FORMULARIO PARA EDITAR GÉNEROS -->
+    <div v-if="generoEditandoId !== null"
+         class="card border-warning mb-4">
+
+        <div class="card-body">
+
+            <h5 class="card-title mb-3">
+                Editar género
+            </h5>
+
+            <form v-on:submit.prevent="guardarEdicion">
+
+                <label class="form-label">
+                    Nuevo nombre
+                </label>
+
+                <input type="text"
+                       class="form-control mb-3"
+                       v-model="nombreEditado"
+                       maxlength="50"
+                       required />
+
+                <button type="submit"
+                        class="btn btn-primary me-2"
+                        :disabled="editando">
+                    {{ editando ? "Guardando..." : "Guardar cambios" }}
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        v-on:click="cancelarEdicion">
+                    Cancelar
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- MENSAJE DE ÉXITO -->
+    <div v-if="mensaje" class="alert alert-success">
+        {{ mensaje }}
+    </div>
+
+    <!-- MENSAJE DE ERROR -->
+    <div v-if="error" class="alert alert-danger">
+        {{ error }}
+    </div>
+
+    <!-- INDICADOR DE CARGA -->
+    <div v-if="cargando" class="alert alert-info">
+        Cargando géneros...
+    </div>
+
+    <!-- TABLA DE GÉNEROS -->
+    <table v-else class="table table-striped table-bordered">
+
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr v-for="genero in generos" :key="genero.id">
+
+                <td>{{ genero.id }}</td>
+
+                <td>{{ genero.nombre }}</td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-warning btn-sm"
+                            v-on:click="prepararEdicion(genero)">
+                        Editar
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-danger btn-sm ms-2"
+                            v-on:click="confirmarEliminacion(genero)">
+                        Eliminar
+                    </button>
+
+                </td>
+
+                
+
+
+
+            </tr>
+
+            <tr v-if="generos.length === 0">
+                <td colspan="3" class="text-center">
+                    No hay géneros registrados.
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+@section Scripts {
+
+    <!-- CARGAR VUE.JS 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+
+            // VARIABLES REACTIVAS
+            data() {
+                return {
+                    generos: [],
+                    cargando: true,
+                    error: "",
+                    mensaje: "",
+
+                    // Creación
+                    nuevoNombre: "",
+                    guardando: false,
+
+                    // Edición
+                    generoEditandoId: null,
+                    nombreEditado: "",
+                    editando: false
+                };
+            },
+
+            methods: {
+
+                // GET: LISTAR GÉNEROS
+                async cargarGeneros() {
+                    this.cargando = true;
+                    this.error = "";
+
+                    try {
+                        const respuesta = await fetch("/api/generos");
+
+                        if (!respuesta.ok) {
+                            throw new Error(
+                                "No se pudieron cargar los géneros."
+                            );
+                        }
+
+                        this.generos = await respuesta.json();
+
+                    } catch (error) {
+                        this.error = error.message;
+
+                    } finally {
+                        this.cargando = false;
+                    }
+                },
+
+                // POST: CREAR GÉNERO
+                async crearGenero() {
+                    this.error = "";
+                    this.mensaje = "";
+
+                    const nombre = this.nuevoNombre.trim();
+
+                    if (!nombre) {
+                        this.error = "El nombre es obligatorio.";
+                        return;
+                    }
+
+                    this.guardando = true;
+
+                    try {
+                        const token = document.querySelector(
+                            '#app-generos input[name="__RequestVerificationToken"]'
+                        ).value;
+
+                        const respuesta = await fetch("/api/generos", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "RequestVerificationToken": token
+                            },
+                            body: JSON.stringify({
+                                nombre: nombre
+                            })
+                        });
+
+                        const resultado = await respuesta.json();
+
+                        if (!respuesta.ok) {
+                            throw new Error(
+                                resultado.mensaje ||
+                                "No se pudo crear el género."
+                            );
+                        }
+
+                        // Mostrar mensaje de éxito
+                        this.mensaje = resultado.mensaje;
+
+                        // Limpiar formulario
+                        this.nuevoNombre = "";
+
+                        // Actualizar listado sin recargar
+                        await this.cargarGeneros();
+
+                    } catch (error) {
+                        this.error = error.message;
+
+                    } finally {
+                        this.guardando = false;
+                    }
+                },
+
+                // PREPARAR EDICIÓN
+                prepararEdicion(genero) {
+                    this.generoEditandoId = genero.id;
+                    this.nombreEditado = genero.nombre;
+
+                    this.error = "";
+                    this.mensaje = "";
+                },
+
+                // CANCELAR EDICIÓN
+                cancelarEdicion() {
+                    this.generoEditandoId = null;
+                    this.nombreEditado = "";
+                },
+
+                // PRUEBA DEL BOTÓN GUARDAR CAMBIOS
+                
+            async guardarEdicion() {
+                this.error = "";
+                this.mensaje = "";
+
+                const id = this.generoEditandoId;
+                const nombre = this.nombreEditado.trim();
+
+                if (id === null) {
+                    this.error = "No seleccionaste ningún género.";
+                    return;
+                }
+
+                if (!nombre) {
+                    this.error = "El nombre es obligatorio.";
+                    return;
+                }
+
+                this.editando = true;
+
+                try {
+                    const token = document.querySelector(
+                        '#app-generos input[name="__RequestVerificationToken"]'
+                    ).value;
+
+                    const respuesta = await fetch(`/api/generos/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "RequestVerificationToken": token
+                        },
+                        body: JSON.stringify({ nombre })
+                    });
+
+                    const resultado = await respuesta.json();
+
+                    if (!respuesta.ok) {
+                        throw new Error(
+                            resultado.mensaje ||
+                            "No se pudo actualizar el género."
+                        );
+                    }
+
+                    this.mensaje = resultado.mensaje;
+
+                    // Cerrar el formulario de edición
+                    this.cancelarEdicion();
+
+                    // Actualizar la tabla sin recargar
+                    await this.cargarGeneros();
+
+                } catch (error) {
+                    this.error = error.message;
+
+                } finally {
+                    this.editando = false;
+                }
+            },
+
+            
+            
+            async confirmarEliminacion(genero) {
+                const confirmado = confirm(
+                    `¿Estás seguro de que querés eliminar el género "${genero.nombre}"?`
+                );
+
+                if (!confirmado) {
+                    return;
+                }
+
+                this.error = "";
+                this.mensaje = "";
+
+                try {
+                    const token = document.querySelector(
+                        '#app-generos input[name="__RequestVerificationToken"]'
+                    ).value;
+
+                    const respuesta = await fetch(
+                        `/api/generos/${genero.id}`,
+                        {
+                            method: "DELETE",
+                            headers: {
+                                "RequestVerificationToken": token
+                            }
+                        }
+                    );
+
+                    const resultado = await respuesta.json();
+
+                    if (!respuesta.ok) {
+                        throw new Error(
+                            resultado.mensaje ||
+                            "No se pudo eliminar el género."
+                        );
+                    }
+
+                    this.mensaje = resultado.mensaje;
+
+                    // Cerrar la edición si se eliminó ese género
+                    if (this.generoEditandoId === genero.id) {
+                        this.cancelarEdicion();
+                    }
+
+                    // Actualizar la tabla sin recargar
+                    await this.cargarGeneros();
+
+                } catch (error) {
+                    this.error = error.message;
+                }
+            }
+
+
+
+            },
+
+            // CARGAR DATOS AL INICIAR VUE
+            mounted() {
+                this.cargarGeneros();
+            }
+
+        }).mount("#app-generos");
+    </script>
+}

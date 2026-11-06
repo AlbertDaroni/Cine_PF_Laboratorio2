@@ -179,4 +179,13 @@ public class GeneroController : Controller
 
         return RedirectToAction(nameof(Indice));
     }
+
+    
+    [HttpGet]
+    public IActionResult Vue()
+    {
+        return View();
+    }
+
+
 }
