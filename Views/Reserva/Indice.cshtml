@@ -45,11 +45,7 @@
                                 <span class="badge bg-danger">Cancelada</span>
                             }
                         </td>
-                        <td>
-                            @if (reserva.Estado && reserva.Funcion != null && reserva.Funcion.FechaHora > DateTime.Now) {
-                                <a asp-action="Detalles" asp-route-id="@reserva.ID" class="btn btn-info btn-sm">Detalles</a>
-                            }
-                        </td>
+                        <td><a asp-action="Detalles" asp-route-id="@reserva.ID" class="btn btn-info btn-sm">Detalles</a></td>
                     </tr>
                 }
             </tbody>

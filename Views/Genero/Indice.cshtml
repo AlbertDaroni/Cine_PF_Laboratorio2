@@ -1,4 +1,3 @@
-
 @model IEnumerable<Proyecto_Final.Models.Genero>
 
 @{ ViewData["Title"] = "Géneros"; }
@@ -20,7 +19,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Acciones</th>
                 </tr>
@@ -28,7 +26,6 @@
             <tbody>
                 @foreach (var genero in Model) {
                     <tr>
-                        <td>@genero.ID</td>
                         <td>@genero.Nombre</td>
                         <td>
                             <a asp-action="Editar" asp-route-id="@genero.ID" class="btn btn-warning btn-sm">Editar</a>

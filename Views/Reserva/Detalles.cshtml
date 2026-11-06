@@ -28,7 +28,7 @@
 
     <dt class="col-sm-3">Estado de la reserva</dt>
     <dd class="col-sm-9">
-        @if (Reserva.Estado) {
+        @if (Reserva.Estado && Funcion != null && Funcion.FechaHora > DateTime.Now) {
             <span class="badge bg-success">Activa</span>
         } else {
             <span class="badge bg-danger">Cancelada</span>
@@ -54,7 +54,7 @@
     <dt class="col-sm-3">Estado del pago</dt>
     <dd class="col-sm-9">
         @if (Pago.Estado) {
-            <span class="badge bg-success">Activo</span>
+            <span class="badge bg-success">Pago</span>
         } else {
             <span class="badge bg-danger">Anulado</span>
         }
@@ -89,7 +89,7 @@
 
     <dt class="col-sm-3">Estado de la función</dt>
     <dd class="col-sm-9">
-        @if (Funcion.Estado) {
+        @if (Funcion.Estado && Reserva.Estado && Funcion != null && Funcion.FechaHora > DateTime.Now) {
             <span class="badge bg-success">Activa</span>
         } else {
             <span class="badge bg-danger">Inactiva</span>
@@ -113,7 +113,7 @@
 
     <dt class="col-sm-3">Estado de la película</dt>
     <dd class="col-sm-9">
-        @if (Pelicula.Estado) {
+        @if (Pelicula.Estado && Funcion.Estado && Reserva.Estado && Funcion != null && Funcion.FechaHora > DateTime.Now) {
             <span class="badge bg-success">Activa</span>
         } else {
             <span class="badge bg-danger">Inactiva</span>

@@ -73,7 +73,10 @@ public class UsuarioController : Controller {
     // -----------------------------------------------------------------------------------
     // Funciones para Crear
     [HttpGet, Authorize(Roles = "Administrador")]
-    public IActionResult Crear() { return View(new Usuario()); }
+    public async Task<IActionResult> Crear() {
+        ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+        return View();
+    }
 
     [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Crear([Bind("Nombre,Apellido,DNI,Correo,Contraseña,Foto_Perfil,RolID,Estado")] Usuario usuario) {
@@ -84,7 +87,10 @@ public class UsuarioController : Controller {
 
         ViewBag.RolSeleccionado = rol?.Nombre;
 
-        if (!ModelState.IsValid) return View(usuario);
+        if (!ModelState.IsValid) {
+            ViewBag.Roles = new SelectList(await _context.Roles.ToListAsync(), "ID", "Nombre");
+            return View(usuario);
+        }
 
         var hasher = new PasswordHasher<Usuario>();
 
@@ -99,7 +105,7 @@ public class UsuarioController : Controller {
 
     // -----------------------------------------------------------------------------------
     // Funciones para Editar
-    [HttpGet, Authorize(Roles = "Administrador")]
+    [HttpGet]
     public async Task<IActionResult> Editar(int id) {
         var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.ID == id);
         if (usuario == null) return NotFound();
@@ -111,7 +117,7 @@ public class UsuarioController : Controller {
         return View(usuario);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Administrador"), RequestSizeLimit(5 * 1024 * 1024)]
+    [HttpPost, ValidateAntiForgeryToken, RequestSizeLimit(5 * 1024 * 1024)]
     public async Task<IActionResult> Editar(int id, Usuario usuario, IFormFile? Foto_Perfil) {
         if (id != usuario.ID) return BadRequest();
         var rol = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.ID == usuario.RolID);
